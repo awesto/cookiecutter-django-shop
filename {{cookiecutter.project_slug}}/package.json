@@ -1,40 +1,23 @@
 {
   "name": "{{cookiecutter.project_slug}}",
   "version": "{{ cookiecutter.version }}",
-  "dependencies": {},
-  "devDependencies": {
-    {% if cookiecutter.js_task_runner == 'Gulp' %}
-    {% if cookiecutter.custom_bootstrap_compilation == 'y' %}
-    "bootstrap": "4.1.1",
-    {% endif %}
-    "browser-sync": "^2.14.0",
-    "del": "^2.2.2",
-    "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^5.0.0",
-    {% if cookiecutter.custom_bootstrap_compilation == 'y' %}
-    "gulp-concat": "^2.6.1",
-    {% endif %}
-    "gulp-cssnano": "^2.1.2",
-    "gulp-imagemin": "^4.1.0",
-    "gulp-pixrem": "^1.0.0",
-    "gulp-plumber": "^1.1.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-sass": "^3.1.0",
-    "gulp-uglify": "^3.0.0",
-    "gulp-util": "^3.0.7",
-    {% if cookiecutter.custom_bootstrap_compilation == 'y' %}
-    "jquery": "3.3.1-slim",
-    "popper.js": "1.14.3",
-    {% endif %}
-    "run-sequence": "^2.1.1"
-    {% endif %}
-  },
-  "engines": {
-    "node": ">=0.8.0"
-  },
-  "scripts": {
-    {% if cookiecutter.js_task_runner == 'Gulp' %}
-    "dev": "gulp"
-    {% endif %}
+  "dependencies": {
+    "angular": "^1.6.9",
+    "angular-animate": "^1.6.9",
+    "angular-bootstrap-plus": "^0.7.0",
+    "angular-i18n": "^1.6.9",
+    "angular-inview": "^1.5.7",
+    "angular-sanitize": "^1.6.9",
+    "angular-ui-bootstrap": "~0.14.3",
+    "autoprefixer": "^8.0.0",
+    "bootstrap": "~3.3.7",
+    "bootstrap-sass": "~3.3.7",
+    "font-awesome": "^4.7.0",
+    "leaflet": "^1.1.0",
+    "leaflet-easybutton": "^2.2.0",
+    "picturefill": "~3.0.2",
+    "postcss": "^6.0.17",
+    "postcss-cli": "^5.0.0",
+    "select2": "~4.0.3"
   }
 }

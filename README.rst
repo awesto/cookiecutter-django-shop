@@ -168,7 +168,6 @@ Answer the prompts with your own desired options_. For example::
     use_pycharm [n]: y
     windows [n]: n
     use_docker [n]: n
-    use_heroku [n]: y
     use_compressor [n]: y
     Select postgresql_version:
     1 - 10.3

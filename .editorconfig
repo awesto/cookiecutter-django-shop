@@ -8,20 +8,17 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{py,rst,ini}]
+[*.{py,ini}]
 indent_style = space
 indent_size = 4
 
-[*.{html,css,scss,json,yml}]
+[*.{html,js,rst,scss}]
+indent_style = tab
+indent_size = 4
+
+[*.{css,json,md,yml}]
 indent_style = space
 indent_size = 2
 
 [*.md]
 trim_trailing_whitespace = false
-
-[Makefile]
-indent_style = tab
-
-[nginx.conf]
-indent_style = space
-indent_size = 2

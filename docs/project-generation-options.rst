@@ -57,16 +57,9 @@ postgresql_version:
     6. 9.4
     7. 9.3
 
-js_task_runner:
-    Select a JavaScript task runner. The choices are:
-
-    1. None
-    2. Gulp_
-
-custom_bootstrap_compilation:
-    Indicates whether the project should support Bootstrap recompilation
-    via the selected JavaScript task runner's task. This can be useful
-    for real-time Bootstrap variable alteration.
+use_i18n:
+    Indicates whether the project should be configured to use `Django Parler`_,
+    supporting more than one language.
 
 use_compressor:
     Indicates whether the project should be configured to use `Django Compressor`_.
@@ -82,10 +75,6 @@ use_sentry:
 
 use_whitenoise:
     Indicates whether the project should be configured to use WhiteNoise_.
-
-use_heroku:
-    Indicates whether the project should be configured so as to be deployable
-    to Heroku_.
 
 use_travisci:
     Indicates whether the project should be configured to use `Travis CI`_.

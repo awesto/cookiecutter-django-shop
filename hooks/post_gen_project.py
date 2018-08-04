@@ -13,6 +13,7 @@ import os
 import random
 import shutil
 import string
+import pipenv
 
 try:
     # Inspired by
@@ -57,6 +58,10 @@ def remove_pycharm_files():
 
 
 def remove_docker_files():
+    pass
+
+
+def remove_docker_files_pass():
     shutil.rmtree("compose")
 
     file_names = ["local.yml", "production.yml", ".dockerignore"]
@@ -68,18 +73,6 @@ def remove_utility_files():
     shutil.rmtree("utility")
 
 
-def remove_heroku_files():
-    file_names = ["Procfile", "runtime.txt", "requirements.txt"]
-    for file_name in file_names:
-        os.remove(file_name)
-
-
-def remove_gulp_files():
-    file_names = ["gulpfile.js"]
-    for file_name in file_names:
-        os.remove(file_name)
-
-
 def remove_packagejson_file():
     file_names = ["package.json"]
     for file_name in file_names:
@@ -87,7 +80,7 @@ def remove_packagejson_file():
 
 
 def remove_celery_app():
-    shutil.rmtree(os.path.join("{{ cookiecutter.project_slug }}", "taskapp"))
+    shutil.rmtree(os.path.join("{{ cookiecutter.app_name }}", "taskapp"))
 
 
 def remove_dottravisyml_file():
@@ -264,6 +257,10 @@ def remove_celery_compose_dirs():
     shutil.rmtree(os.path.join("compose", "production", "django", "celery"))
 
 
+def install_requirements():
+    pipenv.cli(['install', '--dev'])
+
+
 def main():
     debug = "{{ cookiecutter.debug }}".lower() == "y"
 
@@ -287,13 +284,7 @@ def main():
     else:
         remove_docker_files()
 
-    if "{{ cookiecutter.use_heroku }}".lower() == "n":
-        remove_heroku_files()
-
-    if (
-        "{{ cookiecutter.use_docker }}".lower() == "n"
-        and "{{ cookiecutter.use_heroku }}".lower() == "n"
-    ):
+    if "{{ cookiecutter.use_docker }}".lower() == "n":
         if "{{ cookiecutter.keep_local_envs_in_vcs }}".lower() == "y":
             print(
                 INFO + ".env(s) are only utilized when Docker Compose and/or "
@@ -307,25 +298,6 @@ def main():
         if "{{ cookiecutter.keep_local_envs_in_vcs }}".lower() == "y":
             append_to_gitignore_file("!.envs/.local/")
 
-    if "{{ cookiecutter.js_task_runner}}".lower() == "none":
-        remove_gulp_files()
-        remove_packagejson_file()
-    if (
-        "{{ cookiecutter.js_task_runner }}".lower() != "none"
-        and "{{ cookiecutter.use_docker }}".lower() == "y"
-    ):
-        print(
-            WARNING
-            + "Docker and {} JS task runner ".format(
-                "{{ cookiecutter.js_task_runner }}".lower().capitalize()
-            )
-            + "working together not supported yet. "
-              "You can continue using the generated project like you "
-              "normally would, however you would need to add a JS "
-              "task runner service to your Docker Compose configuration "
-              "manually." + TERMINATOR
-        )
-
     if "{{ cookiecutter.use_celery }}".lower() == "n":
         remove_celery_app()
         if "{{ cookiecutter.use_docker }}".lower() == "y":
@@ -333,6 +305,8 @@ def main():
 
     if "{{ cookiecutter.use_travisci }}".lower() == "n":
         remove_dottravisyml_file()
+
+    install_requirements()
 
     print(SUCCESS + "Project initialized, keep up the good work!" + TERMINATOR)
 

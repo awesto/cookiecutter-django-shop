@@ -17,10 +17,12 @@ HINT = "\x1b[3;33m"
 SUCCESS = "\x1b[1;32m [SUCCESS]: "
 
 project_slug = "{{ cookiecutter.project_slug }}"
-if hasattr(project_slug, "isidentifier"):
-    assert project_slug.isidentifier(), "'{}' project slug is not a valid Python identifier.".format(
-        project_slug
-    )
+assert ' ' not in project_slug, "'{}' project slug shall not contain spaces.".format(project_slug)
+assert project_slug.lower() == project_slug, "'{}' project slug shall be in lowercase letters.".format(project_slug)
+
+app_name = "{{ cookiecutter.app_name }}"
+if hasattr(app_name, "isidentifier"):
+    assert app_name.isidentifier(), "'{}' app name is not a valid Python identifier.".format(app_name)
 
 assert "\\" not in "{{ cookiecutter.author_name }}", "Don't include backslashes in author name."
 
