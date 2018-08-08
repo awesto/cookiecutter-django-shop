@@ -1,0 +1,13 @@
+{{ '{%' }} extends "{{ cookiecutter.app_name }}/pages/default.html" %}{{ '%}' }}
+{% raw %}
+{% block breadcrumb %}{% endblock %}
+
+{% block main-content %}
+<div class="container">
+	<div class="row">
+		<div class="col-xs-12">
+			<h2>{{ detail|default:"Forbidden" }}</h2>
+		</div>
+	</div>
+</div>
+{% endblock %}{% endraw %}

@@ -4,7 +4,22 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "<2"
+Django = "<2"
+django-cms = "<3.6"
+djangocms-cascade = "*"
+django-shop = "*"
+"djangocms-bootstrap3" = "*"
+django_compressor = "*"
+django-sass-processor = "*"
+django-filter = "*"
+django-haystack = "*"
+drf-haystack = "*"
+djangoshop-stripe = "*"
+stripe = "<1.54"
+django-parler = "*"
+djangorestframework = "<4"
+django-polymorphic = "<2"
+"django-admin-sortable2" = "==0.6.19"
 
 [dev-packages]
 

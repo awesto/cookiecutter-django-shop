@@ -35,14 +35,14 @@ DEBUG_VALUE = "debug"
 def remove_open_source_files():
     file_names = [
         "CONTRIBUTORS.txt",
-        "LICENSE",
+        "LICENSE.txt",
     ]
     for file_name in file_names:
         os.remove(file_name)
 
 
 def remove_gplv3_files():
-    file_names = ["COPYING"]
+    file_names = ["COPYING.txt"]
     for file_name in file_names:
         os.remove(file_name)
 
@@ -247,11 +247,6 @@ def set_flags_in_settings_files():
     set_django_secret_key(os.path.join("config", "settings", "test.py"))
 
 
-def remove_envs_and_associated_files():
-    shutil.rmtree(".envs")
-    os.remove("merge_production_dotenvs_in_dotenv.py")
-
-
 def remove_celery_compose_dirs():
     shutil.rmtree(os.path.join("compose", "local", "django", "celery"))
     shutil.rmtree(os.path.join("compose", "production", "django", "celery"))
@@ -291,7 +286,6 @@ def main():
                        "Heroku support is enabled so keeping them does not "
                        "make sense given your current setup." + TERMINATOR
             )
-        remove_envs_and_associated_files()
     else:
         append_to_gitignore_file(".env")
         append_to_gitignore_file(".envs/*")

@@ -1,4 +1,11 @@
-.*
+*
+!email_auth/
+!example/
+!shop/
+!requirements/
+!setup.py
+!README.md
+!LICENSE.txt
+!MANIFEST.in
 !.coveragerc
-!.env
 !.pylintrc
