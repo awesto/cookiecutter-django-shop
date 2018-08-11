@@ -5,23 +5,28 @@ name = "pypi"
 
 [packages]
 Django = "<2"
-django-cms = "<3.6"
 djangocms-cascade = "*"
-django-shop = "*"
-"djangocms-bootstrap3" = "*"
-django_compressor = "*"
+django-compressor = "*"
 django-sass-processor = "*"
 django-filter = "*"
 django-haystack = "*"
 drf-haystack = "*"
-djangoshop-stripe = "*"
-stripe = "<1.54"
-django-parler = "*"
+{% if cookiecutter.use_i18n -%}django-parler = "*"{%- endif %}
 djangorestframework = "<4"
-django-polymorphic = "<2"
-"django-admin-sortable2" = "==0.6.19"
+django_polymorphic = "<2"
+"django-admin-sortable2" = "*"
+django-cms = {git = "https://github.com/jrief/django-cms.git", ref = "fixes/load-fixture", editable = true}
+"djangocms-bootstrap3" = "*"
+elasticsearch = "<1.8"
+libsass = "*"
+django-shop = {git = "https://github.com/awesto/django-shop.git", ref = "drafts/cms-3.5", editable = true}
+djangoshop-stripe = "*"
+django-allauth = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.6"
+
+[pipenv]
+allow_prereleases = true

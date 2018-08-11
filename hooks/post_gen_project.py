@@ -13,7 +13,6 @@ import os
 import random
 import shutil
 import string
-import pipenv
 
 try:
     # Inspired by
@@ -77,14 +76,6 @@ def remove_packagejson_file():
     file_names = ["package.json"]
     for file_name in file_names:
         os.remove(file_name)
-
-
-def remove_celery_app():
-    shutil.rmtree(os.path.join("{{ cookiecutter.app_name }}", "taskapp"))
-
-
-def remove_dottravisyml_file():
-    os.remove(".travis.yml")
 
 
 def append_to_project_gitignore(path):
@@ -218,7 +209,7 @@ def append_to_gitignore_file(s):
         gitignore_file.write(os.linesep)
 
 
-def set_flags_in_envs(
+def set_flags_in_envs_deprecated(
     postgres_user,
     celery_flower_user,
     debug=False,
@@ -242,29 +233,10 @@ def set_flags_in_envs(
     set_celery_flower_password(production_django_envs_path, value=DEBUG_VALUE if debug else None)
 
 
-def set_flags_in_settings_files():
-    set_django_secret_key(os.path.join("config", "settings", "local.py"))
-    set_django_secret_key(os.path.join("config", "settings", "test.py"))
-
-
-def remove_celery_compose_dirs():
-    shutil.rmtree(os.path.join("compose", "local", "django", "celery"))
-    shutil.rmtree(os.path.join("compose", "production", "django", "celery"))
-
-
-def install_requirements():
-    pipenv.cli(['install', '--dev'])
-
-
 def main():
     debug = "{{ cookiecutter.debug }}".lower() == "y"
 
-    set_flags_in_envs(
-        DEBUG_VALUE if debug else generate_random_user(),
-        DEBUG_VALUE if debug else generate_random_user(),
-        debug=debug,
-    )
-    set_flags_in_settings_files()
+    set_django_secret_key(os.path.join("{{ cookiecutter.app_name }}", "settings.py"))
 
     if "{{ cookiecutter.open_source_license }}" == "Not open source":
         remove_open_source_files()
@@ -292,16 +264,14 @@ def main():
         if "{{ cookiecutter.keep_local_envs_in_vcs }}".lower() == "y":
             append_to_gitignore_file("!.envs/.local/")
 
-    if "{{ cookiecutter.use_celery }}".lower() == "n":
-        remove_celery_app()
-        if "{{ cookiecutter.use_docker }}".lower() == "y":
-            remove_celery_compose_dirs()
-
-    if "{{ cookiecutter.use_travisci }}".lower() == "n":
-        remove_dottravisyml_file()
-
-    install_requirements()
-
+    next_steps = """Next steps to perform:
+cd {{ cookiecutter.project_slug }}
+pipenv install --sequential
+npm install
+./manage.py migrate {{ cookiecutter.app_name }}
+./manage.py runserver
+    """
+    print(HINT + next_steps + TERMINATOR)
     print(SUCCESS + "Project initialized, keep up the good work!" + TERMINATOR)
 
 

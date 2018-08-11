@@ -10,8 +10,7 @@ from djng.styling.bootstrap3.forms import Bootstrap3Form
 
 from shop.filters import ModelChoiceFilter
 
-from {{ cookiecutter.app_name }}.models.manufacturer import Manufacturer
-from {{ cookiecutter.app_name }}.models import Product
+from {{ cookiecutter.app_name }}.models import Manufacturer, Product
 
 
 class FilterForm(NgModelFormMixin, Bootstrap3Form):

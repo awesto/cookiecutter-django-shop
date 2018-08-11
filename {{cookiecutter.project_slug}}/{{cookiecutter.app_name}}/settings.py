@@ -43,8 +43,8 @@ WORK_DIR = os.environ.get('DJANGO_WORKDIR', os.path.abspath(os.path.join(PROJECT
 
 ADMINS = (("The Merchant", 'the.merchant@example.com'),)
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'nqniwbt=%@5a(e8%&h#c^0()64(ujs0=4%_nyajn*t6a$ca&at'
+# SECURITY WARNING: in production, inject the secret key through the environment
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '!!!SET DJANGO_SECRET_KEY!!!')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get('DJANGO_DEBUG'))
@@ -60,7 +60,7 @@ SITE_ID = 1
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'Europe/Vienna'
+TIME_ZONE = '{{ cookiecutter.timezone }}'
 
 USE_THOUSAND_SEPARATOR = True
 
