@@ -40,7 +40,6 @@ from cookiecutter.replay import dump, load
 )
 def main(no_input, verbose, replay, overwrite_if_exists, output_dir, config_file, default_config):
     template_name = os.path.basename(os.path.dirname(__file__))
-    context_stupid = prompt.read_user_yes_no("Are you a ninja?", 'yes')
     if replay:
         context = None
     else:

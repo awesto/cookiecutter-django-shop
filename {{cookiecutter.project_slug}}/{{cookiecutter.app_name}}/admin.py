@@ -46,16 +46,12 @@ __all__ = ['customer']
 @admin.register(SmartCard)
 class SmartCardAdmin(SortableAdminMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableAdmin,{% endif %} CMSPageAsCategoryMixin, admin.ModelAdmin):
     fieldsets = [
-        {%- if cookiecutter.use_i18n == 'y' %}
         (None, {
-            'fields': ['product_name', 'slug', 'product_code', 'unit_price', 'active'],
+            'fields': ['product_name', 'slug', 'product_code', 'unit_price', 'active'{% if cookiecutter.use_i18n != 'y' %}, 'caption', 'description'{% endif %}],
         }),
+        {%- if cookiecutter.use_i18n == 'y' %}
         (_("Translatable Fields"), {
             'fields': ['caption', 'description'],
-        }),
-        {%- else %}
-        (None, {
-            'fields': ['product_name', 'slug', 'product_code', 'unit_price', 'active', 'description'],
         }),
         {%- endif %}
         (_("Properties"), {
@@ -70,26 +66,37 @@ class SmartCardAdmin(SortableAdminMixin,{% if cookiecutter.use_i18n == 'y' %} Tr
     {%- elif cookiecutter.products_model == 'polymorphic' %}
 
 @admin.register(Commodity)
-class CommodityAdmin(InvalidateProductCacheMixin, SortableAdminMixin, FrontendEditableAdminMixin,
+class CommodityAdmin(InvalidateProductCacheMixin, SortableAdminMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableAdmin,{% endif %} FrontendEditableAdminMixin,
                      PlaceholderAdminMixin, CMSPageAsCategoryMixin, admin.ModelAdmin):
     """
     Since our Commodity model inherits from polymorphic Product, we have to redefine its admin class.
     """
     base_model = Product
     fields = ['product_name', 'slug', 'product_code', 'unit_price', 'active', 'caption', 'manufacturer']
-    filter_horizontal = ('cms_pages',)
-    inlines = (ProductImageInline,)
+    filter_horizontal = ['cms_pages']
+    inlines = [ProductImageInline]
     prepopulated_fields = {'slug': ['product_name']}
 
 
 @admin.register(SmartCard)
-class SmartCardAdmin(InvalidateProductCacheMixin, SortableAdminMixin, FrontendEditableAdminMixin,
+class SmartCardAdmin(InvalidateProductCacheMixin, SortableAdminMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableAdmin,{% endif %} FrontendEditableAdminMixin,
                      CMSPageAsCategoryMixin, PlaceholderAdminMixin, PolymorphicChildModelAdmin):
     base_model = Product
-    fields = ['product_name', 'slug', 'product_code', 'unit_price', 'active', 'caption',
-              'description', 'manufacturer', 'storage', 'card_type', 'speed']
+    fieldsets = (
+        (None, {
+            'fields': ['product_name', 'slug', 'product_code', 'unit_price', 'active'{% if cookiecutter.use_i18n != 'y' %}, 'caption', 'description'{% endif %}],
+        }),
+        {%- if cookiecutter.use_i18n  == 'y' %}
+        (_("Translatable Fields"), {
+            'fields': ['caption', 'description'],
+        }),
+        {%- endif %}
+        (_("Properties"), {
+            'fields': ['manufacturer', 'storage', 'card_type', 'speed'],
+        }),
+    )
     filter_horizontal = ['cms_pages']
-    inlines = (ProductImageInline,)
+    inlines = [ProductImageInline]
     prepopulated_fields = {'slug': ['product_name']}
 
 
@@ -102,15 +109,27 @@ class SmartPhoneInline(admin.TabularInline):
 
 
 @admin.register(SmartPhoneModel)
-class SmartPhoneAdmin(InvalidateProductCacheMixin, SortableAdminMixin, FrontendEditableAdminMixin,
+class SmartPhoneAdmin(InvalidateProductCacheMixin, SortableAdminMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableAdmin,{% endif %} FrontendEditableAdminMixin,
                       CMSPageAsCategoryMixin, PlaceholderAdminMixin, PolymorphicChildModelAdmin):
     base_model = Product
-    fields = ['product_name', 'slug', 'active', 'caption', 'description', 'manufacturer',
-              'battery_type', 'battery_capacity', 'ram_storage', 'wifi_connectivity', 'bluetooth',
-              'gps', 'operating_system', ('width', 'height', 'weight'), 'screen_size']
+    fieldsets = [
+        (None, {
+            'fields': ['product_name', 'slug', 'active'{% if cookiecutter.use_i18n != 'y' %}, 'caption', 'description'{% endif %}],
+        }),
+    {%- if cookiecutter.use_i18n == 'y' %}
+        (_("Translatable Fields"), {
+            'fields': ['caption', 'description'],
+        }),
+    {%- endif %}
+        (_("Properties"), {
+            'fields': ['manufacturer', 'battery_type', 'battery_capacity', 'ram_storage',
+                       'wifi_connectivity', 'bluetooth', 'gps', 'operating_system',
+                       ('width', 'height', 'weight',), 'screen_size'],
+        }),
+    ]
     filter_horizontal = ['cms_pages']
-    inlines = (ProductImageInline, SmartPhoneInline,)
-    prepopulated_fields = {'slug': ('product_name',)}
+    inlines = [ProductImageInline, SmartPhoneInline]
+    prepopulated_fields = {'slug': ['product_name']}
 
     def save_model(self, request, obj, form, change):
         if not change:
@@ -132,7 +151,7 @@ class ProductAdmin(PolymorphicSortableAdminMixin, PolymorphicParentModelAdmin):
     list_display = ['product_name', 'get_price', 'product_type', 'active']
     list_display_links = ['product_name']
     search_fields = ['product_name']
-    list_filter = (PolymorphicChildModelFilter, CMSPageFilter,)
+    list_filter = [PolymorphicChildModelFilter, CMSPageFilter]
     list_per_page = 250
     list_max_show_all = 1000
 

@@ -10,10 +10,10 @@ from django.utils.encoding import python_2_unicode_compatible
 
 from djangocms_text_ckeditor.fields import HTMLField
     {%- if cookiecutter.use_i18n == 'y' %}
+from polymorphic.query import PolymorphicQuerySet
 from parler.managers import TranslatableManager, TranslatableQuerySet
 from parler.models import TranslatableModelMixin, TranslatedFieldsModel
 from parler.fields import TranslatedField
-from polymorphic.query import PolymorphicQuerySet
     {%- endif %}
     {%- if cookiecutter.products_model == 'polymorphic' %}
 from cms.models.fields import PlaceholderField
@@ -65,7 +65,7 @@ class ProductManager(BaseProductManager):
 
 
 @python_2_unicode_compatible
-class Product(CMSPageReferenceMixin, BaseProduct):
+class Product(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableModelMixin,{% endif %} BaseProduct):
     """
     Base class to describe a polymorphic product. Here we declare common fields available in all of
     our different product types. These common fields are also used to build up the view displaying
@@ -81,6 +81,11 @@ class Product(CMSPageReferenceMixin, BaseProduct):
         unique=True,
     )
 
+    {%- if cookiecutter.use_i18n == 'y' %}
+
+    caption = TranslatedField()
+    {%- else %}
+
     caption = HTMLField(
         verbose_name=_("Caption"),
         blank=True,
@@ -88,6 +93,7 @@ class Product(CMSPageReferenceMixin, BaseProduct):
         configuration='CKEDITOR_SETTINGS_CAPTION',
         help_text=_("Short description used in the catalog's list view of products."),
     )
+    {%- endif %}
 
     # common product properties
     manufacturer = models.ForeignKey(
@@ -120,7 +126,7 @@ class Product(CMSPageReferenceMixin, BaseProduct):
     objects = ProductManager()
 
     # filter expression used to lookup for a product item using the Select2 widget
-    lookup_fields = ('product_name__icontains',)
+    lookup_fields = ['product_name__icontains']
 
     def __str__(self):
         return self.product_name
@@ -129,7 +135,28 @@ class Product(CMSPageReferenceMixin, BaseProduct):
     def sample_image(self):
         return self.images.first()
 
-    {%- endif %}
+    {%- if cookiecutter.use_i18n == 'y' %}
+
+
+class ProductTranslation(TranslatedFieldsModel):
+    master = models.ForeignKey(
+        Product,
+        related_name='translations',
+        null=True,
+    )
+
+    caption = HTMLField(
+        verbose_name=_("Caption"),
+        blank=True,
+        null=True,
+        configuration='CKEDITOR_SETTINGS_CAPTION',
+        help_text=_("Short description used in the catalog's list view of products."),
+    )
+
+    class Meta:
+        unique_together = [('language_code', 'master')]
+
+    {%- endif %}{% endif %}
     {%- if cookiecutter.products_model == 'polymorphic' %}
 
 
@@ -153,6 +180,11 @@ class Commodity(Product):
     placeholder = PlaceholderField("Commodity Details")
     show_breadcrumb = True  # hard coded to always show the product's breadcrumb
 
+        {%- if cookiecutter.use_i18n == 'y' %}
+
+    default_manager = TranslatableManager()
+        {%- endif %}
+
     class Meta:
         verbose_name = _("Commodity")
         verbose_name_plural = _("Commodities")
@@ -161,10 +193,22 @@ class Commodity(Product):
         return self.unit_price
 
 
-class SmartCard({% if cookiecutter.use_i18n == 'y' %} TranslatableModelMixin, {% endif %}Product):
-    {%- else %}
+@python_2_unicode_compatible
+class SmartCard(Product):
+        {%- if cookiecutter.use_i18n == 'y' %}
+    multilingual = TranslatedFields(
+        description=HTMLField(
+            verbose_name=_("Description"),
+            configuration='CKEDITOR_SETTINGS_DESCRIPTION',
+            help_text=_("Full description used in the catalog's detail view of Smart Cards."),
+        ),
+    )
+        {%- endif %}
+
+    {%- else %}  {# cookiecutter.products_model != 'polymorphic' #}
 
 
+@python_2_unicode_compatible
 class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableModelMixin,{% endif %} BaseProduct):
     product_name = models.CharField(
         max_length=255,
@@ -176,6 +220,8 @@ class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Tran
         {%- if cookiecutter.use_i18n == 'y' %}
 
     caption = TranslatedField()
+    description = TranslatedField()
+
         {%- else %}
 
     caption = HTMLField(
@@ -183,6 +229,7 @@ class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Tran
         configuration='CKEDITOR_SETTINGS_CAPTION',
         help_text=_("Short description used in the catalog's list view of products."),
     )
+
         {%- endif %}
 
     # product properties
@@ -207,20 +254,7 @@ class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Tran
         'filer.Image',
         through=ProductImage,
     )
-    {%- endif %}
-
-    {%- if cookiecutter.use_i18n == 'y' %}
-
-    description = TranslatedField()
-
-    {%- else %}
-
-    description = HTMLField(
-        _("Description"),
-        configuration='CKEDITOR_SETTINGS_DESCRIPTION',
-        help_text=_("Description for the list view of products."),
-    )
-    {%- endif %}
+    {%- endif %}  {# cookiecutter.products_model != 'polymorphic' #}
 
     unit_price = MoneyField(
         _("Unit price"),
@@ -253,30 +287,43 @@ class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Tran
         help_text=_("Storage capacity in GB"),
     )
 
+    {%- if cookiecutter.use_i18n != 'y' %}
+
+    description = HTMLField(
+        _("Description"),
+        configuration='CKEDITOR_SETTINGS_DESCRIPTION',
+        help_text=_("Description for the list view of products."),
+    )
+
+    {%- endif %}
+
     class Meta:
         verbose_name = _("Smart Card")
         verbose_name_plural = _("Smart Cards")
-        ordering = ('order',)
-
-    objects = ProductManager()
+        ordering = ['order']
 
     # filter expression used to lookup for a product item using the Select2 widget
     lookup_fields = ['product_code__startswith', 'product_name__icontains']
 
+    def get_price(self, request):
+        return self.unit_price
+
+    {%- if cookiecutter.products_model == 'polymorphic' %}
+
+    default_manager = ProductManager()
+
+    {%- else %}
+
+    objects = ProductManager()
+
     def __str__(self):
         return self.product_name
-
-    {%- if cookiecutter.products_model != 'polymorphic' %}
 
     @property
     def sample_image(self):
         return self.images.first()
-    {%- endif %}
 
-    def get_price(self, request):
-        return self.unit_price
-
-    {%- if cookiecutter.use_i18n == 'y' %}
+        {%- if cookiecutter.use_i18n == 'y' %}
 
 
 class SmartCardTranslation(TranslatedFieldsModel):
@@ -301,8 +348,11 @@ class SmartCardTranslation(TranslatedFieldsModel):
     class Meta:
         unique_together = [('language_code', 'master')]
 
-    {%- endif -%}
+        {%- endif -%}
+    {%- endif %}
 {% endif %}
+
+{%- if cookiecutter.products_model == 'polymorphic' %}
 
 
 @python_2_unicode_compatible
@@ -315,7 +365,7 @@ class OperatingSystem(models.Model):
     def __str__(self):
         return self.name
 
-{%- if cookiecutter.products_model == 'polymorphic' %}
+
 class SmartPhoneModel(Product):
     """
     A generic smart phone model, which must be concretized by a model `SmartPhone` - see below.
@@ -398,6 +448,19 @@ class SmartPhoneModel(Product):
         help_text=_("Diagonal screen size in inch"),
     )
 
+    {%- if cookiecutter.use_i18n == 'y' %}
+
+    multilingual = TranslatedFields(
+        description=HTMLField(
+            verbose_name=_("Description"),
+            configuration='CKEDITOR_SETTINGS_DESCRIPTION',
+            help_text=_("Full description used in the catalog's detail view of Smart Phones."),
+        ),
+    )
+
+    default_manager = TranslatableManager()
+    {%- else %}
+
     description = HTMLField(
         verbose_name=_("Description"),
         configuration='CKEDITOR_SETTINGS_DESCRIPTION',
@@ -405,6 +468,7 @@ class SmartPhoneModel(Product):
     )
 
     default_manager = ProductManager()
+    {%- endif %}
 
     class Meta:
         verbose_name = _("Smart Phone")
