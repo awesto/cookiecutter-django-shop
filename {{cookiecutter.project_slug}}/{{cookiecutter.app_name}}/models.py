@@ -12,7 +12,7 @@ from djangocms_text_ckeditor.fields import HTMLField
     {%- if cookiecutter.use_i18n == 'y' %}
 from polymorphic.query import PolymorphicQuerySet
 from parler.managers import TranslatableManager, TranslatableQuerySet
-from parler.models import TranslatableModelMixin, TranslatedFieldsModel
+from parler.models import TranslatableModelMixin, TranslatedFieldsModel, TranslatedFields
 from parler.fields import TranslatedField
     {%- endif %}
     {%- if cookiecutter.products_model == 'polymorphic' %}

@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.conf import settings
 from django.utils.safestring import mark_safe
 
 from rest_framework import serializers
@@ -23,29 +22,30 @@ class ProductSummarySerializer(ProductSerializer):
     def get_media(self, product):
         return self.render_html(product, 'media')
 
-if settings.SHOP_TUTORIAL in ['commodity', 'i18n_commodity']:
+{% if cookiecutter.products_model == 'commodity' %}
 
-    class ProductDetailSerializer(ProductSerializer):
-        class Meta(ProductSerializer.Meta):
-            fields = ['product_name', 'slug', 'unit_price', 'product_code']
+class ProductDetailSerializer(ProductSerializer):
+    class Meta(ProductSerializer.Meta):
+        fields = ['product_name', 'slug', 'unit_price', 'product_code']
 
-    __all__.append('ProductDetailSerializer')
+__all__.append('ProductDetailSerializer')
 
-elif settings.SHOP_TUTORIAL in ['smartcard', 'i18n_smartcard']:
+{% elif cookiecutter.products_model == 'smartcard' %}
 
-    class ProductDetailSerializer(ProductSerializer):
-        class Meta(ProductSerializer.Meta):
-            fields = ['product_name', 'slug', 'unit_price', 'manufacturer', 'card_type', 'speed',
-                      'product_code', 'storage']
+class ProductDetailSerializer(ProductSerializer):
+    class Meta(ProductSerializer.Meta):
+        fields = ['product_name', 'slug', 'unit_price', 'manufacturer', 'card_type', 'speed',
+                  'product_code', 'storage']
 
-    __all__.append('ProductDetailSerializer')
+__all__.append('ProductDetailSerializer')
 
-elif settings.SHOP_TUTORIAL in ['i18n_polymorphic', 'polymorphic']:
+{% elif cookiecutter.products_model == 'polymorphic' %}
 
-    from .polymorphic import (SmartCardSerializer, SmartPhoneSerializer, AddSmartPhoneToCartSerializer)
+from .polymorphic import (SmartCardSerializer, SmartPhoneSerializer, AddSmartPhoneToCartSerializer)
 
-    __all__.extend(['SmartCardSerializer', 'SmartPhoneSerializer', 'AddSmartPhoneToCartSerializer'])
+__all__.extend(['SmartCardSerializer', 'SmartPhoneSerializer', 'AddSmartPhoneToCartSerializer'])
 
+{% endif %}
 
 class ProductSearchSerializer(BaseProductSearchSerializer):
     """

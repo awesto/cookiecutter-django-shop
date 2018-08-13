@@ -8,7 +8,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 
-class MyShopConfig(AppConfig):
+class {{ cookiecutter.appName }}(AppConfig):
     name = '{{ cookiecutter.app_name }}'
     verbose_name = _("My Shop")
     logger = logging.getLogger('{{ cookiecutter.app_name }}')
@@ -20,4 +20,5 @@ class MyShopConfig(AppConfig):
             os.makedirs(settings.MEDIA_ROOT)
         if not os.path.isdir(settings.COMPRESS_ROOT):
             os.makedirs(settings.COMPRESS_ROOT)
-        self.logger.info("Running in %s environment", settings.SHOP_TUTORIAL)
+        as_i18n = {% if cookiecutter.use_i18n == 'y' %}" as I18N"{% else %}""{% endif %}
+        self.logger.info("Running as {{ cookiecutter.products_model }}{}".format(as_i18n))

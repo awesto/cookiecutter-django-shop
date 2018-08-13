@@ -24,14 +24,6 @@ import six
 SHOP_APP_LABEL = '{{ cookiecutter.app_name }}'
 BASE_DIR = os.path.dirname(__file__)
 
-SHOP_TUTORIAL = os.environ.get('DJANGO_SHOP_TUTORIAL')
-if SHOP_TUTORIAL is None:
-    raise ImproperlyConfigured("Environment variable DJANGO_SHOP_TUTORIAL is not set")
-if SHOP_TUTORIAL not in ['commodity', 'i18n_commodity', 'smartcard', 'i18n_smartcard',
-                         'i18n_polymorphic', 'polymorphic']:
-    msg = "Environment variable DJANGO_SHOP_TUTORIAL has an invalid value `{}`"
-    raise ImproperlyConfigured(msg.format(SHOP_TUTORIAL))
-
 # Root directory for this django project
 PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR, os.path.pardir))
 
@@ -119,14 +111,13 @@ INSTALLED_APPS = [
     'filer',
     'easy_thumbnails',
     'easy_thumbnails.optimize',
+    {% if cookiecutter.use_i18n == 'y' %}'parler',{% endif %}
     'post_office',
     'haystack',
     'shop',
     'shop_stripe',
     '{{ cookiecutter.app_name }}',
 ]
-if SHOP_TUTORIAL in ['i18n_commodity', 'i18n_smartcard', 'i18n_polymorphic']:
-    INSTALLED_APPS.append('parler')
 
 MIDDLEWARE_CLASSES = [
     # 'django.middleware.cache.UpdateCacheMiddleware',
@@ -146,8 +137,9 @@ MIDDLEWARE_CLASSES = [
     # 'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
+_SHOP_TUTORIAL = "{% if cookiecutter.use_i18n == 'y' %}i18n_{% endif %}{{ cookiecutter.products_model }}"
 MIGRATION_MODULES = {
-    'myshop': '{{ cookiecutter.app_name }}.migrations.{}'.format(SHOP_TUTORIAL)
+    'myshop': '{{ cookiecutter.app_name }}.migrations.{}'.format(_SHOP_TUTORIAL)
 }
 
 ROOT_URLCONF = '{{ cookiecutter.app_name }}.urls'
@@ -157,7 +149,7 @@ WSGI_APPLICATION = 'wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(WORK_DIR, SHOP_TUTORIAL, 'db.sqlite3'),
+        'NAME': os.path.join(WORK_DIR, _SHOP_TUTORIAL, 'db.sqlite3'),
     }
 }
 
@@ -177,49 +169,50 @@ if os.getenv('POSTGRES_DB') and os.getenv('POSTGRES_USER'):
 
 LANGUAGE_CODE = 'en'
 
-if SHOP_TUTORIAL in ['i18n_smartcard', 'i18n_commodity', 'i18n_polymorphic']:
-    USE_I18N = True
+{% if cookiecutter.use_i18n == 'y' %}
+USE_I18N = True
 
-    LANGUAGES = (
-        ('en', "English"),
-        ('de', "Deutsch"),
-    )
+LANGUAGES = [
+    ('en', "English"),
+    ('de', "Deutsch"),
+]
 
-    PARLER_DEFAULT_LANGUAGE = 'en'
+PARLER_DEFAULT_LANGUAGE = 'en'
 
-    PARLER_LANGUAGES = {
-        1: (
-            {'code': 'de'},
-            {'code': 'en'},
-        ),
-        'default': {
-            'fallbacks': ['de', 'en'],
-        },
-    }
+PARLER_LANGUAGES = {
+    1: (
+        {'code': 'de'},
+        {'code': 'en'},
+    ),
+    'default': {
+        'fallbacks': ['de', 'en'],
+    },
+}
 
-    CMS_LANGUAGES = {
-        'default': {
-            'fallbacks': ['en', 'de'],
-            'redirect_on_fallback': True,
-            'public': True,
-            'hide_untranslated': False,
-        },
-        1: ({
-            'public': True,
-            'code': 'en',
-            'hide_untranslated': False,
-            'name': 'English',
-            'redirect_on_fallback': True,
-        }, {
-            'public': True,
-            'code': 'de',
-            'hide_untranslated': False,
-            'name': 'Deutsch',
-            'redirect_on_fallback': True,
-        },)
-    }
-else:
-    USE_I18N = False
+CMS_LANGUAGES = {
+    'default': {
+        'fallbacks': ['en', 'de'],
+        'redirect_on_fallback': True,
+        'public': True,
+        'hide_untranslated': False,
+    },
+    1: ({
+        'public': True,
+        'code': 'en',
+        'hide_untranslated': False,
+        'name': 'English',
+        'redirect_on_fallback': True,
+    }, {
+        'public': True,
+        'code': 'de',
+        'hide_untranslated': False,
+        'name': 'Deutsch',
+        'redirect_on_fallback': True,
+    },)
+}
+{% else %}
+USE_I18N = False
+{% endif %}
 
 USE_L10N = True
 
@@ -229,7 +222,7 @@ USE_X_FORWARDED_HOST = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.path.join(WORK_DIR, SHOP_TUTORIAL, 'media')
+MEDIA_ROOT = os.path.join(WORK_DIR, _SHOP_TUTORIAL, 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -254,7 +247,6 @@ STATICFILES_FINDERS = [
 STATICFILES_DIRS = [
     ('node_modules', os.path.join(PROJECT_ROOT, 'node_modules')),
 ]
-
 
 TEMPLATES = [{
     'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -292,7 +284,7 @@ if REDIS_HOST:
         'host': REDIS_HOST,
         'port': 6379,
         'db': 0,
-        'prefix': 'session-{}'.format(SHOP_TUTORIAL),
+        'prefix': 'session-{}'.format(_SHOP_TUTORIAL),
         'socket_timeout': 1
     }
 
@@ -348,7 +340,7 @@ LOGGING = {
 
 SILENCED_SYSTEM_CHECKS = ['auth.W004']
 
-FIXTURE_DIRS = [os.path.join(WORK_DIR, SHOP_TUTORIAL, 'fixtures')]
+FIXTURE_DIRS = [os.path.join(WORK_DIR, _SHOP_TUTORIAL, 'fixtures')]
 
 ############################################
 # settings for sending mail
@@ -605,15 +597,16 @@ HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://{}:9200/'.format(ELASTICSEARCH_HOST),
-        'INDEX_NAME': '{{ cookiecutter.app_name }}-{}-en'.format(SHOP_TUTORIAL),
+        'INDEX_NAME': '{{ cookiecutter.app_name }}-{}-en'.format(_SHOP_TUTORIAL),
     },
-}
-if USE_I18N:
-    HAYSTACK_CONNECTIONS['de'] = {
+{%- if cookiecutter.use_i18n == 'y' %}
+    'de': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://{}:9200/'.format(ELASTICSEARCH_HOST),
-        'INDEX_NAME': '{{ cookiecutter.app_name }}-{}-de'.format(SHOP_TUTORIAL),
+        'INDEX_NAME': '{{ cookiecutter.app_name }}-{}-de'.format(_SHOP_TUTORIAL),
     }
+{% endif -%}
+}
 
 HAYSTACK_ROUTERS = [
     'shop.search.routers.LanguageRouter',
@@ -625,22 +618,28 @@ HAYSTACK_ROUTERS = [
 SHOP_VALUE_ADDED_TAX = Decimal(19)
 SHOP_DEFAULT_CURRENCY = 'EUR'
 SHOP_PRODUCT_SUMMARY_SERIALIZER = '{{ cookiecutter.app_name }}.serializers.ProductSummarySerializer'
-if SHOP_TUTORIAL in ['i18n_polymorphic', 'polymorphic']:
-    SHOP_CART_MODIFIERS = ['{{ cookiecutter.app_name }}.polymorphic_modifiers.MyShopCartModifier']
-else:
-    SHOP_CART_MODIFIERS = ['shop.modifiers.defaults.DefaultCartModifier']
-SHOP_CART_MODIFIERS.extend([
+SHOP_CART_MODIFIERS = [
+{%- if cookiecutter.products_model == 'polymorphic' %}
+    '{{ cookiecutter.app_name }}.polymorphic_modifiers.MyShopCartModifier',
+{%- else %}
+    'shop.modifiers.defaults.DefaultCartModifier',
+{%- endif %}
     'shop.modifiers.taxes.CartExcludedTaxModifier',
     '{{ cookiecutter.app_name }}.modifiers.PostalShippingModifier',
     '{{ cookiecutter.app_name }}.modifiers.CustomerPickupModifier',
     'shop.modifiers.defaults.PayInAdvanceModifier',
-])
+]
 
 SHOP_EDITCART_NG_MODEL_OPTIONS = "{updateOn: 'default blur', debounce: {'default': 2500, 'blur': 0}}"
 
 SHOP_ORDER_WORKFLOWS = [
     'shop.payment.defaults.ManualPaymentWorkflowMixin',
     'shop.payment.defaults.CancelOrderWorkflowMixin',
+{%- if cookiecutter.products_model == 'polymorphic' %}
+    'shop.shipping.delivery.PartialDeliveryWorkflowMixin',
+{%- else %}
+    'shop.shipping.defaults.CommissionGoodsWorkflowMixin',
+{%- endif %}
 ]
 
 if 'shop_stripe' in INSTALLED_APPS:
@@ -650,11 +649,6 @@ if 'shop_stripe' in INSTALLED_APPS:
 if 'shop_sendcloud' in INSTALLED_APPS:
     SHOP_CART_MODIFIERS.append('shop_sendcloud.modifiers.SendcloudShippingModifier')
     SHOP_ORDER_WORKFLOWS.append('shop_sendcloud.shipping.OrderWorkflowMixin')
-
-if SHOP_TUTORIAL in ['i18n_polymorphic', 'polymorphic']:
-    SHOP_ORDER_WORKFLOWS.append('shop.shipping.delivery.PartialDeliveryWorkflowMixin')
-else:
-    SHOP_ORDER_WORKFLOWS.append('shop.shipping.defaults.CommissionGoodsWorkflowMixin')
 
 SHOP_STRIPE = {
     'PUBKEY': 'pk_test_HlEp5oZyPonE21svenqowhXp',

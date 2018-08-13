@@ -1,19 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.conf import settings
 from haystack import indexes
 from shop.search.indexes import ProductIndex as ProductIndexBase
-
-
-if settings.SHOP_TUTORIAL in ['i18n_commodity', 'commodity']:
-    from shop.models.defaults.commodity import Commodity
-
-elif settings.SHOP_TUTORIAL in ['i18n_smartcard', 'smartcard']:
-    from {{ cookiecutter.app_name }}.models import SmartCard
-
-elif settings.SHOP_TUTORIAL in ['i18n_polymorphic', 'polymorphic']:
-    from {{ cookiecutter.app_name }}.models import SmartCard, SmartPhoneModel, Commodity
+{%- if cookiecutter.products_model == 'commodity' %}
+from shop.models.defaults.commodity import Commodity
+{%- elif cookiecutter.products_model == 'smartcard' %}
+from {{ cookiecutter.app_name }}.models import SmartCard
+{%- else  %}
+from {{ cookiecutter.app_name }}.models import SmartCard, SmartPhoneModel, Commodity
+{% endif %}
 
 
 class ProductIndex(ProductIndexBase):
@@ -30,20 +26,26 @@ class ProductIndex(ProductIndexBase):
 
 myshop_search_index_classes = []
 
-if settings.SHOP_TUTORIAL in ['i18n_commodity', 'commodity', 'i18n_polymorphic', 'polymorphic']:
-    class CommodityIndex(ProductIndex, indexes.Indexable):
-        def get_model(self):
-            return Commodity
-    myshop_search_index_classes.append(CommodityIndex)
+{% if cookiecutter.products_model in ['commodity', 'polymorphic'] %}
+class CommodityIndex(ProductIndex, indexes.Indexable):
+    def get_model(self):
+        return Commodity
+myshop_search_index_classes.append(CommodityIndex)
+{% endif %}
 
-if settings.SHOP_TUTORIAL in ['i18n_smartcard', 'smartcard', 'i18n_polymorphic', 'polymorphic']:
-    class SmartCardIndex(ProductIndex, indexes.Indexable):
-        def get_model(self):
-            return SmartCard
-    myshop_search_index_classes.append(SmartCardIndex)
+{%- if cookiecutter.products_model in ['smartcard', 'polymorphic'] %}
 
-if settings.SHOP_TUTORIAL in ['i18n_polymorphic', 'polymorphic']:
-    class SmartPhoneIndex(ProductIndex, indexes.Indexable):
-        def get_model(self):
-            return SmartPhoneModel
-    myshop_search_index_classes.append(SmartPhoneIndex)
+class SmartCardIndex(ProductIndex, indexes.Indexable):
+    def get_model(self):
+        return SmartCard
+myshop_search_index_classes.append(SmartCardIndex)
+
+    {%- if cookiecutter.products_model == 'polymorphic' %}
+
+
+class SmartPhoneIndex(ProductIndex, indexes.Indexable):
+    def get_model(self):
+        return SmartPhoneModel
+myshop_search_index_classes.append(SmartPhoneIndex)
+    {%- endif %}
+{% endif -%}
