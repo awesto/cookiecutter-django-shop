@@ -1,4 +1,0 @@
-SHOP_SENDCLOUD = {
-    'API_KEY': 'bda21253c513478aada3be1e861556ab',
-    'API_SECRET': 'e6fad780a8ea443f9aaea3651074734b',
-}
