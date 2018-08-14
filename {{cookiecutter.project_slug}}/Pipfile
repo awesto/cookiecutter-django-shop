@@ -15,11 +15,11 @@ drf-haystack = "*"
 djangorestframework = "<4"
 django_polymorphic = "<2"
 "django-admin-sortable2" = "*"
-django-cms = {git = "https://github.com/jrief/django-cms.git", ref = "fixes/load-fixture", editable = true}
+django-cms = {git = "https://github.com/jrief/django-cms.git", ref = "fixes/load-fixture", editable = true, depth = 1}
 "djangocms-bootstrap3" = "*"
 elasticsearch = "<1.8"
 libsass = "*"
-django-shop = {git = "https://github.com/awesto/django-shop.git", ref = "drafts/cms-3.5", editable = true}
+django-shop = {git = "https://github.com/awesto/django-shop.git", ref = "drafts/cms-3.5", editable = true, depth = 1}
 djangoshop-stripe = "*"
 django-allauth = "*"
 
