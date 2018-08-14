@@ -251,18 +251,9 @@ def main():
     else:
         remove_docker_files()
 
-    if "{{ cookiecutter.use_docker }}".lower() == "n":
-        if "{{ cookiecutter.keep_local_envs_in_vcs }}".lower() == "y":
-            print(
-                INFO + ".env(s) are only utilized when Docker Compose and/or "
-                       "Heroku support is enabled so keeping them does not "
-                       "make sense given your current setup." + TERMINATOR
-            )
-    else:
+    if "{{ cookiecutter.use_docker }}".lower() == "y":
         append_to_gitignore_file(".env")
         append_to_gitignore_file(".envs/*")
-        if "{{ cookiecutter.keep_local_envs_in_vcs }}".lower() == "y":
-            append_to_gitignore_file("!.envs/.local/")
 
     next_steps = """Next steps to perform:
 cd {{ cookiecutter.project_slug }}

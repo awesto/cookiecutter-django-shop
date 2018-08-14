@@ -25,6 +25,12 @@ class Command(BaseCommand):
     pwd = b'z7xv'
     tutorial = "{% if cookiecutter.use_i18n == 'y' %}i18n_{% endif %}{{ cookiecutter.products_model }}"
 
+    def __init__(self, **kwargs):
+        if '{{ cookiecutter.app_name }}' != 'myshop':
+            msg = "Can only initialize django-SHOP if cookiecutter template was created with app_name='myshop'."
+            raise CommandError(msg)
+        super(Command, self).__init__(**kwargs)
+
     def add_arguments(self, parser):
         parser.add_argument('--noinput', '--no-input', action='store_false', dest='interactive',
                             default=True, help="Do NOT prompt the user for input of any kind.")

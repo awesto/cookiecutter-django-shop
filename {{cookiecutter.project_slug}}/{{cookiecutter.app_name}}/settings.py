@@ -14,7 +14,6 @@ https://docs.djangoproject.com/en/stable/ref/settings/
 import os
 from decimal import Decimal
 from django.utils.translation import ugettext_lazy as _
-from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse_lazy
 
 from cmsplugin_cascade.utils import format_lazy
@@ -137,9 +136,14 @@ MIDDLEWARE_CLASSES = [
     # 'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
-_SHOP_TUTORIAL = "{% if cookiecutter.use_i18n == 'y' %}i18n_{% endif %}{{ cookiecutter.products_model }}"
+{%- if cookiecutter.use_i18n == 'y' %}
+    {%- set shop_tutorial = 'i18n_' + cookiecutter.products_model %}
+{%- else %}
+    {%- set shop_tutorial = cookiecutter.products_model %}
+{%- endif %}
+
 MIGRATION_MODULES = {
-    'myshop': '{{ cookiecutter.app_name }}.migrations.{}'.format(_SHOP_TUTORIAL)
+    'myshop': '{{ cookiecutter.app_name }}.migrations.{}'.format('{{ shop_tutorial }}')
 }
 
 ROOT_URLCONF = '{{ cookiecutter.app_name }}.urls'
@@ -149,7 +153,7 @@ WSGI_APPLICATION = 'wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(WORK_DIR, _SHOP_TUTORIAL, 'db.sqlite3'),
+        'NAME': os.path.join(WORK_DIR, '{{ shop_tutorial }}', 'db.sqlite3'),
     }
 }
 
@@ -168,7 +172,6 @@ if os.getenv('POSTGRES_DB') and os.getenv('POSTGRES_USER'):
 # https://docs.djangoproject.com/en/stable/topics/i18n/
 
 LANGUAGE_CODE = 'en'
-
 {% if cookiecutter.use_i18n == 'y' %}
 USE_I18N = True
 
@@ -222,7 +225,7 @@ USE_X_FORWARDED_HOST = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.path.join(WORK_DIR, _SHOP_TUTORIAL, 'media')
+MEDIA_ROOT = os.path.join(WORK_DIR, '{{ shop_tutorial }}', 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -284,7 +287,7 @@ if REDIS_HOST:
         'host': REDIS_HOST,
         'port': 6379,
         'db': 0,
-        'prefix': 'session-{}'.format(_SHOP_TUTORIAL),
+        'prefix': 'session-{{ shop_tutorial }}',
         'socket_timeout': 1
     }
 
@@ -340,7 +343,7 @@ LOGGING = {
 
 SILENCED_SYSTEM_CHECKS = ['auth.W004']
 
-FIXTURE_DIRS = [os.path.join(WORK_DIR, _SHOP_TUTORIAL, 'fixtures')]
+FIXTURE_DIRS = [os.path.join(WORK_DIR, '{{ shop_tutorial }}', 'fixtures')]
 
 ############################################
 # settings for sending mail
@@ -376,14 +379,13 @@ SERIALIZATION_MODULES = {'json': str('shop.money.serializers')}
 # settings for django-restframework and plugins
 
 REST_FRAMEWORK = {
-    'DEFAULT_RENDERER_CLASSES': (
+    'DEFAULT_RENDERER_CLASSES': [
         'shop.rest.money.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',  # can be disabled for production environments
-    ),
-    # 'DEFAULT_AUTHENTICATION_CLASSES': (
-    #   'rest_framework.authentication.TokenAuthentication',
-    # ),
-    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 12,
 }
@@ -597,13 +599,13 @@ HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://{}:9200/'.format(ELASTICSEARCH_HOST),
-        'INDEX_NAME': '{{ cookiecutter.app_name }}-{}-en'.format(_SHOP_TUTORIAL),
+        'INDEX_NAME': '{{ cookiecutter.app_name }}-{{ shop_tutorial }}-en',
     },
 {%- if cookiecutter.use_i18n == 'y' %}
     'de': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://{}:9200/'.format(ELASTICSEARCH_HOST),
-        'INDEX_NAME': '{{ cookiecutter.app_name }}-{}-de'.format(_SHOP_TUTORIAL),
+        'INDEX_NAME': '{{ cookiecutter.app_name }}-{{ shop_tutorial }}-de',
     }
 {% endif -%}
 }
@@ -655,8 +657,3 @@ SHOP_STRIPE = {
     'APIKEY': 'sk_test_xUdHLeFasmOUDvmke4DHGRDP',
     'PURCHASE_DESCRIPTION': _("Thanks for purchasing at MyShop"),
 }
-
-try:
-    from .private_settings import *  # NOQA
-except ImportError:
-    pass
