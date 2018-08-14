@@ -142,9 +142,9 @@ MIDDLEWARE_CLASSES = [
     {%- set shop_tutorial = cookiecutter.products_model %}
 {%- endif %}
 
-MIGRATION_MODULES = {
-    'myshop': '{{ cookiecutter.app_name }}.migrations.{}'.format('{{ shop_tutorial }}')
-}
+# MIGRATION_MODULES = {
+#     'myshop': '{{ cookiecutter.app_name }}.migrations.{}'.format('{{ shop_tutorial }}')
+# }
 
 ROOT_URLCONF = '{{ cookiecutter.app_name }}.urls'
 
