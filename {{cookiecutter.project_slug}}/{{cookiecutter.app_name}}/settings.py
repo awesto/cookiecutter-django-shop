@@ -156,17 +156,18 @@ DATABASES = {
         'NAME': os.path.join(WORK_DIR, '{{ shop_tutorial }}', 'db.sqlite3'),
     }
 }
-
-if os.getenv('POSTGRES_DB') and os.getenv('POSTGRES_USER'):
-    # override database with
-    DATABASES['default'] = {
+{%- if cookiecutter.use_docker == 'y' %}
+if os.getenv('DATABASE_ENGINE') == 'django.db.backends.postgresql':
+    DATABASES['default'].update({
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
-        'PORT': os.getenv('POSTGRES_PORT', 5432),
-    }
+        'NAME': os.getenv('DATABASE_NAME', 'djangoshop'),
+        'USER': os.getenv('DATABASE_USER', 'djangoshop'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+        'HOST': os.getenv('DATABASE_HOST', 'localhost'),
+        'PORT': os.getenv('DATABASE_PORT', 5432),
+    })
+{%- endif %}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/stable/topics/i18n/

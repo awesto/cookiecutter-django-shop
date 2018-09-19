@@ -1,11 +1,12 @@
 *
-!email_auth/
-!example/
-!shop/
-!requirements/
-!setup.py
-!README.md
-!LICENSE.txt
-!MANIFEST.in
+!docker-files
+!{{ cookiecutter.app_name }}
 !.coveragerc
 !.pylintrc
+!manage.py
+!package.json
+!Pipfile
+!README.md
+!requirements.txt
+!worker.py
+!wsgi.py

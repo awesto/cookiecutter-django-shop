@@ -1,0 +1,81 @@
+version: '2.0'
+
+services:
+  postgresdb:
+    restart: always
+    image: postgres
+    env_file:
+      - docker-files/databases.environ
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - shopnet
+
+  redishost:
+    image: redis
+    volumes:
+      - 'redisdata:/data'
+    networks:
+      - shopnet
+
+  elasticsearch:
+    image: elasticsearch:1.7.5
+    container_name: elasticsearch
+    environment:
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    networks:
+      - shopnet
+
+  wsgiapp:
+    restart: always
+    build:
+      context: .
+      dockerfile: docker-files/Dockerfile
+    image: {{ cookiecutter.project_slug }}
+    env_file:
+      - docker-files/databases.environ
+    volumes:
+      - shopmedia:/web/workdir
+    command: uwsgi --ini uwsgi.ini
+    depends_on:
+      - postgresdb
+      - redishost
+      - elasticsearch
+    networks:
+      - shopnet
+    ports:
+      - 9009:9009
+
+  worker:
+    restart: always
+    image: {{ cookiecutter.project_slug }}
+    environment:
+      - DJANGO_SETTINGS_MODULE={{ cookiecutter.app_name }}.settings
+    env_file:
+      - docker-files/databases.environ
+      - docker-files/email.environ
+    command: su django -c /web/worker.py
+    volumes:
+      - shopmedia:/web/workdir
+    depends_on:
+      - postgresdb
+      - redishost
+    networks:
+      - shopnet
+
+networks:
+  shopnet:
+
+volumes:
+  pgdata:
+  redisdata:
+  shopmedia:
+  esdata:
