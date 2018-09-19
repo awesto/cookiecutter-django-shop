@@ -8,17 +8,10 @@
   "domain_name": "example.com",
   "email": "{{ cookiecutter.author_name.lower()|replace(' ', '.') }}@{{ cookiecutter.domain_name }}",
   "version": "0.1.0",
-  "open_source_license": [
-    "MIT",
-    "BSD",
-    "GPLv3",
-    "Apache Software License 2.0",
-    "Not open source"
-  ],
   "timezone": "UTC",
   "windows": "n",
   "use_pycharm": "n",
-  "use_docker": "n",
+  "use_docker": "y",
   "use_i18n": "y",
   "products_model": [
     "commodity",

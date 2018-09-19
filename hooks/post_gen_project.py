@@ -9,14 +9,17 @@ TODO: ? restrict Cookiecutter Django project initialization to Python 3.x enviro
 """
 from __future__ import print_function
 
+import io
 import os
+import subprocess
+import sys
 import random
 import shutil
 import string
 
+
 try:
-    # Inspired by
-    # https://github.com/django/django/blob/master/django/utils/crypto.py
+    # Inspired by https://github.com/django/django/blob/master/django/utils/crypto.py
     random = random.SystemRandom()
     using_sysrandom = True
 except NotImplementedError:
@@ -31,19 +34,16 @@ SUCCESS = "\x1b[1;32m [SUCCESS]: "
 DEBUG_VALUE = "debug"
 
 
-def remove_open_source_files():
-    file_names = [
-        "CONTRIBUTORS.txt",
-        "LICENSE.txt",
-    ]
-    for file_name in file_names:
-        os.remove(file_name)
+class Capturing(list):
+    def __enter__(self):
+        self._stdout = sys.stdout
+        sys.stdout = self._stringio = io.StringIO()
+        return self
 
-
-def remove_gplv3_files():
-    file_names = ["COPYING.txt"]
-    for file_name in file_names:
-        os.remove(file_name)
+    def __exit__(self, *args):
+        self.extend(self._stringio.getvalue().splitlines())
+        del self._stringio    # free up some memory
+        sys.stdout = self._stdout
 
 
 def remove_pycharm_files():
@@ -57,23 +57,8 @@ def remove_pycharm_files():
 
 
 def remove_docker_files():
-    pass
-
-
-def remove_docker_files_pass():
-    shutil.rmtree("compose")
-
-    file_names = ["local.yml", "production.yml", ".dockerignore"]
-    for file_name in file_names:
-        os.remove(file_name)
-
-
-def remove_utility_files():
-    shutil.rmtree("utility")
-
-
-def remove_packagejson_file():
-    file_names = ["package.json"]
+    shutil.rmtree("docker-files")
+    file_names = [".dockerignore", "docker-compose.yml"]
     for file_name in file_names:
         os.remove(file_name)
 
@@ -157,29 +142,16 @@ def generate_random_user():
     return generate_random_string(length=32, using_ascii_letters=True)
 
 
-def generate_postgres_user(debug=False):
-    return DEBUG_VALUE if debug else generate_random_user()
-
-
-def set_postgres_user(file_path, value):
-    postgres_user = set_flag(
-        file_path,
-        "!!!SET POSTGRES_USER!!!",
-        value=value,
-    )
-    return postgres_user
-
-
-def set_postgres_password(file_path, value=None):
-    postgres_password = set_flag(
+def set_database_password(file_path, value=None):
+    database_password = set_flag(
         file_path,
         "!!!SET POSTGRES_PASSWORD!!!",
         value=value,
-        length=64,
+        length=50,
         using_digits=True,
         using_ascii_letters=True,
     )
-    return postgres_password
+    return database_password
 
 
 def set_celery_flower_user(file_path, value):
@@ -209,6 +181,14 @@ def append_to_gitignore_file(s):
         gitignore_file.write(os.linesep)
 
 
+def pipenv_to_requirements():
+    import subprocess
+
+    ret = subprocess.run(['pipenv', 'lock', '--requirements'], stdout=subprocess.PIPE)
+    with open('requirements.txt', 'w') as fh:
+        fh.write(ret.stdout.decode('utf-8'))
+
+
 def set_flags_in_envs_deprecated(
     postgres_user,
     celery_flower_user,
@@ -223,9 +203,8 @@ def set_flags_in_envs_deprecated(
     set_django_admin_url(production_django_envs_path)
 
     set_postgres_user(local_postgres_envs_path, value=postgres_user)
-    set_postgres_password(local_postgres_envs_path, value=DEBUG_VALUE if debug else None)
+    set_database_password(local_postgres_envs_path, value=DEBUG_VALUE if debug else None)
     set_postgres_user(production_postgres_envs_path, value=postgres_user)
-    set_postgres_password(production_postgres_envs_path, value=DEBUG_VALUE if debug else None)
 
     set_celery_flower_user(local_django_envs_path, value=celery_flower_user)
     set_celery_flower_password(local_django_envs_path, value=DEBUG_VALUE if debug else None)
@@ -238,30 +217,27 @@ def main():
 
     set_django_secret_key(os.path.join("{{ cookiecutter.app_name }}", "settings.py"))
 
-    if "{{ cookiecutter.open_source_license }}" == "Not open source":
-        remove_open_source_files()
-    if "{{ cookiecutter.open_source_license}}" != "GPLv3":
-        remove_gplv3_files()
-
     if "{{ cookiecutter.use_pycharm }}".lower() == "n":
         remove_pycharm_files()
 
+    next_steps = "Next steps to perform:"
     if "{{ cookiecutter.use_docker }}".lower() == "y":
-        remove_utility_files()
+        pipenv_to_requirements()
+        set_database_password("docker-files/databases.environ")
+        next_steps += """
+cd {{ cookiecutter.project_slug }}
+docker-compose up --build -d
+"""
     else:
         remove_docker_files()
-
-    if "{{ cookiecutter.use_docker }}".lower() == "y":
-        append_to_gitignore_file(".env")
-        append_to_gitignore_file(".envs/*")
-
-    next_steps = """Next steps to perform:
+        next_steps += """
 cd {{ cookiecutter.project_slug }}
 pipenv install --sequential
 npm install
-./manage.py migrate {{ cookiecutter.app_name }}
+./manage.py makemigrations {{ cookiecutter.app_name }}
+./manage.py migrate
 ./manage.py runserver
-    """
+"""
     print(HINT + next_steps + TERMINATOR)
     print(SUCCESS + "Project initialized, keep up the good work!" + TERMINATOR)
 

@@ -11,15 +11,21 @@ django-sass-processor = "*"
 django-filter = "*"
 django-haystack = "*"
 drf-haystack = "*"
-{% if cookiecutter.use_i18n -%}django-parler = "*"{%- endif %}
-djangorestframework = "<4"
+{% if cookiecutter.use_i18n == 'y' -%}
+django-parler = "*"
+{% endif -%}
+{% if cookiecutter.use_docker == 'y' -%}
+psycopg2-binary = "*"
+django-redis-cache = "*"
+django-redis-sessions = "*"
+uWSGI = "*"
+{% endif -%}
+djangorestframework = "<3.8"
 django_polymorphic = "<2"
 "django-admin-sortable2" = "*"
-django-cms = {git = "https://github.com/jrief/django-cms.git", ref = "fixes/load-fixture", editable = true, depth = 1}
 "djangocms-bootstrap3" = "*"
 elasticsearch = "<1.8"
 libsass = "*"
-django-shop = {git = "https://github.com/awesto/django-shop.git", ref = "drafts/cms-3.5", editable = true, depth = 1}
 djangoshop-stripe = "*"
 django-allauth = "*"
 

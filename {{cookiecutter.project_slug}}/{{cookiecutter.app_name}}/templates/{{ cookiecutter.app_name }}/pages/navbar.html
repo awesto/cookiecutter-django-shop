@@ -34,7 +34,7 @@
 
 	{% addtoblock "css" %}<link href="{% sass_src {% endraw %}'{{ cookiecutter.app_name }}/css/navbar.scss'{% raw %} %}" rel="stylesheet" type="text/css" />{% endaddtoblock %}
 
-	{% addtoblock "js" %}<script src="{% static 'node_modules/angular-ui-bootstrap/ui-bootstrap-tpls.min.js' %}"></script>{% endaddtoblock %}
+	{% addtoblock "js" %}<script src="{% static 'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js' %}"></script>{% endaddtoblock %}
 	{% add_data "ng-requires" "ui.bootstrap" %}
 
 	{% addtoblock "js" %}<script src="{% static {% endraw %}'{{ cookiecutter.app_name }}/js/navbar.js'{% raw %} %}" type="text/javascript"></script>{% endaddtoblock %}

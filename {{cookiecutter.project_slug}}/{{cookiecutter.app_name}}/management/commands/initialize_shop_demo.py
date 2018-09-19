@@ -20,7 +20,7 @@ except ImportError:
 
 class Command(BaseCommand):
     version = 14
-    help = _("Initialize the workdir to run the demo of myshop.")
+    help = _("Initialize the workdir to run the demo of {{ cookiecutter.app_name }}.")
     download_url = 'http://downloads.django-shop.org/django-shop-workdir_{tutorial}-{version}.zip'
     pwd = b'z7xv'
     tutorial = "{% if cookiecutter.use_i18n == 'y' %}i18n_{% endif %}{{ cookiecutter.products_model }}"
@@ -44,13 +44,15 @@ class Command(BaseCommand):
             from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
         except ImportError:
             return
+        if os.getenv('DATABASE_ENGINE') != 'django.db.backends.postgresql':
+            return
 
-        dbname = os.getenv('POSTGRES_DB')
+        dbname = os.getenv('DATABASE_NAME')
         if dbname is None:
             return
-        host = os.getenv('POSTGRES_HOST')
-        user = os.getenv('POSTGRES_USER')
-        password = os.getenv('POSTGRES_PASSWORD')
+        host = os.getenv('DATABASE_HOST')
+        user = os.getenv('DATABASE_USER')
+        password = os.getenv('DATABASE_PASSWORD')
         try:
             con = psycopg2.connect(dbname=dbname, host=host, user=user, password=password)
         except psycopg2.OperationalError:
