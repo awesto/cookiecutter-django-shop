@@ -9,10 +9,8 @@ TODO: ? restrict Cookiecutter Django project initialization to Python 3.x enviro
 """
 from __future__ import print_function
 
-import io
 import os
 import subprocess
-import sys
 import random
 import shutil
 import string
@@ -32,18 +30,6 @@ HINT = "\x1b[3;33m"
 SUCCESS = "\x1b[1;32m [SUCCESS]: "
 
 DEBUG_VALUE = "debug"
-
-
-class Capturing(list):
-    def __enter__(self):
-        self._stdout = sys.stdout
-        sys.stdout = self._stringio = io.StringIO()
-        return self
-
-    def __exit__(self, *args):
-        self.extend(self._stringio.getvalue().splitlines())
-        del self._stringio    # free up some memory
-        sys.stdout = self._stdout
 
 
 def remove_pycharm_files():
@@ -182,11 +168,9 @@ def append_to_gitignore_file(s):
 
 
 def pipenv_to_requirements():
-    import subprocess
-
-    ret = subprocess.run(['pipenv', 'lock', '--requirements'], stdout=subprocess.PIPE)
+    ret = subprocess.check_output(['pipenv', 'lock', '--requirements'])
     with open('requirements.txt', 'w') as fh:
-        fh.write(ret.stdout.decode('utf-8'))
+        fh.write(ret.decode('utf-8'))
 
 
 def set_flags_in_envs_deprecated(
