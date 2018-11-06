@@ -16,7 +16,7 @@ from decimal import Decimal
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse_lazy
 
-from cmsplugin_cascade.utils import format_lazy
+from django.utils.text import format_lazy
 
 import six
 
