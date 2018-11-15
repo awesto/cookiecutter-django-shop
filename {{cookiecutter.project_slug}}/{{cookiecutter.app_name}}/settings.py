@@ -92,7 +92,7 @@ INSTALLED_APPS = [
     'cmsplugin_cascade.extra_fields',
     'cmsplugin_cascade.icon',
     'cmsplugin_cascade.segmentation',
-    'cms_bootstrap3',
+    'cms_bootstrap',
     'adminsortable2',
     'rest_framework',
     'rest_framework.authtoken',
@@ -444,14 +444,15 @@ CMS_CACHE_DURATIONS = {
 CMS_PERMISSION = True
 
 cascade_workarea_glossary = {
-    'breakpoints': ['xs', 'sm', 'md', 'lg'],
-    'container_max_widths': {'xs': 750, 'sm': 750, 'md': 970, 'lg': 1170},
+    'breakpoints': ['xs', 'sm', 'md', 'lg','xl'],
+    'container_max_widths': {'xs': 576,'sm': 768,'md': 992, 'lg': 1200, 'xl': 1980,},
     'fluid': False,
     'media_queries': {
-        'xs': ['(max-width: 768px)'],
-        'sm': ['(min-width: 768px)', '(max-width: 992px)'],
-        'md': ['(min-width: 992px)', '(max-width: 1200px)'],
-        'lg': ['(min-width: 1200px)'],
+        'xs': ['(max-width: 576px)'],
+        'sm': ['(min-width: 576px)', '(max-width: 768px)'],
+        'md': ['(min-width: 768px)', '(max-width: 992px)'],
+        'lg': ['(min-width: 992px)', '(max-width: 1200px)'],
+        'xl': ['(min-width: 1200px)'],
     },
 }
 
@@ -494,7 +495,7 @@ CMSPLUGIN_CASCADE_PLUGINS = [
     'cmsplugin_cascade.leaflet',
     'cmsplugin_cascade.link',
     'shop.cascade',
-    'cmsplugin_cascade.bootstrap3',
+    'cmsplugin_cascade.bootstrap4',
 ]
 
 CMSPLUGIN_CASCADE = {
@@ -504,7 +505,7 @@ CMSPLUGIN_CASCADE = {
         'shop.cascade.plugin_base.CatalogLinkForm',
     ],
     'alien_plugins': ['TextPlugin', 'TextLinkPlugin', 'AcceptConditionPlugin'],
-    'bootstrap3': {
+    'bootstrap4': {
         'template_basedir': 'angular-ui',
     },
     'plugins_with_extra_render_templates': {
