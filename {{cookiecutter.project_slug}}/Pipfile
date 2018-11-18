@@ -27,6 +27,7 @@ django_polymorphic = "<2"
 elasticsearch = "<1.8"
 libsass = "*"
 djangoshop-stripe = "*"
+djangoshop-sendcloud = "*"
 django-allauth = "*"
 
 [dev-packages]
