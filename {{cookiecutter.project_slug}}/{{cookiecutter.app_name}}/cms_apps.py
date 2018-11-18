@@ -6,7 +6,7 @@ from django.conf.urls import url
 from cms.apphook_pool import apphook_pool
 from cms.cms_menus import SoftRootCutter
 from menus.menu_pool import menu_pool
-from shop.cms_apphooks import CatalogListCMSApp, CatalogSearchCMSApp, OrderCMSApp
+from shop.cms_apphooks import CatalogListCMSApp, CatalogSearchCMSApp, OrderApp, PasswordResetApp
 
 
 class CatalogListApp(CatalogListCMSApp):
@@ -77,12 +77,9 @@ class CatalogSearchApp(CatalogSearchCMSApp):
 
 apphook_pool.register(CatalogSearchApp)
 
-
-class OrderApp(OrderCMSApp):
-    pass
-
 apphook_pool.register(OrderApp)
 
+apphook_pool.register(PasswordResetApp)
 
 def _deregister_menu_pool_modifier(Modifier):
     index = None
