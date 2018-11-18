@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 """
-Django settings for myshop project.
+Django settings for {{ cookiecutter.app_name }} project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/stable/topics/settings/
@@ -11,14 +11,12 @@ https://docs.djangoproject.com/en/stable/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
 from decimal import Decimal
-from django.utils.translation import ugettext_lazy as _
-from django.core.urlresolvers import reverse_lazy
-
-from django.utils.text import format_lazy
-
+import os
 import six
+from django.urls import reverse_lazy
+from django.utils.text import format_lazy
+from django.utils.translation import ugettext_lazy as _
 
 SHOP_APP_LABEL = '{{ cookiecutter.app_name }}'
 BASE_DIR = os.path.dirname(__file__)
@@ -113,12 +111,13 @@ INSTALLED_APPS = [
     {% if cookiecutter.use_i18n == 'y' %}'parler',{% endif %}
     'post_office',
     'haystack',
-    'shop',
     'shop_stripe',
+    'shop_sendcloud',
+    'shop',
     '{{ cookiecutter.app_name }}',
 ]
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     # 'django.middleware.cache.UpdateCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -143,7 +142,7 @@ MIDDLEWARE_CLASSES = [
 {%- endif %}
 
 # MIGRATION_MODULES = {
-#     'myshop': '{{ cookiecutter.app_name }}.migrations.{}'.format('{{ shop_tutorial }}')
+#     '{{ cookiecutter.app_name }}': '{{ cookiecutter.app_name }}.migrations.{}'.format('{{ shop_tutorial }}')
 # }
 
 ROOT_URLCONF = '{{ cookiecutter.app_name }}.urls'
@@ -387,8 +386,8 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 12,
+#    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+#    'PAGE_SIZE': 16,
 }
 
 ############################################
@@ -443,24 +442,10 @@ CMS_CACHE_DURATIONS = {
 
 CMS_PERMISSION = True
 
-cascade_workarea_glossary = {
-    'breakpoints': ['xs', 'sm', 'md', 'lg','xl'],
-    'container_max_widths': {'xs': 576,'sm': 768,'md': 992, 'lg': 1200, 'xl': 1980,},
-    'fluid': False,
-    'media_queries': {
-        'xs': ['(max-width: 576px)'],
-        'sm': ['(min-width: 576px)', '(max-width: 768px)'],
-        'md': ['(min-width: 768px)', '(max-width: 992px)'],
-        'lg': ['(min-width: 992px)', '(max-width: 1200px)'],
-        'xl': ['(min-width: 1200px)'],
-    },
-}
-
 CMS_PLACEHOLDER_CONF = {
     'Breadcrumb': {
         'plugins': ['BreadcrumbPlugin'],
         'parent_classes': {'BreadcrumbPlugin': None},
-        'glossary': cascade_workarea_glossary,
     },
     'Commodity Details': {
         'plugins': ['BootstrapContainerPlugin', 'BootstrapJumbotronPlugin'],
@@ -468,7 +453,6 @@ CMS_PLACEHOLDER_CONF = {
             'BootstrapContainerPlugin': None,
             'BootstrapJumbotronPlugin': None,
         },
-        'glossary': cascade_workarea_glossary,
     },
     'Main Content': {
         'plugins': ['BootstrapContainerPlugin', 'BootstrapJumbotronPlugin'],
@@ -477,25 +461,23 @@ CMS_PLACEHOLDER_CONF = {
             'BootstrapJumbotronPlugin': None,
             'TextLinkPlugin': ['TextPlugin', 'AcceptConditionPlugin'],
         },
-        'glossary': cascade_workarea_glossary,
     },
     'Static Footer': {
         'plugins': ['BootstrapContainerPlugin', ],
         'parent_classes': {
             'BootstrapContainerPlugin': None,
         },
-        'glossary': cascade_workarea_glossary,
     },
 }
 
 CMSPLUGIN_CASCADE_PLUGINS = [
+    'cmsplugin_cascade.bootstrap4',
     'cmsplugin_cascade.segmentation',
     'cmsplugin_cascade.generic',
     'cmsplugin_cascade.icon',
     'cmsplugin_cascade.leaflet',
     'cmsplugin_cascade.link',
     'shop.cascade',
-    'cmsplugin_cascade.bootstrap4',
 ]
 
 CMSPLUGIN_CASCADE = {
@@ -648,14 +630,34 @@ SHOP_ORDER_WORKFLOWS = [
 
 if 'shop_stripe' in INSTALLED_APPS:
     SHOP_CART_MODIFIERS.append('{{ cookiecutter.app_name }}.modifiers.StripePaymentModifier')
-    SHOP_ORDER_WORKFLOWS.append('shop_stripe.payment.OrderWorkflowMixin')
+    SHOP_ORDER_WORKFLOWS.append('shop_stripe.workflows.OrderWorkflowMixin')
 
 if 'shop_sendcloud' in INSTALLED_APPS:
-    SHOP_CART_MODIFIERS.append('shop_sendcloud.modifiers.SendcloudShippingModifier')
-    SHOP_ORDER_WORKFLOWS.append('shop_sendcloud.shipping.OrderWorkflowMixin')
+    SHOP_CART_MODIFIERS.append('shop_sendcloud.modifiers.SendcloudShippingModifiers')
+    SHOP_ORDER_WORKFLOWS.extend(['shop_sendcloud.workflows.SingularOrderWorkflowMixin',
+                                 'shop.shipping.workflows.CommissionGoodsWorkflowMixin'])
+
+
+SHOP_CART_MODIFIERS.extend([
+    'shop.modifiers.taxes.CartExcludedTaxModifier',
+    '{{ cookiecutter.app_name }}.modifiers.CustomerPickupModifier',
+    'shop.payment.modifiers.PayInAdvanceModifier',
+    'shop.modifiers.defaults.WeightedCartModifier',
+])
 
 SHOP_STRIPE = {
     'PUBKEY': 'pk_test_HlEp5oZyPonE21svenqowhXp',
     'APIKEY': 'sk_test_xUdHLeFasmOUDvmke4DHGRDP',
-    'PURCHASE_DESCRIPTION': _("Thanks for purchasing at MyShop"),
+    'PURCHASE_DESCRIPTION': _("Thanks for purchasing at {{ cookiecutter.app_name }}"),
 }
+
+SHOP_SENDCLOUD = {
+    'API_KEY': '3863ee1b42ac488daf942312299f5fab',
+    'API_SECRET': '9e011318fa0f4aa2a47af2d0d8e40c67',
+}
+
+SHOP_CASCADE_FORMS = {
+    'CustomerForm': '{{ cookiecutter.app_name }}.forms.CustomerForm',
+}
+
+SHOP_MANUAL_SHIPPING_ID = False
