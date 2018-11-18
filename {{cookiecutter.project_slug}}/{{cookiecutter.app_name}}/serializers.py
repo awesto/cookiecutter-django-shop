@@ -32,6 +32,9 @@ class ProductDetailSerializer(ProductSerializer):
 
 __all__.append('ProductDetailSerializer')
 
+
+{% endif %}
+
 class ProductSearchSerializer(BaseProductSearchSerializer):
     """
     Serializer to search over all products in this shop
