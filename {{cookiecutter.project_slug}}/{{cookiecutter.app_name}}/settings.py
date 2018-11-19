@@ -624,7 +624,7 @@ SHOP_ORDER_WORKFLOWS = [
 {%- if cookiecutter.products_model == 'polymorphic' %}
     'shop.shipping.delivery.PartialDeliveryWorkflowMixin',
 {%- else %}
-    'shop.shipping.defaults.CommissionGoodsWorkflowMixin',
+#    'shop.shipping.defaults.CommissionGoodsWorkflowMixin',
 {%- endif %}
 ]
 
