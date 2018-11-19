@@ -7,7 +7,10 @@ from shop.search.serializers import ProductSearchSerializer as BaseProductSearch
 from shop.serializers.bases import ProductSerializer
 from shop.serializers.defaults import AddToCartSerializer
 
+{% if cookiecutter.products_model in ['smartcard', 'polymorphic'] %}
 from {{ cookiecutter.app_name }} import SmartCard, SmartPhoneModel
+{% endif %}
+
 from {{ cookiecutter.app_name }}.search_indexes import myshop_search_index_classes
 
 
