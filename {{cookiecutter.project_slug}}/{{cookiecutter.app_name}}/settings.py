@@ -610,10 +610,7 @@ SHOP_CART_MODIFIERS = [
 {%- else %}
     'shop.modifiers.defaults.DefaultCartModifier',
 {%- endif %}
-    'shop.modifiers.taxes.CartExcludedTaxModifier',
     '{{ cookiecutter.app_name }}.modifiers.PostalShippingModifier',
-    '{{ cookiecutter.app_name }}.modifiers.CustomerPickupModifier',
-    'shop.modifiers.defaults.PayInAdvanceModifier',
 ]
 
 SHOP_EDITCART_NG_MODEL_OPTIONS = "{updateOn: 'default blur', debounce: {'default': 2500, 'blur': 0}}"
