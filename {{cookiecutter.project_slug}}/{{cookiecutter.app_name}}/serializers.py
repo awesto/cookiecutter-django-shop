@@ -24,17 +24,12 @@ class ProductDetailSerializer(ProductSerializer):
     class Meta(ProductSerializer.Meta):
         fields = ['product_name', 'slug', 'unit_price', 'product_code']
 
-__all__.append('ProductDetailSerializer')
-
 {% elif cookiecutter.products_model == 'smartcard' %}
 
 class ProductDetailSerializer(ProductSerializer):
     class Meta(ProductSerializer.Meta):
         fields = ['product_name', 'slug', 'unit_price', 'manufacturer', 'card_type', 'speed',
                   'product_code', 'storage']
-
-__all__.append('ProductDetailSerializer')
-
 
 {% endif %}
 
