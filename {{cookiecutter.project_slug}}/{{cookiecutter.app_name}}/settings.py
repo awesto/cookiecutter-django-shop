@@ -619,8 +619,8 @@ SHOP_CART_MODIFIERS = [
 SHOP_EDITCART_NG_MODEL_OPTIONS = "{updateOn: 'default blur', debounce: {'default': 2500, 'blur': 0}}"
 
 SHOP_ORDER_WORKFLOWS = [
-    'shop.payment.defaults.ManualPaymentWorkflowMixin',
-    'shop.payment.defaults.CancelOrderWorkflowMixin',
+    'shop.payment.workflows.ManualPaymentWorkflowMixin',
+    'shop.payment.workflows.CancelOrderWorkflowMixin',
 {%- if cookiecutter.products_model == 'polymorphic' %}
     'shop.shipping.delivery.PartialDeliveryWorkflowMixin',
 {%- else %}
