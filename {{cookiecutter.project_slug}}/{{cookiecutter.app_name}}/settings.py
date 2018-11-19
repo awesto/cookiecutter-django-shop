@@ -619,9 +619,9 @@ SHOP_ORDER_WORKFLOWS = [
     'shop.payment.workflows.ManualPaymentWorkflowMixin',
     'shop.payment.workflows.CancelOrderWorkflowMixin',
 {%- if cookiecutter.products_model == 'polymorphic' %}
-    'shop.shipping.delivery.PartialDeliveryWorkflowMixin',
+    'shop.shipping.worflows.PartialDeliveryWorkflowMixin',
 {%- else %}
-#    'shop.shipping.defaults.CommissionGoodsWorkflowMixin',
+    'shop.shipping.worflows.CommissionGoodsWorkflowMixin',
 {%- endif %}
 ]
 
