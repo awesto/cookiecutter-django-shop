@@ -630,7 +630,7 @@ SHOP_ORDER_WORKFLOWS = [
 
 if 'shop_stripe' in INSTALLED_APPS:
     SHOP_CART_MODIFIERS.append('{{ cookiecutter.app_name }}.modifiers.StripePaymentModifier')
-    SHOP_ORDER_WORKFLOWS.append('shop_stripe.workflows.OrderWorkflowMixin')
+    SHOP_ORDER_WORKFLOWS.append('shop_stripe.payment.OrderWorkflowMixin')
 
 if 'shop_sendcloud' in INSTALLED_APPS:
     SHOP_CART_MODIFIERS.append('shop_sendcloud.modifiers.SendcloudShippingModifiers')
