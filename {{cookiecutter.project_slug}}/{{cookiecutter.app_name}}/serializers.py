@@ -64,7 +64,7 @@ class CatalogSearchSerializer(BaseProductSearchSerializer):
     def get_media(self, search_result):
         return mark_safe(search_result.catalog_media)
 
-
+{% if cookiecutter.products_model in ['smartcard', 'polymorphic'] %}
 class SmartCardSerializer(ProductSerializer):
     class Meta:
         model = SmartCard
@@ -101,3 +101,4 @@ class AddSmartPhoneToCartSerializer(AddToCartSerializer):
         }
         return instance
 
+{% endif %}
