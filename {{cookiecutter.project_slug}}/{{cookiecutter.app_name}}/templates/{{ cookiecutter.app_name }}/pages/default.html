@@ -1,15 +1,15 @@
-{% extends "myshop/pages/base.html" %}
-{% load static cms_tags i18n sekizai_tags sass_tags %}
+{{ '{%' }} extends "{{ cookiecutter.app_name }}/pages/base.html" {{ '%}' }}
+{% raw %}{% load static cms_tags i18n sekizai_tags sass_tags %}
 
 {% block title %}{% page_attribute "page_title" %}{% endblock %}
 
 {% block head %}
 	{{ block.super }}
-	{% addtoblock "css" %}<link href="{% sass_src 'myshop/css/default.scss' %}" rel="stylesheet" type="text/css" />{% endaddtoblock %}
+	{% addtoblock "css" %}<link href="{% sass_src '{{ cookiecutter.app_name }}/css/default.scss'{% raw %} %}" rel="stylesheet" type="text/css" />{% endaddtoblock %}
 {% endblock head %}
 
 {% block header %}
-	{% include "myshop/pages/navbar.html" with navbar_classes="navbar-expand-lg navbar-light bg-light fixed-top" %}
+	{% include {% endraw %}"{{ cookiecutter.app_name }}/pages/navbar.html"{% raw %} with navbar_classes="navbar-expand-lg navbar-light bg-light fixed-top" %}
 {% endblock header %}
 
 {% block breadcrumb %}{% placeholder "Breadcrumb" or %}
@@ -33,5 +33,5 @@
 	<p class="text-muted">Place sticky footer content here.</p>
 </div>
 {% endstatic_placeholder %}{% endblock footer %}
-
+{% endraw %}
 
