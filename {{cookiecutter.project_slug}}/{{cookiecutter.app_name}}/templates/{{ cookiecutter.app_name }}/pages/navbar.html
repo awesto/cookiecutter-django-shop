@@ -1,56 +1,54 @@
-{% raw %}{% extends "bootstrap/includes/ng-nav-navbar.html" %}
+{% raw %}{% extends "bootstrap4/includes/ng-nav-navbar.html" %}
 {% load static i18n cms_tags menu_tags sekizai_tags sass_tags shop_tags %}
 
 {% page_url 'shop-watch-list' as shop_watch_list_url %}{% if not shop_watch_list_url %}{% url "shop-watch-list" as shop_watch_list_url %}{% endif %}
 
 {% block navbar %}
-	<div class="navbar-extra-top">
-		<div class="container">
-			<div class="row">
-				<div class="col-xs-12 col-sm-3">
-					<a href="/">
+<div class="container-fluid">
+	<h1 class="pb-1 ml-md-0 ml-sm-3 ml-0 mr-3">
+<a href="/">
 						<img class="brand-logo" src="{% static 'shop/django-shop-logo.svg' %}" alt="django-SHOP" height="40" />
-					</a>
-				</div>
-				<div class="col-xs-12 col-sm-9">
-					<ul class="nav navbar-nav navbar-right">
-						<li><a href="tel:+12345678900"><i class="fa fa-phone"></i>&nbsp;+1-234-567-8900</a></li>
-						<li><a href="mailto:info@example.com"><i class="fa fa-envelope-o"></i>&nbsp;info@example.com</a></li>
-						{% with dropdown_extra_class="expanded-nav" %}
-						{% language_chooser "shop/navbar/language-chooser.html" %}
-						{% include "shop/navbar/login-logout.html" %}
-						{% endwith %}
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-	{{ block.super }}
-	<div class="container">
-		<div class="form-group visible-xs">
-			{% include "shop/navbar/search-form.html" with search_form_classes="shop-search-form navbar-form" %}
-		</div>
-	</div>
+	<img src="{% static 'shop/django-shop-logo.svg' %}" class="mt-3" alt="django-SHOP" height="45" aria-hidden="true">
+		</a>
+	</h1>
+	{% block navbar-toggler %}{{ block.super }}{% endblock %}
 
-	{% addtoblock "css" %}<link href="{% sass_src {% endraw %}'{{ cookiecutter.app_name }}/css/navbar.scss'{% raw %} %}" rel="stylesheet" type="text/css" />{% endaddtoblock %}
+	<div class="collapse navbar-collapse ml-lg-2 ml-0" uib-collapse="isNavCollapsed">
+		<ul class="navbar-nav flex-wrap mb-md-0 mt-md-0 mb-3 mt-2">
+			<li class="nav-item">
+				<a class="nav-link py-0 pr-3" href="tel:+12345678900"><i class="fa fa-phone"></i></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link py-0 pr-3" href="mailto:info@example.com"><i class="fa fa-envelope-o"></i></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link py-0 pr-3" href="https://www.awesto.com/"><i class="fa fa-support"></i></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link py-0 pr-3" href="https://twitter.com/djangoshop"><i class="fa fa-twitter"></i></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link py-0 pr-3" href="https://github.com/awesto/django-shop/"><i class="fa fa-github"></i></a>
+			</li>
+			<li class="nav-item mr-auto">
+				<a class="nav-link py-0 pr-3" href="https://django-shop.readthedocs.io/"><i class="fa fa-book"></i></a>
+</li>
+			{% include "shop/navbar/login-logout.html" %}
+			{% language_chooser "shop/navbar/language-chooser.html" %}
+			{% include "shop/navbar/watch-icon.html" %}
+			<li class="nav-item">{% cart_icon %}</li>
+			<li class="w-100 mb-lg-1"></li>
+			{% with item_class="nav-item lead" %}{% block navbar-nav %}{{ block.super }}{% endblock %}{% endwith %}
+			<li class="nav-item ml-lg-auto my-auto">{% include "shop/navbar/search-form.html" with search_form_classes="form-inline" %}</li>
+		</ul>
+	</div>
+</div>
 
-	{% addtoblock "js" %}<script src="{% static 'node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js' %}"></script>{% endaddtoblock %}
+	{% addtoblock "js" %}<script src="{% static 'node_modules/ui-bootstrap4/dist/ui-bootstrap-tpls.js' %}"></script>{% endaddtoblock %}
 	{% add_data "ng-requires" "ui.bootstrap" %}
 
 	{% addtoblock "js" %}<script src="{% static {% endraw %}'{{ cookiecutter.app_name }}/js/navbar.js'{% raw %} %}" type="text/javascript"></script>{% endaddtoblock %}
 	{% add_data "ng-requires" "django.shop.navbar" %}
 
 {% endblock navbar %}
-
-{% block navbar-nav %}
-	{{ block.super }}
-	<ul class="nav navbar-nav navbar-right">
-		{% with dropdown_extra_class="collapsed-nav" %}
-		{% language_chooser "shop/navbar/language-chooser.html" %}
-		{% include "shop/navbar/login-logout.html" %}
-		{% endwith %}
-		{% include "shop/navbar/watch-icon.html" %}
-		<li>{% cart_icon %}</li>
-	</ul>
-	{% include "shop/navbar/search-form.html" with search_form_classes="shop-search-form navbar-form navbar-right hidden-xs" %}
-{% endblock %}{% endraw %}
+{% endspaceless %}{% endraw %}
