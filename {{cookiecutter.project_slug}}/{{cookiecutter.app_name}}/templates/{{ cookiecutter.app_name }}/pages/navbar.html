@@ -1,5 +1,6 @@
 {% raw %}{% extends "bootstrap4/includes/ng-nav-navbar.html" %}
 {% load static i18n cms_tags menu_tags sekizai_tags sass_tags shop_tags %}
+{% spaceless %}
 
 {% page_url 'shop-watch-list' as shop_watch_list_url %}{% if not shop_watch_list_url %}{% url "shop-watch-list" as shop_watch_list_url %}{% endif %}
 
