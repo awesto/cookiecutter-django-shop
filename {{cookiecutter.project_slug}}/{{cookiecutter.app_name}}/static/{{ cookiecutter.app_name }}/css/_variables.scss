@@ -2,14 +2,21 @@
 
 // footer
 $body-footer-height: 200px;
-$body-footer-color: $navbar-inverse-color;
-$body-footer-bg: $navbar-inverse-bg;
-$body-footer-border: $navbar-inverse-border;
+$body-footer-color: #ffffff;
+$body-footer-bg: #000000;
 
-$body-footer-link-color: $navbar-inverse-link-color;
-$body-footer-link-hover-color: $navbar-inverse-link-hover-color;
-$body-footer-link-hover-bg: $navbar-inverse-link-hover-bg;
-$body-footer-link-active-color: $navbar-inverse-link-active-color;
-$body-footer-link-active-bg: $navbar-inverse-link-active-bg;
-$body-footer-link-disabled-color: $navbar-inverse-link-disabled-color;
-$body-footer-link-disabled-bg: $navbar-inverse-link-disabled-bg;
+$body-footer-border: #000000;
+$body-footer-link-color: #000000;
+$body-footer-link-hover-color: #000000;
+$body-footer-link-hover-bg: #000000;
+$body-footer-link-active-color: #000000;
+$body-footer-link-active-bg: #000000;
+$body-footer-link-disabled-color: #000000;
+$body-footer-link-disabled-bg: #000000;
+
+$navbar-default-border: #000000;
+$navbar-default-bg: #f8f8f8;
+$grid-float-breakpoint: 1000px;
+
+// drop "Apple Color Emoji" from Bootstrap's native font stack, otherwise the OK and times icon are rendered in black.
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
