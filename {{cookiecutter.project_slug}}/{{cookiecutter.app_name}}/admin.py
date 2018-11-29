@@ -16,16 +16,7 @@ from shop.admin.defaults import customer
 from shop.admin.defaults.order import OrderAdmin
 from shop.models.defaults.order import Order
 from shop.admin.order import PrintOrderAdminMixin
-
-"""
-#from shop.admin.delivery import DeliveryOrderAdminMixin
-
-  "django-shop/shop/deferred.py", line 217, in _setup
-    self._wrapped = getattr(self._base_model, '_materialized_model')
-  django-shop/shop/deferred.py", line 185, in __getattr__
-    raise ImproperlyConfigured(msg.format(self.__name__))
-django.core.exceptions.ImproperlyConfigured: No class implements abstract base model: `BaseDelivery`.
-"""
+from shop.admin.delivery import DeliveryOrderAdminMixin
 
 
 {%- if cookiecutter.products_model == 'commodity' %}

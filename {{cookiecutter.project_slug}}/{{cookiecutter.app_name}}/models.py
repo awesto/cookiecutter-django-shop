@@ -26,17 +26,19 @@ from django.conf import settings
 if 'shop_sendcloud' in settings.INSTALLED_APPS:
     from shop_sendcloud.models import ShippingAddress, BillingAddress
     from shop_sendcloud.models import Customer
+    from shop_sendcloud.model.delivery import    Delivery
 else:
     from shop.models.defaults.address import ShippingAddress, BillingAddress
     from shop.models.defaults.customer import Customer
 from shop.models.defaults.cart import Cart
 from shop.models.defaults.cart_item import CartItem
-from shop.models.defaults.mapping import ProductPage, ProductImage
-from shop.models.defaults.order import Order
+from shop.models.defaults.mapping import ProductPage, ProductImagfrom shop.models.defaults.order import Order
 from shop.models.defaults.order_item import OrderItem
 
 {% if cookiecutter.products_model == 'commodity' -%}
 __all__ = ['Commodity']
+
+
 {% else %}
 @python_2_unicode_compatible
 class Manufacturer(models.Model):
