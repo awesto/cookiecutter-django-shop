@@ -26,7 +26,7 @@ from django.conf import settings
 if 'shop_sendcloud' in settings.INSTALLED_APPS:
     from shop_sendcloud.models import ShippingAddress, BillingAddress
     from shop_sendcloud.models import Customer
-    from shop_sendcloud.model.delivery import Delivery
+    from shop_sendcloud.models.delivery import Delivery
 else:
     from shop.models.defaults.address import ShippingAddress, BillingAddress
     from shop.models.defaults.customer import Customer
