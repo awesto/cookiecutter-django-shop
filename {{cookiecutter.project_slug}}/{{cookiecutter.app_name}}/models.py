@@ -30,6 +30,7 @@ if 'shop_sendcloud' in settings.INSTALLED_APPS:
 else:
     from shop.models.defaults.address import ShippingAddress, BillingAddress
     from shop.models.defaults.customer import Customer
+    from shop.models.defaults.delivery import Delivery
 from shop.models.defaults.cart import Cart
 from shop.models.defaults.cart_item import CartItem
 from shop.models.defaults.mapping import ProductPage, ProductImage
