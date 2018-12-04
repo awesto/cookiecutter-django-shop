@@ -43,10 +43,10 @@ class Command(BaseCommand):
             create_page("Change Password", 'INHERIT', 'en', slug="change-password",
                         reverse_id='shop-password-change', parent=page, in_navigation=True, soft_root=False, published=True)
 
-        if True:
-            page = create_page("Become a Member", 'INHERIT', 'en', slug="membership",
-                        parent=None, in_navigation=False, soft_root=True,
-                        reverse_id='shop-membership', published=True)
+        #if True:
+            #page = create_page("Become a Member", 'INHERIT', 'en', slug="membership",
+            #            parent=None, in_navigation=False, soft_root=True,
+            #            reverse_id='shop-membership', published=True)
             #create_page("Register Customer", 'INHERIT', 'en', slug="register-customer",
             #            reverse_id='shop-register-customer', parent=page, in_navigation=True, soft_root=False, published=True)
             #create_page("Reset Password", 'INHERIT', 'en', slug="reset-password",
