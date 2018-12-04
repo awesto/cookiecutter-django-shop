@@ -115,7 +115,7 @@ INSTALLED_APPS = [
     'shop_stripe',
     'shop_sendcloud',
     'shop',
-    'html_email',
+#    'html_email',
     '{{ cookiecutter.app_name }}',
 ]
 
@@ -275,21 +275,21 @@ TEMPLATES = [{
             'shop_stripe.context_processors.public_keys',
         )
     }
-}, {
-    'BACKEND': 'html_email.template.backends.html_email.EmailTemplates',
-    'APP_DIRS': True,
-    'DIRS': [],
-    'OPTIONS': {
-        'context_processors': [
-            'django.contrib.auth.context_processors.auth',
-            'django.template.context_processors.debug',
-            'django.template.context_processors.i18n',
-            'django.template.context_processors.media',
-            'django.template.context_processors.static',
-            'django.template.context_processors.tz',
-            'django.template.context_processors.request',
-        ]
-    }
+#}, {
+#    'BACKEND': 'html_email.template.backends.html_email.EmailTemplates',
+#    'APP_DIRS': True,
+#    'DIRS': [],
+#    'OPTIONS': {
+#        'context_processors': [
+#            'django.contrib.auth.context_processors.auth',
+#            'django.template.context_processors.debug',
+#            'django.template.context_processors.i18n',
+#            'django.template.context_processors.media',
+#            'django.template.context_processors.static',
+#            'django.template.context_processors.tz',
+#            'django.template.context_processors.request',
+#        ]
+#    }
 }]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -526,9 +526,13 @@ CMSPLUGIN_CASCADE = {
                                  'image_height', 'resize_options'],
         'BootstrapPicturePlugin': ['image_shapes', 'responsive_heights', 'image_size', 'resize_options'],
     },
-    'plugins_with_extra_mixins': {
-        'BootstrapRowPlugin': BootstrapUtilities(BootstrapUtilities.margins),
-    },
+#    'plugins_with_extra_mixins': {
+#        'BootstrapRowPlugin': BootstrapUtilities(BootstrapUtilities.margins),
+#    },
+#     "The translation infrastructure cannot be initialized before the "
+#    django.core.exceptions.AppRegistryNotReady: The translation infrastructure cannot be initialized before the apps registry is ready.
+#    Check that you don't make non-lazy gettext calls at import time.
+#    in variable  choices_format       python3.6/site-packages/cmsplugin_cascade/bootstrap4/mixins.py", line 101, in margins
     'leaflet': {
         'tilesURL': 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
         'accessToken': 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
@@ -651,7 +655,7 @@ SHOP_ORDER_WORKFLOWS = [
 
 if 'shop_stripe' in INSTALLED_APPS:
     SHOP_CART_MODIFIERS.append('{{ cookiecutter.app_name }}.modifiers.StripePaymentModifier')
-    SHOP_ORDER_WORKFLOWS.append('shop_stripe.payment.OrderWorkflowMixin')
+    SHOP_ORDER_WORKFLOWS.append('shop_stripe.workflows.OrderWorkflowMixin')
 
 if 'shop_sendcloud' in INSTALLED_APPS:
     SHOP_CART_MODIFIERS.append('shop_sendcloud.modifiers.SendcloudShippingModifiers')
