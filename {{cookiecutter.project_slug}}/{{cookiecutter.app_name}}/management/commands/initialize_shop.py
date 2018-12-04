@@ -51,7 +51,7 @@ except ImportError:
 User=get_user_model()
 
 from cms.api import constants
-from cms.models import Page, Placeholder,
+from cms.models import Page, Placeholder
 from cms.api import create_page, copy_plugins
 
 class Command(ShopCommandBase):
