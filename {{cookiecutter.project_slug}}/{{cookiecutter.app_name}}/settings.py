@@ -17,6 +17,7 @@ import six
 from django.urls import reverse_lazy
 from django.utils.text import format_lazy
 from django.utils.translation import ugettext_lazy as _
+from cmsplugin_cascade.bootstrap4.mixins import BootstrapUtilities
 
 SHOP_APP_LABEL = '{{ cookiecutter.app_name }}'
 BASE_DIR = os.path.dirname(__file__)
@@ -114,6 +115,7 @@ INSTALLED_APPS = [
     'shop_stripe',
     'shop_sendcloud',
     'shop',
+    'html_email',
     '{{ cookiecutter.app_name }}',
 ]
 
@@ -273,6 +275,21 @@ TEMPLATES = [{
             'shop_stripe.context_processors.public_keys',
         )
     }
+}, {
+    'BACKEND': 'html_email.template.backends.html_email.EmailTemplates',
+    'APP_DIRS': True,
+    'DIRS': [],
+    'OPTIONS': {
+        'context_processors': [
+            'django.contrib.auth.context_processors.auth',
+            'django.template.context_processors.debug',
+            'django.template.context_processors.i18n',
+            'django.template.context_processors.media',
+            'django.template.context_processors.static',
+            'django.template.context_processors.tz',
+            'django.template.context_processors.request',
+        ]
+    }
 }]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -390,6 +407,10 @@ REST_FRAMEWORK = {
 #    'PAGE_SIZE': 16,
 }
 
+REST_AUTH_SERIALIZERS = {
+    'LOGIN_SERIALIZER': 'shop.serializers.auth.LoginSerializer',
+}
+
 ############################################
 # settings for storing session data
 
@@ -504,6 +525,9 @@ CMSPLUGIN_CASCADE = {
         'BootstrapImagePlugin': ['image_shapes', 'image_width_responsive', 'image_width_fixed',
                                  'image_height', 'resize_options'],
         'BootstrapPicturePlugin': ['image_shapes', 'responsive_heights', 'image_size', 'resize_options'],
+    },
+    'plugins_with_extra_mixins': {
+        'BootstrapRowPlugin': BootstrapUtilities(BootstrapUtilities.margins),
     },
     'leaflet': {
         'tilesURL': 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
@@ -647,6 +671,8 @@ SHOP_STRIPE = {
     'APIKEY': 'sk_test_xUdHLeFasmOUDvmke4DHGRDP',
     'PURCHASE_DESCRIPTION': _("Thanks for purchasing at {{ cookiecutter.app_name }}"),
 }
+
+SHOP_STRIPE_PREFILL = True
 
 SHOP_SENDCLOUD = {
     'API_KEY': os.getenv('SENDCLOUD_PUBLIC_KEY'),
