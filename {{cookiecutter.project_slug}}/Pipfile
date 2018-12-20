@@ -28,7 +28,7 @@ elasticsearch = "<1.8"
 libsass = "*"
 djangoshop-stripe =  {git = "https://github.com/awesto/djangoshop-stripe", editable = true, ref = "bootstrap-4"}
 djangoshop-sendcloud = {git = "https://github.com/awesto/djangoshop-sendcloud", editable = true, ref = "master"}
-django-shop = {git = "https://github.com/awesto/django-shop", editable = true, ref = "drafts/bootstrap-4-sendcloud"}
+django-shop = {git = "https://github.com/awesto/django-shop", editable = true, ref = "drafts/py.test"}
 django-allauth = "*"
 
 [dev-packages]
