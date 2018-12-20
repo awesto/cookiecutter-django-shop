@@ -4,7 +4,7 @@
 {% block main-content %}
 <div class="container">
 	<div class="row product-detail">
-		<div class="col-xs-12 col-md-8">
+		<div class="col col-md-10 offset-md-1">
 			<h1>{% render_model product "product_name" %}</h1>
 			<pre class="images">
 			{% for img in product.images.all %}
@@ -13,7 +13,7 @@
 			{% endfor %}
 			</pre>
 		</div>
-		<div class="col-xs-12 col-md-8">
+		<div class="col col-md-10 offset-md-1">
 			{{ product.description|safe }}
 			<table class="table table-bordered">
 				<tbody class="table-striped">
