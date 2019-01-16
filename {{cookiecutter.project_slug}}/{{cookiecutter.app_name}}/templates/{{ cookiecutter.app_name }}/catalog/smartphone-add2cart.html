@@ -1,17 +1,14 @@
 {% raw %}{% extends "shop/catalog/product-add2cart.html" %}
 {% load i18n %}
 
+{% block add-to-cart-url %}{{ product.get_absolute_url }}/add-smartphone-to-cart{% endblock %}
+
 {% block add-product-to-cart-body %}
- <table shop-add-to-cart="{{ product.get_absolute_url }}/add-smartphone-to-cart" class="table">
- <div class="card-body pb-0" shop-add-to-cart="{{ product.get_absolute_url }}/add-smartphone-to-cart">
- 	<thead>
- 	<div class="d-flex justify-content-between">
- 		<tr>
- 		<div class="d-flex flex-column">
- 			<th>{% trans "Internal Storage" %}</th>
- 			<label for="product_code">{% trans "Internal Storage" %}</label>
- 			<th>{% trans "Quantity" %}</th>
- 			<select class="form-control" name="product_code" ng-model="context.product_code" ng-change="updateContext()" >
+<div class="card-body pb-0">
+	<div class="d-flex justify-content-between">
+		<div class="d-flex flex-column">
+			<label for="product_code">{% trans "Internal Storage" %}</label>
+			<select class="form-control" name="product_code" ng-model="context.product_code" ng-change="updateContext()" >
 	{% for smartphone in product.variants.all %}
 				<option value="{{ smartphone.product_code }}">
 		{% if smartphone.storage == 0 %}{% trans "Pluggable" %}{% else %}{{ smartphone.storage }} GB{% endif %}
