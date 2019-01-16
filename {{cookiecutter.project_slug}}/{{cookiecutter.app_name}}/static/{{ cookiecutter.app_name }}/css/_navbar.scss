@@ -1,0 +1,8 @@
+@import "variables";
+@import "shop/css/navbar";
+
+body {
+	@include media-breakpoint-up(md) {
+		padding-top: 90px;
+	}
+}

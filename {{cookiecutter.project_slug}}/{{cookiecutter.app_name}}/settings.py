@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 """
-Django settings for myshop project.
+Django settings for {{ cookiecutter.app_name }} project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/stable/topics/settings/
@@ -11,14 +11,13 @@ https://docs.djangoproject.com/en/stable/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
 from decimal import Decimal
-from django.utils.translation import ugettext_lazy as _
-from django.core.urlresolvers import reverse_lazy
-
-from cmsplugin_cascade.utils import format_lazy
-
+import os
 import six
+from django.urls import reverse_lazy
+from django.utils.text import format_lazy
+from django.utils.translation import ugettext_lazy as _
+from cmsplugin_cascade.bootstrap4.mixins import BootstrapUtilities
 
 SHOP_APP_LABEL = '{{ cookiecutter.app_name }}'
 BASE_DIR = os.path.dirname(__file__)
@@ -92,7 +91,7 @@ INSTALLED_APPS = [
     'cmsplugin_cascade.extra_fields',
     'cmsplugin_cascade.icon',
     'cmsplugin_cascade.segmentation',
-    'cms_bootstrap3',
+    'cms_bootstrap',
     'adminsortable2',
     'rest_framework',
     'rest_framework.authtoken',
@@ -113,12 +112,14 @@ INSTALLED_APPS = [
     {% if cookiecutter.use_i18n == 'y' %}'parler',{% endif %}
     'post_office',
     'haystack',
-    'shop',
     'shop_stripe',
+    'shop_sendcloud',
+    'shop',
+#    'html_email',
     '{{ cookiecutter.app_name }}',
 ]
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     # 'django.middleware.cache.UpdateCacheMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -143,7 +144,7 @@ MIDDLEWARE_CLASSES = [
 {%- endif %}
 
 # MIGRATION_MODULES = {
-#     'myshop': '{{ cookiecutter.app_name }}.migrations.{}'.format('{{ shop_tutorial }}')
+#     '{{ cookiecutter.app_name }}': '{{ cookiecutter.app_name }}.migrations.{}'.format('{{ shop_tutorial }}')
 # }
 
 ROOT_URLCONF = '{{ cookiecutter.app_name }}.urls'
@@ -270,10 +271,25 @@ TEMPLATES = [{
             'sekizai.context_processors.sekizai',
             'cms.context_processors.cms_settings',
             'shop.context_processors.customer',
-            'shop.context_processors.ng_model_options',
+            'shop.context_processors.shop_settings',
             'shop_stripe.context_processors.public_keys',
         )
     }
+#}, {
+#    'BACKEND': 'html_email.template.backends.html_email.EmailTemplates',
+#    'APP_DIRS': True,
+#    'DIRS': [],
+#    'OPTIONS': {
+#        'context_processors': [
+#            'django.contrib.auth.context_processors.auth',
+#            'django.template.context_processors.debug',
+#            'django.template.context_processors.i18n',
+#            'django.template.context_processors.media',
+#            'django.template.context_processors.static',
+#            'django.template.context_processors.tz',
+#            'django.template.context_processors.request',
+#        ]
+#    }
 }]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -387,8 +403,12 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 12,
+#    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+#    'PAGE_SIZE': 16,
+}
+
+REST_AUTH_SERIALIZERS = {
+    'LOGIN_SERIALIZER': 'shop.serializers.auth.LoginSerializer',
 }
 
 ############################################
@@ -443,23 +463,10 @@ CMS_CACHE_DURATIONS = {
 
 CMS_PERMISSION = True
 
-cascade_workarea_glossary = {
-    'breakpoints': ['xs', 'sm', 'md', 'lg'],
-    'container_max_widths': {'xs': 750, 'sm': 750, 'md': 970, 'lg': 1170},
-    'fluid': False,
-    'media_queries': {
-        'xs': ['(max-width: 768px)'],
-        'sm': ['(min-width: 768px)', '(max-width: 992px)'],
-        'md': ['(min-width: 992px)', '(max-width: 1200px)'],
-        'lg': ['(min-width: 1200px)'],
-    },
-}
-
 CMS_PLACEHOLDER_CONF = {
     'Breadcrumb': {
         'plugins': ['BreadcrumbPlugin'],
         'parent_classes': {'BreadcrumbPlugin': None},
-        'glossary': cascade_workarea_glossary,
     },
     'Commodity Details': {
         'plugins': ['BootstrapContainerPlugin', 'BootstrapJumbotronPlugin'],
@@ -467,7 +474,6 @@ CMS_PLACEHOLDER_CONF = {
             'BootstrapContainerPlugin': None,
             'BootstrapJumbotronPlugin': None,
         },
-        'glossary': cascade_workarea_glossary,
     },
     'Main Content': {
         'plugins': ['BootstrapContainerPlugin', 'BootstrapJumbotronPlugin'],
@@ -476,25 +482,23 @@ CMS_PLACEHOLDER_CONF = {
             'BootstrapJumbotronPlugin': None,
             'TextLinkPlugin': ['TextPlugin', 'AcceptConditionPlugin'],
         },
-        'glossary': cascade_workarea_glossary,
     },
     'Static Footer': {
         'plugins': ['BootstrapContainerPlugin', ],
         'parent_classes': {
             'BootstrapContainerPlugin': None,
         },
-        'glossary': cascade_workarea_glossary,
     },
 }
 
 CMSPLUGIN_CASCADE_PLUGINS = [
+    'cmsplugin_cascade.bootstrap4',
     'cmsplugin_cascade.segmentation',
     'cmsplugin_cascade.generic',
     'cmsplugin_cascade.icon',
     'cmsplugin_cascade.leaflet',
     'cmsplugin_cascade.link',
     'shop.cascade',
-    'cmsplugin_cascade.bootstrap3',
 ]
 
 CMSPLUGIN_CASCADE = {
@@ -504,7 +508,7 @@ CMSPLUGIN_CASCADE = {
         'shop.cascade.plugin_base.CatalogLinkForm',
     ],
     'alien_plugins': ['TextPlugin', 'TextLinkPlugin', 'AcceptConditionPlugin'],
-    'bootstrap3': {
+    'bootstrap4': {
         'template_basedir': 'angular-ui',
     },
     'plugins_with_extra_render_templates': {
@@ -522,6 +526,13 @@ CMSPLUGIN_CASCADE = {
                                  'image_height', 'resize_options'],
         'BootstrapPicturePlugin': ['image_shapes', 'responsive_heights', 'image_size', 'resize_options'],
     },
+#    'plugins_with_extra_mixins': {
+#        'BootstrapRowPlugin': BootstrapUtilities(BootstrapUtilities.margins),
+#    },
+#     "The translation infrastructure cannot be initialized before the "
+#    django.core.exceptions.AppRegistryNotReady: The translation infrastructure cannot be initialized before the apps registry is ready.
+#    Check that you don't make non-lazy gettext calls at import time.
+#    in variable  choices_format       python3.6/site-packages/cmsplugin_cascade/bootstrap4/mixins.py", line 101, in margins
     'leaflet': {
         'tilesURL': 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
         'accessToken': 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
@@ -627,34 +638,53 @@ SHOP_CART_MODIFIERS = [
 {%- else %}
     'shop.modifiers.defaults.DefaultCartModifier',
 {%- endif %}
-    'shop.modifiers.taxes.CartExcludedTaxModifier',
     '{{ cookiecutter.app_name }}.modifiers.PostalShippingModifier',
-    '{{ cookiecutter.app_name }}.modifiers.CustomerPickupModifier',
-    'shop.modifiers.defaults.PayInAdvanceModifier',
 ]
 
 SHOP_EDITCART_NG_MODEL_OPTIONS = "{updateOn: 'default blur', debounce: {'default': 2500, 'blur': 0}}"
 
 SHOP_ORDER_WORKFLOWS = [
-    'shop.payment.defaults.ManualPaymentWorkflowMixin',
-    'shop.payment.defaults.CancelOrderWorkflowMixin',
+    'shop.payment.workflows.ManualPaymentWorkflowMixin',
+    'shop.payment.workflows.CancelOrderWorkflowMixin',
 {%- if cookiecutter.products_model == 'polymorphic' %}
-    'shop.shipping.delivery.PartialDeliveryWorkflowMixin',
+    'shop.shipping.worflows.PartialDeliveryWorkflowMixin',
 {%- else %}
-    'shop.shipping.defaults.CommissionGoodsWorkflowMixin',
+#    'shop.shipping.workflows.CommissionGoodsWorkflowMixin',
 {%- endif %}
 ]
 
 if 'shop_stripe' in INSTALLED_APPS:
     SHOP_CART_MODIFIERS.append('{{ cookiecutter.app_name }}.modifiers.StripePaymentModifier')
-    SHOP_ORDER_WORKFLOWS.append('shop_stripe.payment.OrderWorkflowMixin')
+    SHOP_ORDER_WORKFLOWS.append('shop_stripe.workflows.OrderWorkflowMixin')
 
 if 'shop_sendcloud' in INSTALLED_APPS:
-    SHOP_CART_MODIFIERS.append('shop_sendcloud.modifiers.SendcloudShippingModifier')
-    SHOP_ORDER_WORKFLOWS.append('shop_sendcloud.shipping.OrderWorkflowMixin')
+    SHOP_CART_MODIFIERS.append('shop_sendcloud.modifiers.SendcloudShippingModifiers')
+    SHOP_ORDER_WORKFLOWS.extend(['shop_sendcloud.workflows.SingularOrderWorkflowMixin',
+                                 'shop.shipping.workflows.CommissionGoodsWorkflowMixin'])
+
+
+SHOP_CART_MODIFIERS.extend([
+    'shop.modifiers.taxes.CartExcludedTaxModifier',
+    '{{ cookiecutter.app_name }}.modifiers.CustomerPickupModifier',
+    'shop.payment.modifiers.PayInAdvanceModifier',
+    'shop.modifiers.defaults.WeightedCartModifier',
+])
 
 SHOP_STRIPE = {
     'PUBKEY': 'pk_test_HlEp5oZyPonE21svenqowhXp',
     'APIKEY': 'sk_test_xUdHLeFasmOUDvmke4DHGRDP',
-    'PURCHASE_DESCRIPTION': _("Thanks for purchasing at MyShop"),
+    'PURCHASE_DESCRIPTION': _("Thanks for purchasing at {{ cookiecutter.app_name }}"),
 }
+
+SHOP_STRIPE_PREFILL = True
+
+SHOP_SENDCLOUD = {
+    'API_KEY': os.getenv('SENDCLOUD_PUBLIC_KEY'),
+    'API_SECRET': os.getenv('SENDCLOUD_SECRET_KEY'),
+}
+
+SHOP_CASCADE_FORMS = {
+    'CustomerForm': '{{ cookiecutter.app_name }}.forms.CustomerForm',
+}
+
+SHOP_MANUAL_SHIPPING_ID = False

@@ -9,7 +9,7 @@
 {% endblock head %}
 
 {% block header %}
-	{% include {% endraw %}"{{ cookiecutter.app_name }}/pages/navbar.html"{% raw %} with navbar_classes="navbar-default navbar-fixed-top" %}
+	{% include {% endraw %}"{{ cookiecutter.app_name }}/pages/navbar.html"{% raw %} with navbar_classes="navbar-expand-lg navbar-light bg-light fixed-top" %}
 {% endblock header %}
 
 {% block breadcrumb %}{% placeholder "Breadcrumb" or %}
@@ -19,7 +19,7 @@
 {% block main-content %}{% placeholder "Main Content" inherit or %}
 <div class="container">
 	<div class="row shop-starter-template">
-		<div class="col-xs-12">
+		<div class="col">
 			<h1>Default Template</h1>
 			<p class="lead">Use this placeholder as a quick way to start editing a new CMS page.<br/>
 			All you have to do is to append <code>?edit</code> to the URL and switch to “Structure” mode.</p>
@@ -34,3 +34,4 @@
 </div>
 {% endstatic_placeholder %}{% endblock footer %}
 {% endraw %}
+

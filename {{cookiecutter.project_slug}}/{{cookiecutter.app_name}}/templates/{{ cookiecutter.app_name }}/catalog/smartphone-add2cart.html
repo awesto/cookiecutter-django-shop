@@ -1,48 +1,42 @@
 {% raw %}{% extends "shop/catalog/product-add2cart.html" %}
 {% load i18n %}
 
-{% block add-product-to-cart-table %}
-<table shop-add-to-cart="{{ product.get_absolute_url }}/add-smartphone-to-cart" class="table">
-	<thead>
-		<tr>
-			<th>{% trans "Internal Storage" %}</th>
-			<th>{% trans "Quantity" %}</th>
-			<th>{% trans "Unit Price" %}</th>
-			<th>{% trans "Subtotal" %}</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>
-				<select class="form-control" ng-model="context.product_code" ng-change="updateContext()" >
+{% block add-to-cart-url %}{{ product.get_absolute_url }}/add-smartphone-to-cart{% endblock %}
+
+{% block add-product-to-cart-body %}
+<div class="card-body pb-0">
+	<div class="d-flex justify-content-between">
+		<div class="d-flex flex-column">
+			<label for="product_code">{% trans "Internal Storage" %}</label>
+			<select class="form-control" name="product_code" ng-model="context.product_code" ng-change="updateContext()" >
 	{% for smartphone in product.variants.all %}
-					<option value="{{ smartphone.product_code }}">
+				<option value="{{ smartphone.product_code }}">
 		{% if smartphone.storage == 0 %}{% trans "Pluggable" %}{% else %}{{ smartphone.storage }} GB{% endif %}
-					</option>
+				</option>
 	{% endfor %}
-				</select>
-			</td>
-			<td>
-				<select class="form-control" ng-model="context.quantity" ng-change="updateContext()"
-					ng-options="quantity as quantity for quantity in [1,2]">
-				</select>
-			</td>
-			<td ng-bind="context.unit_price"></td>
-			<td ng-bind="context.subtotal"></td>
-		</tr>
-		{% if request.session.is_empty %}
-		<tr>
-			<td colspan="4">{% block cookie-disclaimer %}{{ block.super }}{% endblock %}</td>
-		</tr>
-		{% endif %}
-		<tr>
-			<td colspan="2">
-				<button class="btn btn-info btn-block btn-xs" ng-click="addToCart('{% url 'shop:watch-list' %}', {watch: true})">{% trans "Watch product" %}</button>
-			</td>
-			<td colspan="2">
-				<button class="btn btn-primary btn-block" ng-click="addToCart('{% url 'shop:cart-list' %}')">{% trans "Add to cart" %}</button>
-			</td>
-		</tr>
-	</tbody>
-</table>
-{% endblock add-product-to-cart-table %}{% endraw %}
+			</select>
+		</div>
+		<div class="d-flex flex-column w-25">
+			<span class="label">{% trans "Quantity" %}</span>
+			<div class="form-group">
+				<input class="form-control" type="number" min="1" ng-model="context.quantity" ng-model-options="{{ ADD2CART_NG_MODEL_OPTIONS }}" ng-change="updateContext()" />
+			</div>
+		</div>
+		<div class="d-flex flex-column">
+			<span class="label">{% trans "Unit Price" %}</span>
+			<div class="lead font-weight-bold">
+			{% verbatim %}{{ context.unit_price }}{% endverbatim %}
+			</div>
+		</div>
+		<div class="d-flex flex-column">
+			<span class="label">{% trans "Subtotal" %}</span>
+			<div class="lead font-weight-bold">
+			{% verbatim %}{{ context.subtotal }}<sup>*</sup>{% endverbatim %}
+			</div>
+		</div>
+	</div>
+	<div class="text-muted text-right mb-3">
+		<small><sup>*</sup>&nbsp;incl. VAT, plus shipping costs</small>
+	</div>
+</div>
+{% endblock add-product-to-cart-body %}{% endraw %}
