@@ -17,6 +17,8 @@ from shop.admin.defaults.order import OrderAdmin
 from shop.models.defaults.order import Order
 from shop.admin.order import PrintOrderAdminMixin
 from shop.admin.delivery import DeliveryOrderAdminMixin
+
+
 {%- if cookiecutter.products_model == 'commodity' %}
 from shop.admin.defaults import commodity
 {%- elif cookiecutter.products_model in ['smartcard', 'polymorphic'] %}
