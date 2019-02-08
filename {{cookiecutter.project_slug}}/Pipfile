@@ -30,6 +30,11 @@ djangoshop-stripe = "*"
 django-allauth = "*"
 
 [dev-packages]
+tox = "*"
+pytest = "*"
+pytest-django = "*"
+beautifulsoup4 = "*"
+lxml = "*"
 
 [requires]
 python_version = "3.6"
