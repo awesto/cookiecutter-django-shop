@@ -218,9 +218,9 @@ docker-compose up --build -d
 cd {{ cookiecutter.project_slug }}
 pipenv install --sequential
 npm install
-./manage.py makemigrations {{ cookiecutter.app_name }}
-./manage.py migrate
-./manage.py runserver
+pipenv run manage.py makemigrations {{ cookiecutter.app_name }}
+pipenv run manage.py migrate
+pipenv run manage.py runserver
 """
     print(HINT + next_steps + TERMINATOR)
     print(SUCCESS + "Project initialized, keep up the good work!" + TERMINATOR)
