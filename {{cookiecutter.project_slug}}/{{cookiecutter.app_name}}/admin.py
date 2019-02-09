@@ -6,25 +6,21 @@ from django.db.models import Max
 from django.template.context import Context
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import get_template
-
 {%- if cookiecutter.use_i18n == 'y' %}
 from parler.admin import TranslatableAdmin
 {%- endif %}
 from cms.admin.placeholderadmin import PlaceholderAdminMixin, FrontendEditableAdminMixin
-
 from shop.admin.defaults import customer
 from shop.admin.defaults.order import OrderAdmin
 from shop.models.defaults.order import Order
 from shop.admin.order import PrintOrderAdminMixin
 from shop.admin.delivery import DeliveryOrderAdminMixin
-
-
+from shop_sendcloud.admin import SendCloudOrderAdminMixin
 {%- if cookiecutter.products_model == 'commodity' %}
 from shop.admin.defaults import commodity
 {%- elif cookiecutter.products_model in ['smartcard', 'polymorphic'] %}
 from adminsortable2.admin import SortableAdminMixin, PolymorphicSortableAdminMixin
 from shop.admin.product import CMSPageAsCategoryMixin, ProductImageInline, InvalidateProductCacheMixin, CMSPageFilter
-from shop_sendcloud.admin import SendCloudOrderAdminMixin
     {%- if cookiecutter.products_model == 'polymorphic' %}
 from polymorphic.admin import (PolymorphicParentModelAdmin, PolymorphicChildModelAdmin,
                                PolymorphicChildModelFilter)
@@ -34,6 +30,7 @@ from {{ cookiecutter.app_name }}.models import Manufacturer, SmartCard
 {% endif %}
 
 admin.site.site_header = "{{ cookiecutter.project_name }} Administration"
+
 
 @admin.register(Order)
 class OrderAdmin(SendCloudOrderAdminMixin, OrderAdmin):

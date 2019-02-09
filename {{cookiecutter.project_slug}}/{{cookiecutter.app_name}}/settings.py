@@ -642,9 +642,9 @@ SHOP_ORDER_WORKFLOWS = [
     'shop.payment.workflows.ManualPaymentWorkflowMixin',
     'shop.payment.workflows.CancelOrderWorkflowMixin',
 {%- if cookiecutter.products_model == 'polymorphic' %}
-    'shop.shipping.worflows.PartialDeliveryWorkflowMixin',
+    'shop.shipping.workflows.PartialDeliveryWorkflowMixin',
 {%- else %}
-#    'shop.shipping.workflows.CommissionGoodsWorkflowMixin',
+    'shop.shipping.workflows.CommissionGoodsWorkflowMixin',
 {%- endif %}
 ]
 
@@ -667,7 +667,7 @@ SHOP_CART_MODIFIERS.extend([
 SHOP_STRIPE = {
     'PUBKEY': 'pk_test_HlEp5oZyPonE21svenqowhXp',
     'APIKEY': 'sk_test_xUdHLeFasmOUDvmke4DHGRDP',
-    'PURCHASE_DESCRIPTION': _("Thanks for purchasing at {{ cookiecutter.app_name }}"),
+    'PURCHASE_DESCRIPTION': _("Thanks for purchasing at {{ cookiecutter.project_name }}"),
 }
 
 SHOP_STRIPE_PREFILL = True

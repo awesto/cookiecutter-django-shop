@@ -13,21 +13,14 @@ indent_style = space
 indent_size = 4
 
 [*.py]
-line_length=120
-known_first_party={{ cookiecutter.project_slug }}
+line_length=119
+known_first_party=my-shop
 multi_line_output=3
 default_section=THIRDPARTY
 
-[*.{html,css,scss,json,yml}]
-indent_style = space
-indent_size = 2
+[*.{html,js,rst,scss}]
+indent_style = tab
+indent_size = 4
 
 [*.md]
 trim_trailing_whitespace = false
-
-[Makefile]
-indent_style = tab
-
-[nginx.conf]
-indent_style = space
-indent_size = 2

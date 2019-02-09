@@ -38,6 +38,8 @@ pytest = "*"
 pytest-django = "*"
 beautifulsoup4 = "*"
 lxml = "*"
+factory-boy = "*"
+pytest-factoryboy = "*"
 
 [requires]
 python_version = "3.6"
