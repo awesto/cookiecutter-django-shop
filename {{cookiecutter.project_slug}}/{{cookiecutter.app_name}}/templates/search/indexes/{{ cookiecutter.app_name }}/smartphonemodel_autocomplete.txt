@@ -1,4 +1,5 @@
 {% raw %}{{ object.product_name }}
+{{ object.manufacturer }}
 {% for product_code in object.smartphone_set.all %}
 {{ product_code }}{% endfor %}
 {{ object.caption|striptags }}{% endraw %}

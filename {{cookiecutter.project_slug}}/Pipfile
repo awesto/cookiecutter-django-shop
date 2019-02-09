@@ -20,16 +20,17 @@ django-redis-cache = "*"
 django-redis-sessions = "*"
 uWSGI = "*"
 {% endif -%}
-djangorestframework = "<3.8"
+djangorestframework = "<3.9"
 django_polymorphic = "<2"
 "django-admin-sortable2" = "*"
-"djangocms-bootstrap" = "*"
+"djangocms-bootstrap" = ">=1"
 elasticsearch = "<1.8"
 libsass = "*"
 djangoshop-stripe =  {git = "https://github.com/awesto/djangoshop-stripe", editable = true, ref = "bootstrap-4"}
 djangoshop-sendcloud = {git = "https://github.com/awesto/djangoshop-sendcloud", editable = true, ref = "master"}
 django-shop = {git = "https://github.com/awesto/django-shop", editable = true, ref = "drafts/py.test"}
 django-allauth = "*"
+django = "<2"
 
 [dev-packages]
 tox = "*"

@@ -31,7 +31,7 @@ WORK_DIR = os.environ.get('DJANGO_WORKDIR', os.path.abspath(os.path.join(PROJECT
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
-ADMINS = (("The Merchant", 'the.merchant@example.com'),)
+ADMINS = [("The Merchant", 'the.merchant@example.com')]
 
 # SECURITY WARNING: in production, inject the secret key through the environment
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '!!!SET DJANGO_SECRET_KEY!!!')
@@ -103,8 +103,8 @@ INSTALLED_APPS = [
     'menus',
     'treebeard',
     'compressor',
-    'sekizai',
     'sass_processor',
+    'sekizai',
     'django_filters',
     'filer',
     'easy_thumbnails',
@@ -258,7 +258,7 @@ TEMPLATES = [{
     'APP_DIRS': True,
     'DIRS': [],
     'OPTIONS': {
-        'context_processors': (
+        'context_processors': [
             'django.contrib.auth.context_processors.auth',
             'django.template.context_processors.debug',
             'django.template.context_processors.i18n',
@@ -273,23 +273,23 @@ TEMPLATES = [{
             'shop.context_processors.customer',
             'shop.context_processors.shop_settings',
             'shop_stripe.context_processors.public_keys',
-        )
+        ]
     }
-#}, {
-#    'BACKEND': 'html_email.template.backends.html_email.EmailTemplates',
-#    'APP_DIRS': True,
-#    'DIRS': [],
-#    'OPTIONS': {
-#        'context_processors': [
-#            'django.contrib.auth.context_processors.auth',
-#            'django.template.context_processors.debug',
-#            'django.template.context_processors.i18n',
-#            'django.template.context_processors.media',
-#            'django.template.context_processors.static',
-#            'django.template.context_processors.tz',
-#            'django.template.context_processors.request',
-#        ]
-#    }
+}, {
+    'BACKEND': 'html_email.template.backends.html_email.EmailTemplates',
+    'APP_DIRS': True,
+    'DIRS': [],
+    'OPTIONS': {
+        'context_processors': [
+            'django.contrib.auth.context_processors.auth',
+            'django.template.context_processors.debug',
+            'django.template.context_processors.i18n',
+            'django.template.context_processors.media',
+            'django.template.context_processors.static',
+            'django.template.context_processors.tz',
+            'django.template.context_processors.request',
+        ]
+    }
 }]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -403,8 +403,8 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
-#    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-#    'PAGE_SIZE': 16,
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'PAGE_SIZE': 16,
 }
 
 REST_AUTH_SERIALIZERS = {
@@ -484,9 +484,10 @@ CMS_PLACEHOLDER_CONF = {
         },
     },
     'Static Footer': {
-        'plugins': ['BootstrapContainerPlugin', ],
+        'plugins': ['BootstrapContainerPlugin', 'BootstrapJumbotronPlugin'],
         'parent_classes': {
             'BootstrapContainerPlugin': None,
+            'BootstrapJumbotronPlugin': None,
         },
     },
 }
@@ -516,23 +517,18 @@ CMSPLUGIN_CASCADE = {
             ('shop/catalog/product-heading.html', _("Product Heading")),
             ('{{ cookiecutter.app_name }}/catalog/manufacturer-filter.html', _("Manufacturer Filter")),
         ],
-        'ShopAddToCartPlugin': [
-            (None, _("Default")),
-            ('{{ cookiecutter.app_name }}/catalog/commodity-add2cart.html', _("Add Commodity to Cart")),
-        ],
     },
     'plugins_with_sharables': {
         'BootstrapImagePlugin': ['image_shapes', 'image_width_responsive', 'image_width_fixed',
                                  'image_height', 'resize_options'],
         'BootstrapPicturePlugin': ['image_shapes', 'responsive_heights', 'image_size', 'resize_options'],
     },
-#    'plugins_with_extra_mixins': {
-#        'BootstrapRowPlugin': BootstrapUtilities(BootstrapUtilities.margins),
-#    },
-#     "The translation infrastructure cannot be initialized before the "
-#    django.core.exceptions.AppRegistryNotReady: The translation infrastructure cannot be initialized before the apps registry is ready.
-#    Check that you don't make non-lazy gettext calls at import time.
-#    in variable  choices_format       python3.6/site-packages/cmsplugin_cascade/bootstrap4/mixins.py", line 101, in margins
+    'plugins_with_extra_mixins': {
+        'BootstrapContainerPlugin': BootstrapUtilities(BootstrapUtilities.background_and_color),
+        'BootstrapRowPlugin': BootstrapUtilities(BootstrapUtilities.paddings),
+        'ShopLeftExtension': BootstrapUtilities(BootstrapUtilities.paddings),
+        'ShopRightExtension': BootstrapUtilities(BootstrapUtilities.paddings),
+    },
     'leaflet': {
         'tilesURL': 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
         'accessToken': 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
@@ -631,7 +627,6 @@ HAYSTACK_ROUTERS = [
 
 SHOP_VALUE_ADDED_TAX = Decimal(19)
 SHOP_DEFAULT_CURRENCY = 'EUR'
-SHOP_PRODUCT_SUMMARY_SERIALIZER = '{{ cookiecutter.app_name }}.serializers.ProductSummarySerializer'
 SHOP_CART_MODIFIERS = [
 {%- if cookiecutter.products_model == 'polymorphic' %}
     '{{ cookiecutter.app_name }}.polymorphic_modifiers.MyShopCartModifier',
@@ -661,7 +656,6 @@ if 'shop_sendcloud' in INSTALLED_APPS:
     SHOP_CART_MODIFIERS.append('shop_sendcloud.modifiers.SendcloudShippingModifiers')
     SHOP_ORDER_WORKFLOWS.extend(['shop_sendcloud.workflows.SingularOrderWorkflowMixin',
                                  'shop.shipping.workflows.CommissionGoodsWorkflowMixin'])
-
 
 SHOP_CART_MODIFIERS.extend([
     'shop.modifiers.taxes.CartExcludedTaxModifier',

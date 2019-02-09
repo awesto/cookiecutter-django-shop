@@ -24,6 +24,7 @@ from shop.admin.defaults import commodity
 {%- elif cookiecutter.products_model in ['smartcard', 'polymorphic'] %}
 from adminsortable2.admin import SortableAdminMixin, PolymorphicSortableAdminMixin
 from shop.admin.product import CMSPageAsCategoryMixin, ProductImageInline, InvalidateProductCacheMixin, CMSPageFilter
+from shop_sendcloud.admin import SendCloudOrderAdminMixin
     {%- if cookiecutter.products_model == 'polymorphic' %}
 from polymorphic.admin import (PolymorphicParentModelAdmin, PolymorphicChildModelAdmin,
                                PolymorphicChildModelFilter)
@@ -33,9 +34,12 @@ from {{ cookiecutter.app_name }}.models import Manufacturer, SmartCard
 {% endif %}
 
 admin.site.site_header = "{{ cookiecutter.project_name }} Administration"
-admin.site.register(Order, OrderAdmin)
-{% if cookiecutter.products_model == 'commodity' %}
 
+@admin.register(Order)
+class OrderAdmin(SendCloudOrderAdminMixin, OrderAdmin):
+    pass
+
+{% if cookiecutter.products_model == 'commodity' %}
 __all__ = ['commodity', 'customer']
 {%- else %}
 admin.site.register(Manufacturer, admin.ModelAdmin)

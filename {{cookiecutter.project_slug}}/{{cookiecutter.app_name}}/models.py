@@ -35,7 +35,24 @@ from shop.models.defaults.cart import Cart
 from shop.models.defaults.cart_item import CartItem
 from shop.models.defaults.mapping import ProductPage, ProductImage
 from shop.models.defaults.order import Order
-from shop.models.defaults.order_item import OrderItem
+from shop.models.cart import CartItemModel
+from shop.models.order import BaseOrderItem
+from shop_sendcloud.models.address import BillingAddress, ShippingAddress
+from shop_sendcloud.models.customer import Customer
+
+
+class OrderItem(BaseOrderItem):
+    quantity = models.IntegerField(_("Ordered quantity"))
+    canceled = models.BooleanField(_("Item canceled "), default=False)
+
+    def populate_from_cart_item(self, cart_item, request):
+        super(OrderItem, self).populate_from_cart_item(cart_item, request)
+        # the product's unit_price must be fetched from the product's variant
+        try:
+            variant = cart_item.product.get_product_variant(product_code=cart_item.product_code)
+            self._unit_price = Decimal(variant.unit_price)
+        except (KeyError, ObjectDoesNotExist) as e:
+            raise CartItemModel.DoesNotExist(e)
 
 {% if cookiecutter.products_model == 'commodity' -%}
 __all__ = ['Commodity']

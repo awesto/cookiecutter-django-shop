@@ -22,7 +22,9 @@ class CatalogListApp(CatalogListCMSApp):
                 filter_class=ManufacturerFilterSet,
                 search_serializer_class=CatalogSearchSerializer,
             )),
-            url(r'^(?P<slug>[\w-]+)/?$', ProductRetrieveView.as_view()),
+            url(r'^(?P<slug>[\w-]+)/?$', ProductRetrieveView.as_view(
+                use_modal_dialog=False,
+            )),
             url(r'^(?P<slug>[\w-]+)/add-to-cart', AddToCartView.as_view()),
             url(r'^(?P<slug>[\w-]+)/add-smartphone-to-cart', AddToCartView.as_view(
                 serializer_class=AddSmartPhoneToCartSerializer,
@@ -80,6 +82,7 @@ apphook_pool.register(CatalogSearchApp)
 apphook_pool.register(OrderApp)
 
 apphook_pool.register(PasswordResetApp)
+
 
 def _deregister_menu_pool_modifier(Modifier):
     index = None

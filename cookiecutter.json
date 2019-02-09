@@ -13,6 +13,8 @@
   "use_pycharm": "n",
   "use_docker": "y",
   "use_i18n": "y",
+  "use_stripe": "y",
+  "use_sendcloud": "y",
   "products_model": [
     "commodity",
     "smartcard",

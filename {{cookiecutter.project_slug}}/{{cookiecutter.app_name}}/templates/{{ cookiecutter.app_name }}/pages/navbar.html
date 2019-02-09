@@ -5,41 +5,38 @@
 {% page_url 'shop-watch-list' as shop_watch_list_url %}{% if not shop_watch_list_url %}{% url "shop-watch-list" as shop_watch_list_url %}{% endif %}
 
 {% block navbar %}
-<div class="container-fluid">
-	<h1 class="pb-1 ml-md-0 ml-sm-3 ml-0 mr-3">
-<a href="/">
-	<img src="{% static 'shop/django-shop-logo.svg' %}" class="mt-3" alt="django-SHOP" height="45" aria-hidden="true">
+<div class="container">
+	<h1>
+		<a href="/">
+			<img src="{% static 'shop/django-shop-logo.svg' %}" class="mt-1" alt="django-SHOP" height="45" aria-hidden="true">
 		</a>
 	</h1>
 	{% block navbar-toggler %}{{ block.super }}{% endblock %}
 
 	<div class="collapse navbar-collapse ml-lg-2 ml-0" uib-collapse="isNavCollapsed">
-		<ul class="navbar-nav flex-wrap mb-md-0 mt-md-0 mb-3 mt-2">
-			<li class="nav-item">
-				<a class="nav-link py-0 pr-3" href="tel:+12345678900"><i class="fa fa-phone"></i></a>
+		<ul class="navbar-nav flex-wrap">
+			<li class="nav-item mr-auto shop-social-icons">
+				<a class="nav-link" href="tel:+12345678900"><i class="fa fa-phone"></i></a>
+				<a class="nav-link" href="mailto:info@example.com"><i class="fa fa-envelope-o"></i></a>
+				<a class="nav-link" href="https://www.awesto.com/"><i class="fa fa-link"></i></a>
+				<a class="nav-link" href="https://www.linkedin.com/in/jacob-rief-27884016a/"><i class="fa fa-linkedin"></i></a>
+				<a class="nav-link" href="https://twitter.com/djangoshop"><i class="fa fa-twitter"></i></a>
+				<a class="nav-link" href="https://github.com/awesto/django-shop/"><i class="fa fa-github"></i></a>
+				<a class="nav-link" href="https://django-shop.readthedocs.io/"><i class="fa fa-book"></i></a>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link py-0 pr-3" href="mailto:info@example.com"><i class="fa fa-envelope-o"></i></a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link py-0 pr-3" href="https://www.awesto.com/"><i class="fa fa-support"></i></a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link py-0 pr-3" href="https://twitter.com/djangoshop"><i class="fa fa-twitter"></i></a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link py-0 pr-3" href="https://github.com/awesto/django-shop/"><i class="fa fa-github"></i></a>
-			</li>
-			<li class="nav-item mr-auto">
-				<a class="nav-link py-0 pr-3" href="https://django-shop.readthedocs.io/"><i class="fa fa-book"></i></a>
-</li>
-			{% include "shop/navbar/login-logout.html" %}
-			{% language_chooser "shop/navbar/language-chooser.html" %}
-			{% include "shop/navbar/watch-icon.html" %}
-			{% cart_icon unsorted %}
-			<li class="w-100 mb-lg-1"></li>
-			{% with item_class="nav-item lead" %}{% block navbar-nav %}{{ block.super }}{% endblock %}{% endwith %}
-			<li class="nav-item ml-lg-auto my-auto">{% include "shop/navbar/search-form.html" with search_form_classes="form-inline" %}</li>
+			{% include "shop/navbar/login-logout.html" with item_class="shop-secondary-menu" %}
+			{% with item_class="shop-secondary-menu" %}{% language_chooser "shop/navbar/language-chooser.html" %}{% endwith %}
+			{% include "shop/navbar/watch-icon.html" with item_class="shop-secondary-menu" %}
+			{% with item_class="shop-secondary-menu" %}
+				{% if current_page.reverse_id == 'shop-cart' or current_page.reverse_id == 'shop-watch-list' %}
+					{% cart_icon without %}
+				{% else %}
+					{% cart_icon unsorted %}
+				{% endif %}
+			{% endwith %}
+			<li class="w-100"></li>
+			{% with item_class="nav-item shop-primary-menu" %}{% block navbar-nav %}{{ block.super }}{% endblock %}{% endwith %}
+			<li class="nav-item shop-search-form">{% include "shop/navbar/search-form.html" with search_form_classes="form-inline" %}</li>
 		</ul>
 	</div>
 </div>
@@ -51,4 +48,5 @@
 	{% add_data "ng-requires" "django.shop.navbar" %}
 
 {% endblock navbar %}
+
 {% endspaceless %}{% endraw %}
