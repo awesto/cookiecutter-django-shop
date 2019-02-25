@@ -146,12 +146,6 @@ MIDDLEWARE = [
     # 'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
-{%- if cookiecutter.use_i18n == 'y' %}
-    {%- set shop_tutorial = 'i18n_' + cookiecutter.products_model %}
-{%- else %}
-    {%- set shop_tutorial = cookiecutter.products_model %}
-{%- endif %}
-
 ROOT_URLCONF = '{{ cookiecutter.app_name }}.urls'
 
 WSGI_APPLICATION = 'wsgi.application'
@@ -159,7 +153,7 @@ WSGI_APPLICATION = 'wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(WORK_DIR, '{{ shop_tutorial }}', 'db.sqlite3'),
+        'NAME': os.path.join(WORK_DIR, 'db.sqlite3'),
     }
 }
 {%- if cookiecutter.use_docker == 'y' %}
@@ -232,7 +226,7 @@ USE_X_FORWARDED_HOST = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.path.join(WORK_DIR, '{{ shop_tutorial }}', 'media')
+MEDIA_ROOT = os.path.join(WORK_DIR, 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -309,7 +303,7 @@ if REDIS_HOST:
         'host': REDIS_HOST,
         'port': 6379,
         'db': 0,
-        'prefix': 'session-{{ shop_tutorial }}',
+        'prefix': 'session-',
         'socket_timeout': 1
     }
 
@@ -365,7 +359,7 @@ LOGGING = {
 
 SILENCED_SYSTEM_CHECKS = ['auth.W004']
 
-FIXTURE_DIRS = [os.path.join(WORK_DIR, '{{ shop_tutorial }}', 'fixtures')]
+FIXTURE_DIRS = [os.path.join(WORK_DIR, 'fixtures')]
 
 ############################################
 # settings for sending mail
@@ -618,13 +612,13 @@ HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://{}:9200/'.format(ELASTICSEARCH_HOST),
-        'INDEX_NAME': '{{ cookiecutter.app_name }}-{{ shop_tutorial }}-en',
+        'INDEX_NAME': '{{ cookiecutter.app_name }}-en',
     },
 {%- if cookiecutter.use_i18n == 'y' %}
     'de': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://{}:9200/'.format(ELASTICSEARCH_HOST),
-        'INDEX_NAME': '{{ cookiecutter.app_name }}-{{ shop_tutorial }}-de',
+        'INDEX_NAME': '{{ cookiecutter.app_name }}-de',
     }
 {% endif -%}
 }
