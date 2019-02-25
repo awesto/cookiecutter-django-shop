@@ -381,7 +381,8 @@ class SmartCardTranslation(TranslatedFieldsModel):
     {%- endif %}
 {% endif %}
 
-{%- if cookiecutter.products_model == 'polymorphic' -%}
+{%- if cookiecutter.products_model == 'polymorphic' %}
+
 
 @python_2_unicode_compatible
 class OperatingSystem(models.Model):
