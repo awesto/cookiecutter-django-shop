@@ -8,12 +8,17 @@ django = "<2"
 djangocms-cascade = "*"
 django-compressor = "*"
 django-allauth = "*"
+django-angular = "*"
+django-filer = "*"
+django-ipware = "*"
 django-sass-processor = "*"
+django-select2 = "*"
 django-filter = "*"
 django-haystack = "*"
 drf-haystack = "*"
 {% if cookiecutter.use_i18n == 'y' -%}
 django-parler = "*"
+"e007892" = {file = "https://github.com/jrief/django-parler-rest/archive/deserialize-TranslatedField.zip"}
 {% endif -%}
 {% if cookiecutter.use_docker == 'y' -%}
 psycopg2-binary = "*"
@@ -22,9 +27,14 @@ django-redis-sessions = "*"
 uWSGI = "*"
 {% endif -%}
 djangorestframework = "<3.9"
+django-rest-auth = "*"
 django_polymorphic = "<2"
-"django-admin-sortable2" = "*"
-"djangocms-bootstrap" = ">=1"
+django-admin-sortable2 = "*"
+django-fsm = "*"
+django-fsm-admin = "*"
+django-phonenumber-field = "*"
+phonenumbers = "*"
+djangocms-bootstrap = ">=1"
 elasticsearch = "<1.8"
 libsass = "*"
 # django-shop = "{{ cookiecutter.version }}"
@@ -32,6 +42,7 @@ libsass = "*"
 {% if cookiecutter.use_stripe == 'y' -%}
 # djangoshop-stripe = "{{ cookiecutter.version }}"
 "847cb9d" = {file = "https://github.com/awesto/djangoshop-stripe/archive/releases/1.0.x.zip"}
+stripe = "<1.54"
 {% endif -%}
 {% if cookiecutter.use_paypal == 'y' -%}
 djangoshop-paypal = "{{ cookiecutter.version }}"
