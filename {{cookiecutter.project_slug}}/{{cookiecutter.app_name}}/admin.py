@@ -33,7 +33,7 @@ admin.site.site_header = "{{ cookiecutter.project_name }} Administration"
 
 
 @admin.register(Order)
-class OrderAdmin(SendCloudOrderAdminMixin, OrderAdmin):
+class OrderAdmin(SendCloudOrderAdminMixin, DeliveryOrderAdminMixin, OrderAdmin):
     pass
 
 {% if cookiecutter.products_model == 'commodity' %}

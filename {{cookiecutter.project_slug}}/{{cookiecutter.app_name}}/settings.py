@@ -654,8 +654,8 @@ if 'shop_stripe' in INSTALLED_APPS:
 
 if 'shop_sendcloud' in INSTALLED_APPS:
     SHOP_CART_MODIFIERS.append('shop_sendcloud.modifiers.SendcloudShippingModifiers')
-    SHOP_ORDER_WORKFLOWS.extend(['shop_sendcloud.workflows.SingularOrderWorkflowMixin',
-                                 'shop.shipping.workflows.CommissionGoodsWorkflowMixin'])
+    SHOP_ORDER_WORKFLOWS.append('shop_sendcloud.workflows.SingularOrderWorkflowMixin')
+    # SHOP_ORDER_WORKFLOWS.append('shop.shipping.workflows.CommissionGoodsWorkflowMixin')
 
 SHOP_CART_MODIFIERS.extend([
     'shop.modifiers.taxes.CartExcludedTaxModifier',
