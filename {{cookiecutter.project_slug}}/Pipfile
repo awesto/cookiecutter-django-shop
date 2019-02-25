@@ -31,6 +31,7 @@ djangoshop-sendcloud = {git = "https://github.com/awesto/djangoshop-sendcloud", 
 django-shop = {git = "https://github.com/awesto/django-shop", editable = true, ref = "drafts/py.test"}
 django-allauth = "*"
 django = "<2"
+"8a232e5" = {file = "https://github.com/jrief/django-post_office/archive/attachments-allowing-MIMEBase.zip"}
 
 [dev-packages]
 tox = "*"
