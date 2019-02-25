@@ -6,16 +6,11 @@
 
 {% block navbar %}
 <div class="container">
-	<h1>
-		<a href="/">
-			<img src="{% static 'shop/django-shop-logo.svg' %}" class="mt-1" alt="django-SHOP" height="45" aria-hidden="true">
-		</a>
-	</h1>
 	{% block navbar-toggler %}{{ block.super }}{% endblock %}
 
 	<div class="collapse navbar-collapse ml-lg-2 ml-0" uib-collapse="isNavCollapsed">
 		<ul class="navbar-nav flex-wrap">
-			<li class="nav-item mr-auto shop-social-icons">
+			<li class="nav-item shop-social-icons">
 				<a class="nav-link" href="tel:+12345678900"><i class="fa fa-phone"></i></a>
 				<a class="nav-link" href="mailto:info@example.com"><i class="fa fa-envelope-o"></i></a>
 				<a class="nav-link" href="https://www.awesto.com/"><i class="fa fa-link"></i></a>
@@ -23,6 +18,11 @@
 				<a class="nav-link" href="https://twitter.com/djangoshop"><i class="fa fa-twitter"></i></a>
 				<a class="nav-link" href="https://github.com/awesto/django-shop/"><i class="fa fa-github"></i></a>
 				<a class="nav-link" href="https://django-shop.readthedocs.io/"><i class="fa fa-book"></i></a>
+			</li>
+			<li class="nav-item mx-auto">
+				<a class="nav-link" href="/">
+					<img src="{% static 'shop/django-shop-logo.svg' %}" class="mt-1" alt="django-SHOP" height="25" aria-hidden="true">
+				</a>
 			</li>
 			{% include "shop/navbar/login-logout.html" with item_class="shop-secondary-menu" %}
 			{% with item_class="shop-secondary-menu" %}{% language_chooser "shop/navbar/language-chooser.html" %}{% endwith %}
@@ -44,7 +44,7 @@
 	{% addtoblock "js" %}<script src="{% static 'node_modules/ui-bootstrap4/dist/ui-bootstrap-tpls.js' %}"></script>{% endaddtoblock %}
 	{% add_data "ng-requires" "ui.bootstrap" %}
 
-	{% addtoblock "js" %}<script src="{% static {% endraw %}'{{ cookiecutter.app_name }}/js/navbar.js'{% raw %} %}" type="text/javascript"></script>{% endaddtoblock %}
+	{% addtoblock "js" %}<script src="{% static 'myshop/js/navbar.js' %}" type="text/javascript"></script>{% endaddtoblock %}
 	{% add_data "ng-requires" "django.shop.navbar" %}
 
 {% endblock navbar %}

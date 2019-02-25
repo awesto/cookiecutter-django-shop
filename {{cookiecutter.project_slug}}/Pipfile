@@ -4,9 +4,10 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-Django = "<2"
+django = "<2"
 djangocms-cascade = "*"
 django-compressor = "*"
+django-allauth = "*"
 django-sass-processor = "*"
 django-filter = "*"
 django-haystack = "*"
@@ -26,11 +27,16 @@ django_polymorphic = "<2"
 "djangocms-bootstrap" = ">=1"
 elasticsearch = "<1.8"
 libsass = "*"
-djangoshop-stripe =  {git = "https://github.com/awesto/djangoshop-stripe", editable = true, ref = "bootstrap-4"}
-djangoshop-sendcloud = {git = "https://github.com/awesto/djangoshop-sendcloud", editable = true, ref = "master"}
-django-shop = {git = "https://github.com/awesto/django-shop", editable = true, ref = "drafts/py.test"}
-django-allauth = "*"
-django = "<2"
+django-shop = "{{ cookiecutter.version }}"
+{% if cookiecutter.use_stripe == 'y' -%}
+djangoshop-stripe = "{{ cookiecutter.version }}"
+{% endif -%}
+{% if cookiecutter.use_paypal == 'y' -%}
+djangoshop-paypal = "{{ cookiecutter.version }}"
+{% endif -%}
+{% if cookiecutter.use_sendcloud == 'y' -%}
+djangoshop-sendcloud = "{{ cookiecutter.version }}"
+{% endif -%}
 "8a232e5" = {file = "https://github.com/jrief/django-post_office/archive/attachments-allowing-MIMEBase.zip"}
 
 [dev-packages]

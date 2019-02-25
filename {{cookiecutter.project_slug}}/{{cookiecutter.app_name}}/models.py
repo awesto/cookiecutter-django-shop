@@ -7,7 +7,7 @@ from shop.models.defaults.commodity import Commodity
 from decimal import Decimal
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, pgettext_lazy
 from django.utils.encoding import python_2_unicode_compatible
 from djangocms_text_ckeditor.fields import HTMLField
     {%- if cookiecutter.use_i18n == 'y' %}
@@ -39,12 +39,17 @@ __all__ = ['Commodity', 'Order']
 
 {%- else %}
 
-__all__ = ['Order', 'Cart', 'Delivery', 'DeliveryItem', 'BillingAddress', 'ShippingAddress', 'Customer']
+__all__ = ['Order', 'Cart', 'Delivery', 'DeliveryItem', 'BillingAddress', 'ShippingAddress', 'Customer',
+           'ProductPage', 'ProductImage']
 
 
 class OrderItem(BaseOrderItem):
     quantity = models.IntegerField(_("Ordered quantity"))
     canceled = models.BooleanField(_("Item canceled "), default=False)
+
+    class Meta:
+        verbose_name = pgettext_lazy('order_models', "Ordered Item")
+        verbose_name_plural = pgettext_lazy('order_models', "Ordered Items")
 
     def populate_from_cart_item(self, cart_item, request):
         super(OrderItem, self).populate_from_cart_item(cart_item, request)
@@ -61,6 +66,7 @@ class Manufacturer(models.Model):
     name = models.CharField(
         _("Name"),
         max_length=50,
+        unique=True,
     )
 
     def __str__(self):
@@ -375,14 +381,14 @@ class SmartCardTranslation(TranslatedFieldsModel):
     {%- endif %}
 {% endif %}
 
-{%- if cookiecutter.products_model == 'polymorphic' %}
-
+{%- if cookiecutter.products_model == 'polymorphic' -%}
 
 @python_2_unicode_compatible
 class OperatingSystem(models.Model):
     name = models.CharField(
         _("Name"),
         max_length=50,
+        unique=True,
     )
 
     def __str__(self):

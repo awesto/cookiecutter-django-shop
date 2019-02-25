@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
+from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from shop.modifiers.pool import cart_modifiers_pool
 from shop.serializers.cart import ExtraCartRow
 from shop.money import Money
 from shop.shipping.modifiers import ShippingModifier
+{%- if cookiecutter.use_stripe %}
 from shop_stripe import modifiers
+{%- endif %}
 
 
 class PostalShippingModifier(ShippingModifier):
@@ -23,13 +27,14 @@ class PostalShippingModifier(ShippingModifier):
         cart.extra_rows[self.identifier] = ExtraCartRow(instance)
         cart.total += amount
 
+    def ship_the_goods(self, delivery):
+        if not delivery.shipping_id:
+            raise ValidationError("Please provide a valid Shipping ID")
+        super(PostalShippingModifier, self).ship_the_goods(delivery)
 
-class CustomerPickupModifier(ShippingModifier):
-    identifier = 'customer-pickup'
-
-    def get_choice(self):
-        return (self.identifier, _("Customer pickups the goods"))
+{%- if cookiecutter.use_stripe %}
 
 
 class StripePaymentModifier(modifiers.StripePaymentModifier):
     commision_percentage = 3
+{%- endif %}

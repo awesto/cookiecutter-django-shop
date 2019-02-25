@@ -109,11 +109,20 @@ INSTALLED_APPS = [
     'filer',
     'easy_thumbnails',
     'easy_thumbnails.optimize',
-    {% if cookiecutter.use_i18n == 'y' %}'parler',{% endif %}
+{%- if cookiecutter.use_i18n == 'y' %}
+    'parler',
+{%- endif %}
     'post_office',
     'haystack',
+{%- if cookiecutter.use_paypal == 'y' %}
+    'shop_paypal',
+{%- endif %}
+{%- if cookiecutter.use_stripe == 'y' %}
     'shop_stripe',
+{%- endif %}
+{%- if cookiecutter.use_sendcloud == 'y' %}
     'shop_sendcloud',
+{%- endif %}
     'shop',
 #    'html_email',
     '{{ cookiecutter.app_name }}',
@@ -517,6 +526,11 @@ CMSPLUGIN_CASCADE = {
             ('shop/catalog/product-heading.html', _("Product Heading")),
             ('{{ cookiecutter.app_name }}/catalog/manufacturer-filter.html', _("Manufacturer Filter")),
         ],
+        # required to purchase real estate
+        'ShopAddToCartPlugin': [
+            (None, _("Default")),
+            ('myshop/catalog/commodity-add2cart.html', _("Add Commodity to Cart")),
+        ],
     },
     'plugins_with_sharables': {
         'BootstrapImagePlugin': ['image_shapes', 'image_width_responsive', 'image_width_fixed',
@@ -528,6 +542,7 @@ CMSPLUGIN_CASCADE = {
         'BootstrapRowPlugin': BootstrapUtilities(BootstrapUtilities.paddings),
         'ShopLeftExtension': BootstrapUtilities(BootstrapUtilities.paddings),
         'ShopRightExtension': BootstrapUtilities(BootstrapUtilities.paddings),
+        'ShopAddToCartPlugin': BootstrapUtilities(BootstrapUtilities.margins),
     },
     'leaflet': {
         'tilesURL': 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
@@ -627,43 +642,44 @@ HAYSTACK_ROUTERS = [
 
 SHOP_VALUE_ADDED_TAX = Decimal(19)
 SHOP_DEFAULT_CURRENCY = 'EUR'
+SHOP_EDITCART_NG_MODEL_OPTIONS = "{updateOn: 'default blur', debounce: {'default': 2500, 'blur': 0}}"
+
 SHOP_CART_MODIFIERS = [
 {%- if cookiecutter.products_model == 'polymorphic' %}
     '{{ cookiecutter.app_name }}.polymorphic_modifiers.MyShopCartModifier',
 {%- else %}
     'shop.modifiers.defaults.DefaultCartModifier',
 {%- endif %}
+    'shop.modifiers.taxes.CartExcludedTaxModifier',
     '{{ cookiecutter.app_name }}.modifiers.PostalShippingModifier',
+{%- if cookiecutter.use_stripe %}
+    '{{ cookiecutter.app_name }}.modifiers.StripePaymentModifier',
+{%- endif %}
+    'shop.payment.modifiers.PayInAdvanceModifier',
+{%- if cookiecutter.use_sendcloud %}
+    'shop_sendcloud.modifiers.SendcloudShippingModifiers',
+    'shop.modifiers.defaults.WeightedCartModifier',
+{%- endif %}
+    'shop.shipping.modifiers.SelfCollectionModifier',
 ]
-
-SHOP_EDITCART_NG_MODEL_OPTIONS = "{updateOn: 'default blur', debounce: {'default': 2500, 'blur': 0}}"
 
 SHOP_ORDER_WORKFLOWS = [
     'shop.payment.workflows.ManualPaymentWorkflowMixin',
     'shop.payment.workflows.CancelOrderWorkflowMixin',
-{%- if cookiecutter.products_model == 'polymorphic' %}
+{%- if cookiecutter.delivery_handling == 'partial' %}
     'shop.shipping.workflows.PartialDeliveryWorkflowMixin',
-{%- else %}
+{%- endif %}
+{%- if cookiecutter.delivery_handling == 'common' %}
     'shop.shipping.workflows.CommissionGoodsWorkflowMixin',
+{%- else %}
+    'shop.shipping.workflows.SimpleShippingWorkflowMixin',
+{%- endif %}
+{%- if cookiecutter.use_stripe %}
+    'shop_stripe.workflows.OrderWorkflowMixin',
 {%- endif %}
 ]
 
-if 'shop_stripe' in INSTALLED_APPS:
-    SHOP_CART_MODIFIERS.append('{{ cookiecutter.app_name }}.modifiers.StripePaymentModifier')
-    SHOP_ORDER_WORKFLOWS.append('shop_stripe.workflows.OrderWorkflowMixin')
-
-if 'shop_sendcloud' in INSTALLED_APPS:
-    SHOP_CART_MODIFIERS.append('shop_sendcloud.modifiers.SendcloudShippingModifiers')
-    SHOP_ORDER_WORKFLOWS.append('shop_sendcloud.workflows.SingularOrderWorkflowMixin')
-    # SHOP_ORDER_WORKFLOWS.append('shop.shipping.workflows.CommissionGoodsWorkflowMixin')
-
-SHOP_CART_MODIFIERS.extend([
-    'shop.modifiers.taxes.CartExcludedTaxModifier',
-    '{{ cookiecutter.app_name }}.modifiers.CustomerPickupModifier',
-    'shop.payment.modifiers.PayInAdvanceModifier',
-    'shop.modifiers.defaults.WeightedCartModifier',
-])
-
+{%- if cookiecutter.use_stripe %}
 SHOP_STRIPE = {
     'PUBKEY': 'pk_test_HlEp5oZyPonE21svenqowhXp',
     'APIKEY': 'sk_test_xUdHLeFasmOUDvmke4DHGRDP',
@@ -671,14 +687,15 @@ SHOP_STRIPE = {
 }
 
 SHOP_STRIPE_PREFILL = True
+{%- endif %}
 
+{%- if cookiecutter.use_sendcloud %}
 SHOP_SENDCLOUD = {
     'API_KEY': os.getenv('SENDCLOUD_PUBLIC_KEY'),
     'API_SECRET': os.getenv('SENDCLOUD_SECRET_KEY'),
 }
+{%- endif %}
 
 SHOP_CASCADE_FORMS = {
     'CustomerForm': '{{ cookiecutter.app_name }}.forms.CustomerForm',
 }
-
-SHOP_MANUAL_SHIPPING_ID = False

@@ -2,11 +2,9 @@
 @import "shop/css/navbar";
 
 body {
-	padding-top: 90px;
+	padding-top: $body-header-height;
 	.navbar {
-		h1 {
-			line-height: 66.6px;
-		}
+		height: $body-header-height;
 		.shop-social-icons {
 			.nav-link {
 				display: inline-block;

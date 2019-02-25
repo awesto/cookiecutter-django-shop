@@ -22,15 +22,18 @@ class ProductSummarySerializer(ProductSerializer):
 
 
 {%- if cookiecutter.products_model == 'commodity' %}
+
 class ProductDetailSerializer(ProductSerializer):
     class Meta(ProductSerializer.Meta):
         fields = ['product_name', 'slug', 'unit_price', 'product_code']
 {%- elif cookiecutter.products_model == 'smartcard' %}
+
 class ProductDetailSerializer(ProductSerializer):
     class Meta(ProductSerializer.Meta):
         fields = ['product_name', 'slug', 'unit_price', 'manufacturer', 'card_type', 'speed',
                   'product_code', 'storage']
 {%- endif %}
+
 
 class ProductSearchSerializer(BaseProductSearchSerializer):
     """
@@ -106,4 +109,4 @@ class AddSmartPhoneToCartSerializer(AddToCartSerializer):
             'extra': extra,
         }
         return instance
-{% endif %}
+{%- endif %}
