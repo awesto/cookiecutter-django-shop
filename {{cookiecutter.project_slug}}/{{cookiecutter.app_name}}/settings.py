@@ -124,7 +124,7 @@ INSTALLED_APPS = [
     'shop_sendcloud',
 {%- endif %}
     'shop',
-#    'html_email',
+    'html_email',
     '{{ cookiecutter.app_name }}',
 ]
 
@@ -151,10 +151,6 @@ MIDDLEWARE = [
 {%- else %}
     {%- set shop_tutorial = cookiecutter.products_model %}
 {%- endif %}
-
-# MIGRATION_MODULES = {
-#     '{{ cookiecutter.app_name }}': '{{ cookiecutter.app_name }}.migrations.{}'.format('{{ shop_tutorial }}')
-# }
 
 ROOT_URLCONF = '{{ cookiecutter.app_name }}.urls'
 
@@ -680,6 +676,7 @@ SHOP_ORDER_WORKFLOWS = [
 ]
 
 {%- if cookiecutter.use_stripe %}
+
 SHOP_STRIPE = {
     'PUBKEY': 'pk_test_HlEp5oZyPonE21svenqowhXp',
     'APIKEY': 'sk_test_xUdHLeFasmOUDvmke4DHGRDP',
@@ -690,6 +687,7 @@ SHOP_STRIPE_PREFILL = True
 {%- endif %}
 
 {%- if cookiecutter.use_sendcloud %}
+
 SHOP_SENDCLOUD = {
     'API_KEY': os.getenv('SENDCLOUD_PUBLIC_KEY'),
     'API_SECRET': os.getenv('SENDCLOUD_SECRET_KEY'),
