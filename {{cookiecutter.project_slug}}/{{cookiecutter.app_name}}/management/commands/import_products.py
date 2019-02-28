@@ -19,7 +19,7 @@ class Command(BaseCommand):
         parser.add_argument(
             'filename',
             nargs='?',
-            default='products.json',
+            default='products-meta.json',
         )
 
     def handle(self, verbosity, filename, *args, **options):

@@ -1,6 +1,6 @@
 {
   "name": "{{ cookiecutter.project_slug }}",
-  "version": "0.1.0",
+  "version": "{{ cookiecutter.version }}",
   "dependencies": {
     "angular": "^1.7.7",
     "angular-animate": "^1.7.7",
@@ -14,7 +14,7 @@
     "font-awesome": "^4.7.0",
     "leaflet": "^1.1.0",
     "leaflet-easybutton": "^2.2.0",
-    "postcss": "^6.0.17",
+    "postcss": "^6.0.23",
     "postcss-cli": "^5.0.0",
     "select2": "~4.0.3",
     "ui-bootstrap4": "^3.0.5"

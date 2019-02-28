@@ -227,6 +227,7 @@ pipenv run ./manage.py shop check-pages --add-recommended
 pipenv run ./manage.py assign_iconfonts
 pipenv run ./manage.py download_workdir
 pipenv run ./manage.py loaddata products-media
+pipenv run ./manage.py import_products
 """
     print(HINT + next_steps + TERMINATOR)
     print(SUCCESS + "Project initialized, keep up the good work!" + TERMINATOR)

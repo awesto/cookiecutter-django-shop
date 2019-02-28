@@ -51,6 +51,7 @@ class Command(BaseCommand):
             self.stderr.write("No IconFont named 'fontawesome' found to assign to CMS page.")
         else:
             for page in Page.objects.drafts():
+                self.stdout.write("Assign IconFont 'fontawesome' to CMS page".format(page.get_title()))
                 CascadePage.objects.update_or_create(
                     extended_object=page,
                     defaults={'icon_font': fontawesome},
