@@ -107,4 +107,3 @@ class Command(BaseCommand):
             zip_ref.close()
 
         call_command('loaddata', fixture)
-        call_command('fix_filer_bug_965')

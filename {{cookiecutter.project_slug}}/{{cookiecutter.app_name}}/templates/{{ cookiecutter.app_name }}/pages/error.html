@@ -3,12 +3,13 @@
 
 {% block breadcrumb %}{% endblock %}
 
+{% page_url 'shop-login' as login_url %}
+
 {% block main-content %}
 <div class="container mt-5">
 	<div class="row">
-		<div class="col-12 col-sm-10 col-md-8 offset-sm-1 offset-md-2">
+		<div class="col col-sm-10 col-md-8 offset-sm-1 offset-md-2">
 			<h3>{{ detail|default:"Forbidden" }}</h3>
-	{% page_url 'shop-login' as login_url %}
 	{% if status_code == 403 and login_url %}
 		<p>{% blocktrans %}In case you have ordered anything on this site before, please <a href="{{ login_url }}">sign in</a> and try again.{% endblocktrans %}</p>
 	{% endif %}

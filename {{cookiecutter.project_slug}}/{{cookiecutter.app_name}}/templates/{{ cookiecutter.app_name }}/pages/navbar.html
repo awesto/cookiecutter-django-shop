@@ -6,10 +6,18 @@
 
 {% block navbar %}
 <div class="container">
+	{% block navbar-brand %}
+	<div class="shop-brand-icon">
+		<a href="/">
+			<img src="{% static 'shop/django-shop-logo.svg' %}" alt="django-SHOP" aria-hidden="true">
+		</a>
+	</div>
+	{% endblock %}
+
 	{% block navbar-toggler %}{{ block.super }}{% endblock %}
 
-	<div class="collapse navbar-collapse ml-lg-2 ml-0" uib-collapse="isNavCollapsed">
-		<ul class="navbar-nav flex-wrap">
+	<div class="collapse navbar-collapse" uib-collapse="isNavCollapsed">
+		<ul class="navbar-nav flex-wrap align-content-between w-100">
 			<li class="nav-item shop-social-icons">
 				<a class="nav-link" href="tel:+12345678900"><i class="fa fa-phone"></i></a>
 				<a class="nav-link" href="mailto:info@example.com"><i class="fa fa-envelope-o"></i></a>
@@ -19,11 +27,7 @@
 				<a class="nav-link" href="https://github.com/awesto/django-shop/"><i class="fa fa-github"></i></a>
 				<a class="nav-link" href="https://django-shop.readthedocs.io/"><i class="fa fa-book"></i></a>
 			</li>
-			<li class="nav-item mx-auto">
-				<a class="nav-link" href="/">
-					<img src="{% static 'shop/django-shop-logo.svg' %}" class="mt-1" alt="django-SHOP" height="25" aria-hidden="true">
-				</a>
-			</li>
+			<li class="mx-auto"></li>
 			{% include "shop/navbar/login-logout.html" with item_class="shop-secondary-menu" %}
 			{% with item_class="shop-secondary-menu" %}{% language_chooser "shop/navbar/language-chooser.html" %}{% endwith %}
 			{% include "shop/navbar/watch-icon.html" with item_class="shop-secondary-menu" %}
@@ -44,7 +48,7 @@
 	{% addtoblock "js" %}<script src="{% static 'node_modules/ui-bootstrap4/dist/ui-bootstrap-tpls.js' %}"></script>{% endaddtoblock %}
 	{% add_data "ng-requires" "ui.bootstrap" %}
 
-	{% addtoblock "js" %}<script src="{% static 'myshop/js/navbar.js' %}" type="text/javascript"></script>{% endaddtoblock %}
+	{% addtoblock "js" %}<script src="{% static 'shop/js/navbar.js' %}" type="text/javascript"></script>{% endaddtoblock %}
 	{% add_data "ng-requires" "django.shop.navbar" %}
 
 {% endblock navbar %}

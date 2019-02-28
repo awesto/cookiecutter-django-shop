@@ -379,7 +379,7 @@ class SmartCardTranslation(TranslatedFieldsModel):
 
         {%- endif -%}
     {%- endif %}
-{% endif %}
+{%- endif %}
 
 {%- if cookiecutter.products_model == 'polymorphic' %}
 

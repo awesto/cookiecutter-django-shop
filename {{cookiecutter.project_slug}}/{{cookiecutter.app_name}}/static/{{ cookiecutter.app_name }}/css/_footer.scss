@@ -7,11 +7,13 @@ html {
 	}
 }
 body {
+	main {
+		padding-bottom: $body-footer-margin;
+	}
 	@include media-breakpoint-up(lg) {
 		margin-bottom: $body-footer-height;
 	}
 	.footer {
-		margin-top: 1rem;
 		width: 100%;
 		color: $body-footer-color;
 		background: $body-footer-bg;

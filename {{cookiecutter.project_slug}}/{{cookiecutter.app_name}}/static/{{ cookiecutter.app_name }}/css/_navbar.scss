@@ -3,8 +3,53 @@
 
 body {
 	padding-top: $body-header-height;
+	@include media-breakpoint-up(lg) {
+		padding-top: $body-header-lg-height;
+	}
 	.navbar {
-		height: $body-header-height;
+		$navbar: &;
+		@include media-breakpoint-up(lg) {
+			height: $body-header-lg-height;
+			transition: height 500ms ease, box-shadow 250ms ease;
+			padding-top: 0;
+			padding-bottom: 0;
+			.navbar-nav, .navbar-collapse, >.container {
+				height: 100% !important;
+			}
+			&.scrolled {
+				height: 75px;
+				box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.075);
+				.shop-brand-icon {
+					height: 32px;
+				}
+			}
+			.nav-link {
+				padding-top: 0.25rem;
+				padding-bottom: 0.25rem;
+			}
+		}
+		.shop-brand-icon {
+			height: 48px;
+			transition: height 500ms ease;
+			position: absolute;
+			padding-top: 0.5rem;
+			top: 0;
+			left: 0;
+			right: 0;
+			display: flex;
+			justify-content: center;
+			pointer-events: none;
+			a {
+				width: min-content;
+			}
+			img {
+				height: 100%;
+				width: auto;
+				margin: auto;
+				display: block;
+				pointer-events: auto;
+			}
+		}
 		.shop-social-icons {
 			.nav-link {
 				display: inline-block;
@@ -16,19 +61,26 @@ body {
 					margin-right: 0.5rem;
 				}
 			}
+			@include media-breakpoint-up(lg) {
+				align-self: flex-end;
+			}
 		}
 		.shop-primary-menu {
+			font-size: 125%;
+			font-weight: 300;
 			@include media-breakpoint-down(md) {
 				order: 1;
 			}
 			@include media-breakpoint-up(lg) {
 				font-size: 150%;
-				font-weight: 300;
 			}
 		}
 		.shop-secondary-menu {
 			@include media-breakpoint-down(md) {
 				order: 2;
+			}
+			@include media-breakpoint-up(lg) {
+				align-self: flex-end;
 			}
 		}
 		.shop-search-form {

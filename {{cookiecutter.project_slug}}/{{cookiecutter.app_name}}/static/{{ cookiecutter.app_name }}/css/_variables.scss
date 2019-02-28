@@ -1,10 +1,12 @@
 @import "shop/css/variables";
 
 // header
-$body-header-height: 90px;
+$body-header-height: 50px;
+$body-header-lg-height: 90px;
 
 // footer
 $body-footer-height: 200px;
+$body-footer-margin: 1rem;
 $body-footer-color: $white;
 $body-footer-bg: $gray-900;
 $body-footer-border: $gray-900;
