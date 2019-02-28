@@ -7,25 +7,25 @@
   "author_name": "Jacob Rief",
   "domain_name": "example.com",
   "email": "{{ cookiecutter.author_name.lower()|replace(' ', '.') }}@{{ cookiecutter.domain_name }}",
-  "version": "1.0",
+  "version": "1.0.0",
   "timezone": "UTC",
   "windows": "n",
   "use_pycharm": "n",
-  "use_docker": "y",
+  "use_docker": "n",
   "use_i18n": "y",
   "use_paypal": "n",
   "use_stripe": "y",
   "use_sendcloud": "y",
   "printable_invoice": "y",
   "delivery_handling": [
-    false,
+    "partial",
     "common",
-    "partial"
+    false
   ],
   "products_model": [
-    "commodity",
+    "polymorphic",
     "smartcard",
-    "polymorphic"
+    "commodity"
   ],
   "use_compressor": "n",
   "keep_local_envs_in_vcs": "y",
