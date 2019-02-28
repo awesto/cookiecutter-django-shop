@@ -22,14 +22,6 @@ class Command(BaseCommand):
     version = 14
     help = _("Initialize the workdir to run the demo of {{ cookiecutter.app_name }}.")
     download_url = 'http://downloads.django-shop.org/django-shop-workdir_{tutorial}-{version}.zip'
-    pwd = b'z7xv'
-    tutorial = "{% if cookiecutter.use_i18n == 'y' %}i18n_{% endif %}{{ cookiecutter.products_model }}"
-
-    def __init__(self, **kwargs):
-        if '{{ cookiecutter.app_name }}' != 'myshop':
-            msg = "Can only initialize django-SHOP if cookiecutter template was created with app_name='myshop'."
-            raise CommandError(msg)
-        super(Command, self).__init__(**kwargs)
 
     def add_arguments(self, parser):
         parser.add_argument('--noinput', '--no-input', action='store_false', dest='interactive',
@@ -77,6 +69,8 @@ class Command(BaseCommand):
             pass
 
     def handle(self, verbosity, *args, **options):
+        raise CommandError("./manage.py initialize_shop_demo currently is deprecated")
+
         self.set_options(**options)
         self.createdb_if_not_exists()
         self.clear_compressor_cache()
