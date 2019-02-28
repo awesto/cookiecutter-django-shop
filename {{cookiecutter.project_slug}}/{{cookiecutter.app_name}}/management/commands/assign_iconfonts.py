@@ -45,13 +45,14 @@ class Command(BaseCommand):
         from cms.utils.i18n import get_public_languages
         from cmsplugin_cascade.models import CascadePage, IconFont
 
+        identifier = 'fontawesome'
         try:
-            fontawesome = IconFont.objects.get(identifier='fontawesome')
+            fontawesome = IconFont.objects.get(identifier=identifier)
         except IconFont.DoesNotExist:
-            self.stderr.write("No IconFont named 'fontawesome' found to assign to CMS page.")
+            self.stderr.write("No IconFont named '{}' found to assign to CMS page.".format(identifier))
         else:
             for page in Page.objects.drafts():
-                self.stdout.write("Assign IconFont 'fontawesome' to CMS page".format(page.get_title()))
+                self.stdout.write("Assign IconFont '{}' to CMS page: {}".format(identifier, page.get_title()))
                 CascadePage.objects.update_or_create(
                     extended_object=page,
                     defaults={'icon_font': fontawesome},
