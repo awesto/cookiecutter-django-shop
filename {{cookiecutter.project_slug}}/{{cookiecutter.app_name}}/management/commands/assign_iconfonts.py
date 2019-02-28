@@ -42,6 +42,7 @@ class Command(BaseCommand):
 
     def assign_iconfonts_to_cmspages(self):
         from cms.models.pagemodel import Page
+        from cms.utils.i18n import get_public_languages
         from cmsplugin_cascade.models import CascadePage, IconFont
 
         try:
@@ -49,9 +50,10 @@ class Command(BaseCommand):
         except IconFont.DoesNotExist:
             self.stderr.write("No IconFont named 'fontawesome' found to assign to CMS page.")
         else:
-            for page in Page.objects.public():
+            for page in Page.objects.drafts():
                 CascadePage.objects.update_or_create(
                     extended_object=page,
                     defaults={'icon_font': fontawesome},
                 )
-                page.publish()
+                for language in get_public_languages():
+                    page.publish(language)
