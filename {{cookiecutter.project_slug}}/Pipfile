@@ -37,19 +37,16 @@ phonenumbers = "*"
 djangocms-bootstrap = ">=1"
 elasticsearch = "<1.8"
 libsass = "*"
-# django-shop = "{{ cookiecutter.version }}"
-"12d3451" = {file = "https://github.com/awesto/django-shop/archive/releases/1.0.x.zip"}
+"12d3451" = {file = "https://github.com/awesto/django-shop/archive/releases/1.0.x.zip"}{# django-shop = "{{ cookiecutter.version }}" #}
 {% if cookiecutter.use_stripe == 'y' -%}
-# djangoshop-stripe = "{{ cookiecutter.version }}"
-"847cb9d" = {file = "https://github.com/awesto/djangoshop-stripe/archive/releases/1.0.x.zip"}
+"847cb9d" = {file = "https://github.com/awesto/djangoshop-stripe/archive/releases/1.0.x.zip"}{# djangoshop-stripe = "{{ cookiecutter.version }}" #}
 stripe = "<1.54"
 {% endif -%}
 {% if cookiecutter.use_paypal == 'y' -%}
 djangoshop-paypal = "{{ cookiecutter.version }}"
 {% endif -%}
 {% if cookiecutter.use_sendcloud == 'y' -%}
-# djangoshop-sendcloud = "{{ cookiecutter.version }}"
-"f8f74e0" = {file = "https://github.com/awesto/djangoshop-sendcloud/archive/releases/1.0.zip"}
+"f8f74e0" = {file = "https://github.com/awesto/djangoshop-sendcloud/archive/releases/1.0.zip"}{# djangoshop-sendcloud = "{{ cookiecutter.version }}" #}
 {% endif -%}
 "8a232e5" = {file = "https://github.com/jrief/django-post_office/archive/attachments-allowing-MIMEBase.zip"}
 
