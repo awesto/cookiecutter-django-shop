@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from parler_rest.serializers import TranslatableModelSerializerMixin, TranslatedFieldsField, TranslatedField
 from rest_framework import serializers
 from shop.serializers.catalog import CMSPagesField, ImagesField, ValueRelatedField
 from myshop.models import (Commodity, SmartCard, SmartPhoneModel, SmartPhoneVariant, Manufacturer, OperatingSystem,
                            ProductPage, ProductImage)
+from .translation import TranslatedFieldsField, TranslatedField, TranslatableModelSerializerMixin
 
 
 class ProductSerializer(serializers.ModelSerializer):

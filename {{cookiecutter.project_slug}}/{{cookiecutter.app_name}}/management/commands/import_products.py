@@ -38,6 +38,7 @@ class Command(BaseCommand):
             serializer = serializer_class(data=product)
             assert serializer.is_valid(), serializer.errors
             instance = serializer.save()
+            self.assign_product_to_catalog(instance)
             self.stdout.write("{}. {}".format(number, instance))
             if product_model == 'commodity':
                 languages = get_public_languages()
@@ -68,3 +69,10 @@ class Command(BaseCommand):
             if os.path.exists(path):
                 return path
         raise CommandError("No such file in any fixture dir: {}".format(filename))
+
+    def assign_product_to_catalog(self, product):
+        from cms.models.pagemodel import Page
+        from shop.models.related import ProductPageModel
+
+        for page in Page.objects.published().filter(application_urls='CatalogListApp'):
+            ProductPageModel.objects.get_or_create(page=page, product=product)
