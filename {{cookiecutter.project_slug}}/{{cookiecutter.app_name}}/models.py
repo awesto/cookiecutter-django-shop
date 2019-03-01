@@ -3,6 +3,10 @@ from __future__ import unicode_literals
 
 {% if cookiecutter.products_model == 'commodity' -%}
 from shop.models.defaults.commodity import Commodity
+    {%- if cookiecutter.delivery_handling %}
+from django.db import models
+from django.utils.translation import ugettext_lazy as _, pgettext_lazy
+    {%- endif %}
 {% else -%}
 from decimal import Decimal
 from django.core.exceptions import ObjectDoesNotExist
@@ -25,23 +29,20 @@ from shop.models.product import BaseProduct, BaseProductManager, CMSPageReferenc
 {% endif -%}
 from shop.models.defaults.cart import Cart
 from shop.models.defaults.cart_item import CartItem
+{% if cookiecutter.delivery_handling -%}
+from shop.models.order import BaseOrderItem
 from shop.models.defaults.delivery import Delivery
 from shop.models.defaults.delivery_item import DeliveryItem
-from shop.models.defaults.mapping import ProductPage, ProductImage
+{% else -%}
+from shop.models.defaults.order_item import OrderItem
+{% endif -%}
 from shop.models.defaults.order import Order
-from shop.models.order import BaseOrderItem
+from shop.models.defaults.mapping import ProductPage, ProductImage
 from shop_sendcloud.models.address import BillingAddress, ShippingAddress
 from shop_sendcloud.models.customer import Customer
 
-{%- if cookiecutter.products_model == 'commodity' %}
 
-__all__ = ['Commodity', 'Order']
-
-{%- else %}
-
-__all__ = ['Order', 'Cart', 'Delivery', 'DeliveryItem', 'BillingAddress', 'ShippingAddress', 'Customer',
-           'ProductPage', 'ProductImage']
-
+{% if cookiecutter.delivery_handling -%}
 
 class OrderItem(BaseOrderItem):
     quantity = models.IntegerField(_("Ordered quantity"))
@@ -51,6 +52,8 @@ class OrderItem(BaseOrderItem):
         verbose_name = pgettext_lazy('order_models', "Ordered Item")
         verbose_name_plural = pgettext_lazy('order_models', "Ordered Items")
 
+    {%- if cookiecutter.products_model == 'polymorphic' %}
+
     def populate_from_cart_item(self, cart_item, request):
         super(OrderItem, self).populate_from_cart_item(cart_item, request)
         # the product's unit_price must be fetched from the product's variant
@@ -59,6 +62,12 @@ class OrderItem(BaseOrderItem):
             self._unit_price = Decimal(variant.unit_price)
         except (KeyError, ObjectDoesNotExist) as e:
             raise CartItem.DoesNotExist(e)
+
+    {%- endif %}
+
+{%- endif -%}
+
+{% if cookiecutter.products_model != 'commodity' %}
 
 
 @python_2_unicode_compatible
@@ -283,8 +292,7 @@ class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Tran
         'filer.Image',
         through=ProductImage,
     )
-    {%- endif %}  {# cookiecutter.products_model != 'polymorphic' #}
-
+    {% endif %}
     unit_price = MoneyField(
         _("Unit price"),
         decimal_places=3,
@@ -377,9 +385,9 @@ class SmartCardTranslation(TranslatedFieldsModel):
     class Meta:
         unique_together = [('language_code', 'master')]
 
-        {%- endif -%}
-    {%- endif %}
-{%- endif %}
+        {%- endif -%}{# if cookiecutter.use_i18n == 'y' #}
+    {%- endif %}{# cookiecutter.products_model != 'polymorphic' #}
+{%- endif %}{# if cookiecutter.products_model == 'commodity' #}
 
 {%- if cookiecutter.products_model == 'polymorphic' %}
 
@@ -560,4 +568,9 @@ class SmartPhoneVariant(models.Model):
 
     def get_price(self, request):
         return self.unit_price
+
+{%- endif %}
+{%- if cookiecutter.products_model == 'commodity' %}
+
+__all__ = ['Commodity']
 {%- endif %}

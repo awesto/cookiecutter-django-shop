@@ -3,14 +3,22 @@ from __future__ import unicode_literals
 
 from rest_framework import serializers
 from shop.serializers.catalog import CMSPagesField, ImagesField, ValueRelatedField
+{%- if cookiecutter.products_model == 'polymorphic' %}
 from {{ cookiecutter.app_name }}.models import (Commodity, SmartCard, SmartPhoneModel, SmartPhoneVariant,
     Manufacturer, OperatingSystem, ProductPage, ProductImage)
+{%- elif cookiecutter.products_model == 'smartcard' %}
+from {{ cookiecutter.app_name }}.models import SmartCard, Manufacturer, ProductPage, ProductImage
+{%- elif cookiecutter.products_model == 'commodity' %}
+from {{ cookiecutter.app_name }}.models import Commodity, ProductPage, ProductImage
+{%- endif %}
 from .translation import TranslatedFieldsField, TranslatedField, TranslatableModelSerializerMixin
 
 
 class ProductSerializer(serializers.ModelSerializer):
     product_model = serializers.CharField(read_only=True)
+{%- if cookiecutter.products_model != 'commodity' %}
     manufacturer = ValueRelatedField(model=Manufacturer)
+{%- endif %}
     caption = TranslatedField()
     cms_pages = CMSPagesField()
     images = ImagesField()
@@ -29,17 +37,34 @@ class ProductSerializer(serializers.ModelSerializer):
         return product
 
 
+{% if cookiecutter.products_model != 'smartcard' -%}
+
 class CommoditySerializer(TranslatableModelSerializerMixin, ProductSerializer):
+    {%- if cookiecutter.products_model == 'commodity' %}
+    product_name = TranslatedField()
+    slug = TranslatedField()
+    {%- endif %}
+
     class Meta(ProductSerializer.Meta):
         model = Commodity
         exclude = ['id', 'placeholder', 'polymorphic_ctype', 'updated_at']
 
+{%- endif %}{% if cookiecutter.products_model != 'commodity' %}
+
 
 class SmartCardSerializer(TranslatableModelSerializerMixin, ProductSerializer):
-    multilingual = TranslatedFieldsField()
+    {%- if cookiecutter.use_i18n == 'y' and cookiecutter.products_model == 'smartcard' %}
+    description = TranslatedField()
+    {%- else %}
+    multilingual = TranslatedFieldsField(
+        help_text="Helper to convert multilingual data into single field.",
+    )
+    {%- endif %}
 
     class Meta(ProductSerializer.Meta):
         model = SmartCard
+
+{%- endif %}{% if cookiecutter.products_model == 'polymorphic' %}
 
 
 class SmartphoneVariantSerializer(serializers.ModelSerializer):
@@ -62,3 +87,4 @@ class SmartPhoneModelSerializer(TranslatableModelSerializerMixin, ProductSeriali
         for variant in variants:
             SmartPhoneVariant.objects.create(product=product, **variant)
         return product
+{% endif %}

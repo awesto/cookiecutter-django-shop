@@ -3,36 +3,35 @@ from __future__ import unicode_literals
 
 from django.utils.safestring import mark_safe
 from rest_framework import serializers
-from rest_framework.fields import empty
-from shop.models.cart import CartModel
 from shop.search.serializers import ProductSearchSerializer as BaseProductSearchSerializer
 from shop.serializers.bases import ProductSerializer
-from shop.serializers.defaults.catalog import AddToCartSerializer
 {%- if cookiecutter.products_model == 'smartcard' %}
 from {{ cookiecutter.app_name }}.models import SmartCard
 {%- elif cookiecutter.products_model == 'polymorphic' %}
+from rest_framework.fields import empty
+from shop.models.cart import CartModel
+from shop.serializers.defaults.catalog import AddToCartSerializer
 from {{ cookiecutter.app_name }}.models import SmartCard, SmartPhoneModel
-{% endif -%}
+{%- endif %}
 from {{ cookiecutter.app_name }}.search_indexes import myshop_search_index_classes
 
 
-class ProductSummarySerializer(ProductSerializer):
-    class Meta(ProductSerializer.Meta):
-        fields = ['id', 'product_name', 'product_url', 'product_model', 'price', 'media', 'caption']
-
-
-{%- if cookiecutter.products_model == 'commodity' %}
+{% if cookiecutter.products_model == 'commodity' -%}
 
 class ProductDetailSerializer(ProductSerializer):
     class Meta(ProductSerializer.Meta):
         fields = ['product_name', 'slug', 'unit_price', 'product_code']
-{%- elif cookiecutter.products_model == 'smartcard' %}
+
+
+{% elif cookiecutter.products_model == 'smartcard' -%}
 
 class ProductDetailSerializer(ProductSerializer):
     class Meta(ProductSerializer.Meta):
         fields = ['product_name', 'slug', 'unit_price', 'manufacturer', 'card_type', 'speed',
                   'product_code', 'storage']
-{%- endif %}
+
+
+{% endif -%}
 
 
 class ProductSearchSerializer(BaseProductSearchSerializer):
@@ -67,12 +66,14 @@ class CatalogSearchSerializer(BaseProductSearchSerializer):
         return mark_safe(search_result.catalog_media)
 
 {% if cookiecutter.products_model in ['smartcard', 'polymorphic'] %}
+
 class SmartCardSerializer(ProductSerializer):
     class Meta:
         model = SmartCard
         fields = ['product_name', 'slug', 'unit_price', 'manufacturer', 'card_type', 'speed',
                   'product_code', 'storage']
 
+{% endif -%}{%- if cookiecutter.products_model == 'polymorphic' %}
 
 class SmartPhoneSerializer(ProductSerializer):
     class Meta:
@@ -109,4 +110,4 @@ class AddSmartPhoneToCartSerializer(AddToCartSerializer):
             'extra': extra,
         }
         return instance
-{%- endif %}
+{% endif %}

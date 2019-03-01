@@ -2,14 +2,18 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
+{%- if cookiecutter.products_model == 'polymorphic' %}
 from django.db.models import Max
 from django.template.context import Context
-from django.utils.translation import ugettext_lazy as _
 from django.template.loader import get_template
+{%- endif %}
+from django.utils.translation import ugettext_lazy as _
 {%- if cookiecutter.use_i18n == 'y' %}
 from parler.admin import TranslatableAdmin
 {%- endif %}
+{%- if cookiecutter.products_model in ['commodity', 'polymorphic'] %}
 from cms.admin.placeholderadmin import PlaceholderAdminMixin, FrontendEditableAdminMixin
+{%- endif %}
 from shop.admin.defaults import customer
 from shop.admin.defaults.order import OrderAdmin
 from shop.models.defaults.order import Order
@@ -25,8 +29,8 @@ from shop_sendcloud.admin import SendCloudOrderAdminMixin
 {%- if cookiecutter.products_model == 'commodity' %}
 from shop.admin.defaults import commodity
 {%- elif cookiecutter.products_model in ['smartcard', 'polymorphic'] %}
-from adminsortable2.admin import SortableAdminMixin, PolymorphicSortableAdminMixin
-from shop.admin.product import CMSPageAsCategoryMixin, ProductImageInline, InvalidateProductCacheMixin, CMSPageFilter
+from adminsortable2.admin import SortableAdminMixin{% if cookiecutter.products_model == 'polymorphic' %}, PolymorphicSortableAdminMixin{% endif %}
+from shop.admin.product import CMSPageAsCategoryMixin, ProductImageInline, InvalidateProductCacheMixin{% if cookiecutter.products_model == 'polymorphic' %}, CMSPageFilter{% endif %}
     {%- if cookiecutter.products_model == 'polymorphic' %}
 from polymorphic.admin import (PolymorphicParentModelAdmin, PolymorphicChildModelAdmin,
                                PolymorphicChildModelFilter)
@@ -53,7 +57,7 @@ __all__ = ['customer']
 
 
 @admin.register(SmartCard)
-class SmartCardAdmin(SortableAdminMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableAdmin,{% endif %} CMSPageAsCategoryMixin, PolymorphicChildModelAdmin):
+class SmartCardAdmin(InvalidateProductCacheMixin, SortableAdminMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableAdmin,{% endif %} CMSPageAsCategoryMixin, {% if cookiecutter.products_model == 'polymorphic' %}PolymorphicChildModelAdmin{% else %}admin.ModelAdmin{% endif %}):
     fieldsets = [
         (None, {
             'fields': ['product_name', 'slug', 'product_code', 'unit_price', 'active'{% if cookiecutter.use_i18n != 'y' %}, 'caption', 'description'{% endif %}],

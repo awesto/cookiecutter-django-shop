@@ -1,9 +1,35 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-{% if cookiecutter.use_i18n == 'y' %}
+{% if cookiecutter.use_i18n == 'y' -%}
+
 from parler_rest.serializers import TranslatedFieldsField, TranslatedField, TranslatableModelSerializerMixin
-{% else %}
+
+    {%- if cookiecutter.products_model == 'smartcard' %}
+
+
+class TranslatableModelSerializerMixin(TranslatableModelSerializerMixin):
+    def to_internal_value(self, data):
+        data = self._swap_translated_data(data)
+        return super(TranslatableModelSerializerMixin, self).to_internal_value(data)
+
+    def _swap_translated_data(self, data):
+        """
+        Swap translated data unassigned to internal fields.
+        """
+        remaining = set(data.keys()) - set(self.get_fields().keys())
+        for field_name in remaining:
+            translations = data.pop(field_name, {})
+            for language in translations.keys():
+                for key, lemma in translations.get(language, {}).items():
+                    data.setdefault(key, {})
+                    data[key][language] = lemma
+        return data
+
+    {% endif -%}
+
+{% else -%}
+
 from rest_framework import serializers
 
 

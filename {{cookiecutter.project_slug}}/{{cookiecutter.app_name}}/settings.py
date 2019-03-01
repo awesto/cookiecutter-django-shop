@@ -660,8 +660,7 @@ SHOP_ORDER_WORKFLOWS = [
     'shop.payment.workflows.CancelOrderWorkflowMixin',
 {%- if cookiecutter.delivery_handling == 'partial' %}
     'shop.shipping.workflows.PartialDeliveryWorkflowMixin',
-{%- endif %}
-{%- if cookiecutter.delivery_handling == 'common' %}
+{%- elif cookiecutter.delivery_handling == 'common' %}
     'shop.shipping.workflows.CommissionGoodsWorkflowMixin',
 {%- else %}
     'shop.shipping.workflows.SimpleShippingWorkflowMixin',
@@ -671,8 +670,7 @@ SHOP_ORDER_WORKFLOWS = [
 {%- endif %}
 ]
 
-{%- if cookiecutter.use_stripe %}
-
+{% if cookiecutter.use_stripe -%}
 SHOP_STRIPE = {
     'PUBKEY': 'pk_test_HlEp5oZyPonE21svenqowhXp',
     'APIKEY': 'sk_test_xUdHLeFasmOUDvmke4DHGRDP',
@@ -682,8 +680,7 @@ SHOP_STRIPE = {
 SHOP_STRIPE_PREFILL = True
 {%- endif %}
 
-{%- if cookiecutter.use_sendcloud %}
-
+{% if cookiecutter.use_sendcloud -%}
 SHOP_SENDCLOUD = {
     'API_KEY': os.getenv('SENDCLOUD_PUBLIC_KEY'),
     'API_SECRET': os.getenv('SENDCLOUD_SECRET_KEY'),

@@ -32,6 +32,12 @@ class Command(BaseCommand):
 
         for number, product in enumerate(data, 1):
             product_model = product.pop('product_model')
+{%- if cookiecutter.products_model != 'polymorphic' %}
+            if product_model != '{{ cookiecutter.products_model }}':
+                continue
+{%- endif %}
+            if product.get('product_code'){% if cookiecutter.products_model == 'commodity' %} != {% else %} == {% endif %}"parklake-springfield":
+                continue
             ProductModel = ContentType.objects.get(app_label='{{ cookiecutter.app_name }}', model=product_model)
             class_name = '{{ cookiecutter.app_name }}.management.serializers.' + ProductModel.model_class().__name__ + 'Serializer'
             serializer_class = import_string(class_name)
