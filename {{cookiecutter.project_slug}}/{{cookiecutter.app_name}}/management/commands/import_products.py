@@ -32,8 +32,8 @@ class Command(BaseCommand):
 
         for number, product in enumerate(data, 1):
             product_model = product.pop('product_model')
-            ProductModel = ContentType.objects.get(app_label='myshop', model=product_model)
-            class_name = 'myshop.management.serializers.' + ProductModel.model_class().__name__ + 'Serializer'
+            ProductModel = ContentType.objects.get(app_label='{{ cookiecutter.app_name }}', model=product_model)
+            class_name = '{{ cookiecutter.app_name }}.management.serializers.' + ProductModel.model_class().__name__ + 'Serializer'
             serializer_class = import_string(class_name)
             serializer = serializer_class(data=product)
             assert serializer.is_valid(), serializer.errors

@@ -3,8 +3,8 @@ from __future__ import unicode_literals
 
 from rest_framework import serializers
 from shop.serializers.catalog import CMSPagesField, ImagesField, ValueRelatedField
-from myshop.models import (Commodity, SmartCard, SmartPhoneModel, SmartPhoneVariant, Manufacturer, OperatingSystem,
-                           ProductPage, ProductImage)
+from {{ cookiecutter.app_name }}.models import (Commodity, SmartCard, SmartPhoneModel, SmartPhoneVariant,
+    Manufacturer, OperatingSystem, ProductPage, ProductImage)
 from .translation import TranslatedFieldsField, TranslatedField, TranslatableModelSerializerMixin
 
 

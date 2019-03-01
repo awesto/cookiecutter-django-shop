@@ -7,7 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.management.base import BaseCommand
 from django.utils.module_loading import import_string
 from django.utils.translation import activate
-from myshop.models import Product
+from {{ cookiecutter.app_name }}.models import Product
 
 
 class Command(BaseCommand):
@@ -23,8 +23,8 @@ class Command(BaseCommand):
         activate(settings.LANGUAGE_CODE)
         data = []
         for product in Product.objects.all():
-            ProductModel = ContentType.objects.get(app_label='myshop', model=product.product_model)
-            class_name = 'myshop.management.serializers.' + ProductModel.model_class().__name__ + 'Serializer'
+            ProductModel = ContentType.objects.get(app_label='{{ cookiecutter.app_name }}', model=product.product_model)
+            class_name = '{{ cookiecutter.app_name }}.management.serializers.' + ProductModel.model_class().__name__ + 'Serializer'
             serializer_class = import_string(class_name)
             serializer = serializer_class(product, context={'request': None})
             data.append(serializer.data)

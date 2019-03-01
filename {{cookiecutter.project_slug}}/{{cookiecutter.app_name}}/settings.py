@@ -521,7 +521,7 @@ CMSPLUGIN_CASCADE = {
         # required to purchase real estate
         'ShopAddToCartPlugin': [
             (None, _("Default")),
-            ('myshop/catalog/commodity-add2cart.html', _("Add Commodity to Cart")),
+            ('{{ cookiecutter.app_name }}/catalog/commodity-add2cart.html', _("Add Commodity to Cart")),
         ],
     },
     'plugins_with_sharables': {
