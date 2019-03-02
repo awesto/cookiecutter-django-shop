@@ -3,6 +3,9 @@
 Powered by [Cookiecutter](https://github.com/audreyr/cookiecutter), **cookiecutter-django-shop** is a set of templates
 for jumpstarting a **django-SHOP** project quickly.
 
+> Note: This documentation refers to the upcoming release 1.0.0 of django-SHOP. If you are looking for
+  version 0.12.x, please check here: https://github.com/awesto/cookiecutter-django-shop/tree/releases/0.12
+
 Use these Cookiecutter Templates to run one of the demo merchant implementations.
 
 * Use them to get a first impression on its features.
