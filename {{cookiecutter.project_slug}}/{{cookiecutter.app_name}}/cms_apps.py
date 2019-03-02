@@ -22,44 +22,31 @@ class CatalogListApp(CatalogListCMSApp):
                 filter_class=ManufacturerFilterSet,
                 search_serializer_class=CatalogSearchSerializer,
             )),
-            url(r'^(?P<slug>[\w-]+)/?$', ProductRetrieveView.as_view()),
+            url(r'^(?P<slug>[\w-]+)/?$', ProductRetrieveView.as_view(
+                use_modal_dialog=False,
+            )),
             url(r'^(?P<slug>[\w-]+)/add-to-cart', AddToCartView.as_view()),
             url(r'^(?P<slug>[\w-]+)/add-smartphone-to-cart', AddToCartView.as_view(
                 serializer_class=AddSmartPhoneToCartSerializer,
             )),
         ]
-{%- elif cookiecutter.products_model == 'commodity' and cookiecutter.use_i18n == 'y' %}
+{%- else %}{% set use_lookup_field = (cookiecutter.products_model == 'commodity' and cookiecutter.use_i18n == 'y') %}
         from shop.views.catalog import AddToCartView, ProductListView, ProductRetrieveView
-        from {{ cookiecutter.app_name }}.serializers import ProductSummarySerializer, ProductDetailSerializer
+        from {{ cookiecutter.app_name }}.serializers import ProductDetailSerializer
 
         return [
             url(r'^$', ProductListView.as_view(
-                serializer_class=ProductSummarySerializer,
                 redirect_to_lonely_product=True,
             )),
             url(r'^(?P<slug>[\w-]+)/?$', ProductRetrieveView.as_view(
                 serializer_class=ProductDetailSerializer,
+    {%- if use_lookup_field %}
                 lookup_field='translations__slug'
+    {%- endif %}
             )),
-            url(r'^(?P<slug>[\w-]+)/add-to-cart', AddToCartView.as_view(
-                lookup_field='translations__slug'
-            )),
+            url(r'^(?P<slug>[\w-]+)/add-to-cart', AddToCartView.as_view({% if use_lookup_field %}lookup_field='translations__slug'{% endif %})),
         ]
-{%- else %}  {# a simple product, such as SmartCard #}
-        from shop.views.catalog import AddToCartView, ProductListView, ProductRetrieveView
-        from {{ cookiecutter.app_name }}.serializers import ProductSummarySerializer, ProductDetailSerializer
-
-        return [
-            url(r'^$', ProductListView.as_view(
-                serializer_class=ProductSummarySerializer,
-                redirect_to_lonely_product=True,
-            )),
-            url(r'^(?P<slug>[\w-]+)/?$', ProductRetrieveView.as_view(
-                serializer_class=ProductDetailSerializer
-            )),
-            url(r'^(?P<slug>[\w-]+)/add-to-cart', AddToCartView.as_view()),
-        ]
-{% endif %}
+{%- endif %}
 
 apphook_pool.register(CatalogListApp)
 
@@ -80,6 +67,7 @@ apphook_pool.register(CatalogSearchApp)
 apphook_pool.register(OrderApp)
 
 apphook_pool.register(PasswordResetApp)
+
 
 def _deregister_menu_pool_modifier(Modifier):
     index = None

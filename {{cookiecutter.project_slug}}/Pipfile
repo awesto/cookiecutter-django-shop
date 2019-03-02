@@ -4,15 +4,21 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-Django = "<2"
+django = "<2"
 djangocms-cascade = "*"
 django-compressor = "*"
+django-allauth = "*"
+django-angular = "*"
+django-filer = "*"
+django-ipware = "*"
 django-sass-processor = "*"
+django-select2 = "*"
 django-filter = "*"
 django-haystack = "*"
 drf-haystack = "*"
 {% if cookiecutter.use_i18n == 'y' -%}
 django-parler = "*"
+"e007892" = {file = "https://github.com/jrief/django-parler-rest/archive/deserialize-TranslatedField.zip"}
 {% endif -%}
 {% if cookiecutter.use_docker == 'y' -%}
 psycopg2-binary = "*"
@@ -20,18 +26,38 @@ django-redis-cache = "*"
 django-redis-sessions = "*"
 uWSGI = "*"
 {% endif -%}
-djangorestframework = "<3.8"
+djangorestframework = "<3.9"
+django-rest-auth = "*"
 django_polymorphic = "<2"
-"django-admin-sortable2" = "*"
-"djangocms-bootstrap" = "*"
+django-admin-sortable2 = "*"
+django-fsm = "*"
+django-fsm-admin = "*"
+django-phonenumber-field = "*"
+phonenumbers = "*"
+djangocms-bootstrap = ">=1"
 elasticsearch = "<1.8"
 libsass = "*"
-djangoshop-stripe =  {git = "https://github.com/awesto/djangoshop-stripe", editable = true, ref = "bootstrap-4"}
-djangoshop-sendcloud = {git = "https://github.com/awesto/djangoshop-sendcloud", editable = true, ref = "master"}
-django-shop = {git = "https://github.com/awesto/django-shop", editable = true, ref = "drafts/py.test"}
-django-allauth = "*"
+"12d3451" = {file = "https://github.com/awesto/django-shop/archive/releases/1.0.x.zip"}{# django-shop = "{{ cookiecutter.version }}" #}
+{% if cookiecutter.use_stripe == 'y' -%}
+"847cb9d" = {file = "https://github.com/awesto/djangoshop-stripe/archive/releases/1.0.x.zip"}{# djangoshop-stripe = "{{ cookiecutter.version }}" #}
+stripe = "<1.54"
+{% endif -%}
+{% if cookiecutter.use_paypal == 'y' -%}
+djangoshop-paypal = "{{ cookiecutter.version }}"
+{% endif -%}
+{% if cookiecutter.use_sendcloud == 'y' -%}
+"f8f74e0" = {file = "https://github.com/awesto/djangoshop-sendcloud/archive/releases/1.0.zip"}{# djangoshop-sendcloud = "{{ cookiecutter.version }}" #}
+{% endif -%}
+"8a232e5" = {file = "https://github.com/jrief/django-post_office/archive/attachments-allowing-MIMEBase.zip"}
 
 [dev-packages]
+tox = "*"
+pytest = "*"
+pytest-django = "*"
+beautifulsoup4 = "*"
+lxml = "*"
+factory-boy = "*"
+pytest-factoryboy = "*"
 
 [requires]
 python_version = "3.6"

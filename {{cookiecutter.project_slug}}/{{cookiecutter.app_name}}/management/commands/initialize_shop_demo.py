@@ -19,32 +19,28 @@ except ImportError:
 
 
 class Command(BaseCommand):
-    version = 14
     help = _("Initialize the workdir to run the demo of {{ cookiecutter.app_name }}.")
-    download_url = 'http://downloads.django-shop.org/django-shop-workdir_{tutorial}-{version}.zip'
-    pwd = b'z7xv'
-    tutorial = "{% if cookiecutter.use_i18n == 'y' %}i18n_{% endif %}{{ cookiecutter.products_model }}"
-
-    def __init__(self, **kwargs):
-        if '{{ cookiecutter.app_name }}' != 'myshop':
-            msg = "Can only initialize django-SHOP if cookiecutter template was created with app_name='myshop'."
-            raise CommandError(msg)
-        super(Command, self).__init__(**kwargs)
 
     def add_arguments(self, parser):
-        parser.add_argument('--noinput', '--no-input', action='store_false', dest='interactive',
-                            default=True, help="Do NOT prompt the user for input of any kind.")
+        parser.add_argument(
+            '--noinput', '--no-input',
+            action='store_false',
+            dest='interactive',
+            default=True,
+            help="Do NOT prompt the user for input of any kind.",
+        )
 
     def set_options(self, **options):
         self.interactive = options['interactive']
 
     def createdb_if_not_exists(self):
+        if os.getenv('DATABASE_ENGINE') != 'django.db.backends.postgresql':
+            return
+
         try:
             import psycopg2
             from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
         except ImportError:
-            return
-        if os.getenv('DATABASE_ENGINE') != 'django.db.backends.postgresql':
             return
 
         dbname = os.getenv('DATABASE_NAME')
@@ -80,31 +76,11 @@ class Command(BaseCommand):
         self.set_options(**options)
         self.createdb_if_not_exists()
         self.clear_compressor_cache()
+        call_command('makemigrations', '{{ cookiecutter.app_name }}')
         call_command('migrate')
-
-        fixture = '{workdir}/{tutorial}/fixtures/myshop.json'.format(workdir=settings.WORK_DIR, tutorial=self.tutorial)
-
-        if self.interactive:
-            mesg = ("\nThis will overwrite your workdir and install a new database for the django-SHOP demo: {tutorial}\n"
-                    "Are you sure you want to do this?\n\n"
-                    "Type 'yes' to continue, or 'no' to cancel: ").format(tutorial=self.tutorial)
-            if input(mesg) != 'yes':
-                raise CommandError("SHOP initialization cancelled.")
-        else:
-            if os.path.isfile(fixture):
-                self.stdout.write(self.style.WARNING("Can not override downloaded data in input-less mode."))
-                return
-
-        extract_to = os.path.join(settings.WORK_DIR, os.pardir)
-        msg = "Downloading workdir and extracting to {}. Please wait ..."
-        self.stdout.write(msg.format(extract_to))
-        download_url = self.download_url.format(tutorial=self.tutorial, version=self.version)
-        response = requests.get(download_url, stream=True)
-        zip_ref = zipfile.ZipFile(StringIO(response.content))
-        try:
-            zip_ref.extractall(extract_to, pwd=self.pwd)
-        finally:
-            zip_ref.close()
-
-        call_command('loaddata', fixture)
-        call_command('fix_filer_bug_965')
+        call_command('loaddata', 'skeleton')
+        call_command('shop', 'check-pages', add_recommended=True)
+        call_command('assign_iconfonts')
+        call_command('download_workdir', interactive=self.interactive)
+        call_command('loaddata', 'products-media')
+        call_command('import_products')

@@ -3,11 +3,16 @@ from __future__ import unicode_literals
 
 {% if cookiecutter.products_model == 'commodity' -%}
 from shop.models.defaults.commodity import Commodity
-{% else -%}
+    {%- if cookiecutter.delivery_handling %}
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext_lazy as _, pgettext_lazy
+    {%- endif %}
+{% else -%}
+from decimal import Decimal
+from django.core.exceptions import ObjectDoesNotExist
+from django.db import models
+from django.utils.translation import ugettext_lazy as _, pgettext_lazy
 from django.utils.encoding import python_2_unicode_compatible
-
 from djangocms_text_ckeditor.fields import HTMLField
     {%- if cookiecutter.use_i18n == 'y' %}
 from polymorphic.query import PolymorphicQuerySet
@@ -22,31 +27,55 @@ from shop.money import Money, MoneyMaker
 from shop.money.fields import MoneyField
 from shop.models.product import BaseProduct, BaseProductManager, CMSPageReferenceMixin
 {% endif -%}
-from django.conf import settings
-if 'shop_sendcloud' in settings.INSTALLED_APPS:
-    from shop_sendcloud.models import ShippingAddress, BillingAddress
-    from shop_sendcloud.models import Customer
-    from shop_sendcloud.models.delivery import Delivery
-else:
-    from shop.models.defaults.address import ShippingAddress, BillingAddress
-    from shop.models.defaults.customer import Customer
-    from shop.models.defaults.delivery import Delivery
 from shop.models.defaults.cart import Cart
 from shop.models.defaults.cart_item import CartItem
-from shop.models.defaults.mapping import ProductPage, ProductImage
-from shop.models.defaults.order import Order
+{% if cookiecutter.delivery_handling -%}
+from shop.models.order import BaseOrderItem
+from shop.models.defaults.delivery import Delivery
+from shop.models.defaults.delivery_item import DeliveryItem
+{% else -%}
 from shop.models.defaults.order_item import OrderItem
+{% endif -%}
+from shop.models.defaults.order import Order
+from shop.models.defaults.mapping import ProductPage, ProductImage
+from shop_sendcloud.models.address import BillingAddress, ShippingAddress
+from shop_sendcloud.models.customer import Customer
 
-{% if cookiecutter.products_model == 'commodity' -%}
-__all__ = ['Commodity']
+
+{% if cookiecutter.delivery_handling -%}
+
+class OrderItem(BaseOrderItem):
+    quantity = models.IntegerField(_("Ordered quantity"))
+    canceled = models.BooleanField(_("Item canceled "), default=False)
+
+    class Meta:
+        verbose_name = pgettext_lazy('order_models', "Ordered Item")
+        verbose_name_plural = pgettext_lazy('order_models', "Ordered Items")
+
+    {%- if cookiecutter.products_model == 'polymorphic' %}
+
+    def populate_from_cart_item(self, cart_item, request):
+        super(OrderItem, self).populate_from_cart_item(cart_item, request)
+        # the product's unit_price must be fetched from the product's variant
+        try:
+            variant = cart_item.product.get_product_variant(product_code=cart_item.product_code)
+            self._unit_price = Decimal(variant.unit_price)
+        except (KeyError, ObjectDoesNotExist) as e:
+            raise CartItem.DoesNotExist(e)
+
+    {%- endif %}
+
+{%- endif -%}
+
+{% if cookiecutter.products_model != 'commodity' %}
 
 
-{% else %}
 @python_2_unicode_compatible
 class Manufacturer(models.Model):
     name = models.CharField(
         _("Name"),
         max_length=50,
+        unique=True,
     )
 
     def __str__(self):
@@ -263,8 +292,7 @@ class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Tran
         'filer.Image',
         through=ProductImage,
     )
-    {%- endif %}  {# cookiecutter.products_model != 'polymorphic' #}
-
+    {% endif %}
     unit_price = MoneyField(
         _("Unit price"),
         decimal_places=3,
@@ -357,9 +385,9 @@ class SmartCardTranslation(TranslatedFieldsModel):
     class Meta:
         unique_together = [('language_code', 'master')]
 
-        {%- endif -%}
-    {%- endif %}
-{% endif %}
+        {%- endif -%}{# if cookiecutter.use_i18n == 'y' #}
+    {%- endif %}{# cookiecutter.products_model != 'polymorphic' #}
+{%- endif %}{# if cookiecutter.products_model == 'commodity' #}
 
 {%- if cookiecutter.products_model == 'polymorphic' %}
 
@@ -369,6 +397,7 @@ class OperatingSystem(models.Model):
     name = models.CharField(
         _("Name"),
         max_length=50,
+        unique=True,
     )
 
     def __str__(self):
@@ -497,12 +526,11 @@ class SmartPhoneModel(Product):
         return self._price
 
     def is_in_cart(self, cart, watched=False, **kwargs):
-        from shop.models.cart import CartItemModel
         try:
             product_code = kwargs['product_code']
         except KeyError:
             return
-        cart_item_qs = CartItemModel.objects.filter(cart=cart, product=self)
+        cart_item_qs = CartItem.objects.filter(cart=cart, product=self)
         for cart_item in cart_item_qs:
             if cart_item.product_code == product_code:
                 return cart_item
@@ -540,4 +568,9 @@ class SmartPhoneVariant(models.Model):
 
     def get_price(self, request):
         return self.unit_price
+
+{%- endif %}
+{%- if cookiecutter.products_model == 'commodity' %}
+
+__all__ = ['Commodity']
 {%- endif %}

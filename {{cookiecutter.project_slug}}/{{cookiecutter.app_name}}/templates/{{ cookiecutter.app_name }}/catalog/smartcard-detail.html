@@ -2,37 +2,34 @@
 {% raw %}{% load i18n cms_tags thumbnail %}
 
 {% block main-content %}
+{% thumbnail product.images.first 250x250 crop as thumb %}
 <div class="container">
-	<div class="row product-detail">
+	<div class="row">
 		<div class="col col-md-10 offset-md-1">
 			<h1>{% render_model product "product_name" %}</h1>
-			<pre class="images">
-			{% for img in product.images.all %}
-				{% thumbnail img 250x250 crop as thumb %}
-				<img src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}" alt="{{ product.product_name }}">
-			{% endfor %}
-			</pre>
-		</div>
-		<div class="col col-md-10 offset-md-1">
-			{{ product.description|safe }}
-			<table class="table table-bordered">
-				<tbody class="table-striped">
-					<tr>
-						<td>{% trans "Card Type" %}</td>
-						<td>{{ product.get_card_type_display }}</td>
-					</tr>
-					<tr>
-						<td>{% trans "Storage capacity" %}</td>
-						<td>{{ product.storage }} GB</td>
-					</tr>
-					<tr>
-						<td>{% trans "Manufacturer" %}</td>
-						<td>{{ product.manufacturer }}</td>
-					</tr>
-				</tbody>
-			</table>
+			<div class="media mb-3 flex-column flex-md-row">
+				<img class="mr-3 mb-3" src="{{ thumb.url }}" width="{{ thumb.width }}" height="{{ thumb.height }}" alt="{{ product.product_name }}">
+				<div class="media-body">
+					{{ product.description|safe }}
+				</div>
+			</div>
+			<h4>{% trans "Details" %}</h4>
+			<ul class="list-group mb-3">
+				<li class="list-group-item d-flex">
+					<div class="w-50">{% trans "Card Type" %}:</div>
+					<strong>{{ product.get_card_type_display }}</strong>
+				</li>
+				<li class="list-group-item d-flex">
+					<div class="w-50">{% trans "Storage capacity" %}:</div>
+					<strong>{{ product.storage }} GB</strong>
+				</li>
+				<li class="list-group-item d-flex">
+					<div class="w-50">{% trans "Manufacturer" %}:</div>
+					<strong>{{ product.manufacturer }}</strong>
+				</li>
+			</ul>
 			<!-- include "Add to Cart" dialog box -->
-			{% include "shop/catalog/product-add2cart.html" %}
+			{% include "shop/catalog/product-add2cart.html" with card_css_classes="mb-3" %}
 		</div>
 	</div>
 </div>

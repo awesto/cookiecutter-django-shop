@@ -2,28 +2,35 @@
 from __future__ import unicode_literals
 
 from django.contrib import admin
+{%- if cookiecutter.products_model == 'polymorphic' %}
 from django.db.models import Max
 from django.template.context import Context
-from django.utils.translation import ugettext_lazy as _
 from django.template.loader import get_template
-
+{%- endif %}
+from django.utils.translation import ugettext_lazy as _
 {%- if cookiecutter.use_i18n == 'y' %}
 from parler.admin import TranslatableAdmin
 {%- endif %}
+{%- if cookiecutter.products_model in ['commodity', 'polymorphic'] %}
 from cms.admin.placeholderadmin import PlaceholderAdminMixin, FrontendEditableAdminMixin
-
+{%- endif %}
 from shop.admin.defaults import customer
 from shop.admin.defaults.order import OrderAdmin
 from shop.models.defaults.order import Order
-from shop.admin.order import PrintOrderAdminMixin
+{%- if cookiecutter.printable_invoice == 'y' %}
+from shop.admin.order import PrintInvoiceAdminMixin
+{%- endif %}
+{%- if cookiecutter.delivery_handling %}
 from shop.admin.delivery import DeliveryOrderAdminMixin
-
-
+{%- endif %}
+{%- if cookiecutter.use_sendcloud == 'y' %}
+from shop_sendcloud.admin import SendCloudOrderAdminMixin
+{%- endif %}
 {%- if cookiecutter.products_model == 'commodity' %}
 from shop.admin.defaults import commodity
 {%- elif cookiecutter.products_model in ['smartcard', 'polymorphic'] %}
-from adminsortable2.admin import SortableAdminMixin, PolymorphicSortableAdminMixin
-from shop.admin.product import CMSPageAsCategoryMixin, ProductImageInline, InvalidateProductCacheMixin, CMSPageFilter
+from adminsortable2.admin import SortableAdminMixin{% if cookiecutter.products_model == 'polymorphic' %}, PolymorphicSortableAdminMixin{% endif %}
+from shop.admin.product import CMSPageAsCategoryMixin, ProductImageInline, InvalidateProductCacheMixin{% if cookiecutter.products_model == 'polymorphic' %}, CMSPageFilter{% endif %}
     {%- if cookiecutter.products_model == 'polymorphic' %}
 from polymorphic.admin import (PolymorphicParentModelAdmin, PolymorphicChildModelAdmin,
                                PolymorphicChildModelFilter)
@@ -33,9 +40,13 @@ from {{ cookiecutter.app_name }}.models import Manufacturer, SmartCard
 {% endif %}
 
 admin.site.site_header = "{{ cookiecutter.project_name }} Administration"
-admin.site.register(Order, OrderAdmin)
-{% if cookiecutter.products_model == 'commodity' %}
 
+
+@admin.register(Order)
+class OrderAdmin({% if cookiecutter.printable_invoice == 'y' %}PrintInvoiceAdminMixin, {% endif %}{% if cookiecutter.use_sendcloud == 'y' %}SendCloudOrderAdminMixin, {% endif %}{% if cookiecutter.delivery_handling %}DeliveryOrderAdminMixin, {% endif %}OrderAdmin):
+    pass
+
+{% if cookiecutter.products_model == 'commodity' %}
 __all__ = ['commodity', 'customer']
 {%- else %}
 admin.site.register(Manufacturer, admin.ModelAdmin)
@@ -46,7 +57,7 @@ __all__ = ['customer']
 
 
 @admin.register(SmartCard)
-class SmartCardAdmin(SortableAdminMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableAdmin,{% endif %} CMSPageAsCategoryMixin, admin.ModelAdmin):
+class SmartCardAdmin(InvalidateProductCacheMixin, SortableAdminMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableAdmin,{% endif %} CMSPageAsCategoryMixin, {% if cookiecutter.products_model == 'polymorphic' %}PolymorphicChildModelAdmin{% else %}admin.ModelAdmin{% endif %}):
     fieldsets = [
         (None, {
             'fields': ['product_name', 'slug', 'product_code', 'unit_price', 'active'{% if cookiecutter.use_i18n != 'y' %}, 'caption', 'description'{% endif %}],
@@ -69,7 +80,7 @@ class SmartCardAdmin(SortableAdminMixin,{% if cookiecutter.use_i18n == 'y' %} Tr
 
 @admin.register(Commodity)
 class CommodityAdmin(InvalidateProductCacheMixin, SortableAdminMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableAdmin,{% endif %} FrontendEditableAdminMixin,
-                     PlaceholderAdminMixin, CMSPageAsCategoryMixin, admin.ModelAdmin):
+                     PlaceholderAdminMixin, CMSPageAsCategoryMixin, PolymorphicChildModelAdmin):
     """
     Since our Commodity model inherits from polymorphic Product, we have to redefine its admin class.
     """

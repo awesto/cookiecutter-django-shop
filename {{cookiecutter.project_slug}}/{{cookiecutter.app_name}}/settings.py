@@ -26,12 +26,12 @@ BASE_DIR = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR, os.path.pardir))
 
 # Directory where working files, such as media and databases are kept
-WORK_DIR = os.environ.get('DJANGO_WORKDIR', os.path.abspath(os.path.join(PROJECT_ROOT, os.path.pardir, 'workdir')))
+WORK_DIR = os.environ.get('DJANGO_WORKDIR', os.path.abspath(os.path.join(PROJECT_ROOT, 'workdir')))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
-ADMINS = (("The Merchant", 'the.merchant@example.com'),)
+ADMINS = [("The Merchant", 'the.merchant@example.com')]
 
 # SECURITY WARNING: in production, inject the secret key through the environment
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '!!!SET DJANGO_SECRET_KEY!!!')
@@ -103,19 +103,28 @@ INSTALLED_APPS = [
     'menus',
     'treebeard',
     'compressor',
-    'sekizai',
     'sass_processor',
+    'sekizai',
     'django_filters',
     'filer',
     'easy_thumbnails',
     'easy_thumbnails.optimize',
-    {% if cookiecutter.use_i18n == 'y' %}'parler',{% endif %}
+{%- if cookiecutter.use_i18n == 'y' %}
+    'parler',
+{%- endif %}
     'post_office',
     'haystack',
+{%- if cookiecutter.use_paypal == 'y' %}
+    'shop_paypal',
+{%- endif %}
+{%- if cookiecutter.use_stripe == 'y' %}
     'shop_stripe',
+{%- endif %}
+{%- if cookiecutter.use_sendcloud == 'y' %}
     'shop_sendcloud',
+{%- endif %}
     'shop',
-#    'html_email',
+    'html_email',
     '{{ cookiecutter.app_name }}',
 ]
 
@@ -137,16 +146,6 @@ MIDDLEWARE = [
     # 'django.middleware.cache.FetchFromCacheMiddleware',
 ]
 
-{%- if cookiecutter.use_i18n == 'y' %}
-    {%- set shop_tutorial = 'i18n_' + cookiecutter.products_model %}
-{%- else %}
-    {%- set shop_tutorial = cookiecutter.products_model %}
-{%- endif %}
-
-# MIGRATION_MODULES = {
-#     '{{ cookiecutter.app_name }}': '{{ cookiecutter.app_name }}.migrations.{}'.format('{{ shop_tutorial }}')
-# }
-
 ROOT_URLCONF = '{{ cookiecutter.app_name }}.urls'
 
 WSGI_APPLICATION = 'wsgi.application'
@@ -154,7 +153,7 @@ WSGI_APPLICATION = 'wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(WORK_DIR, '{{ shop_tutorial }}', 'db.sqlite3'),
+        'NAME': os.path.join(WORK_DIR, 'db.sqlite3'),
     }
 }
 {%- if cookiecutter.use_docker == 'y' %}
@@ -227,7 +226,7 @@ USE_X_FORWARDED_HOST = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = os.path.join(WORK_DIR, '{{ shop_tutorial }}', 'media')
+MEDIA_ROOT = os.path.join(WORK_DIR, 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -258,7 +257,7 @@ TEMPLATES = [{
     'APP_DIRS': True,
     'DIRS': [],
     'OPTIONS': {
-        'context_processors': (
+        'context_processors': [
             'django.contrib.auth.context_processors.auth',
             'django.template.context_processors.debug',
             'django.template.context_processors.i18n',
@@ -273,23 +272,23 @@ TEMPLATES = [{
             'shop.context_processors.customer',
             'shop.context_processors.shop_settings',
             'shop_stripe.context_processors.public_keys',
-        )
+        ]
     }
-#}, {
-#    'BACKEND': 'html_email.template.backends.html_email.EmailTemplates',
-#    'APP_DIRS': True,
-#    'DIRS': [],
-#    'OPTIONS': {
-#        'context_processors': [
-#            'django.contrib.auth.context_processors.auth',
-#            'django.template.context_processors.debug',
-#            'django.template.context_processors.i18n',
-#            'django.template.context_processors.media',
-#            'django.template.context_processors.static',
-#            'django.template.context_processors.tz',
-#            'django.template.context_processors.request',
-#        ]
-#    }
+}, {
+    'BACKEND': 'html_email.template.backends.html_email.EmailTemplates',
+    'APP_DIRS': True,
+    'DIRS': [],
+    'OPTIONS': {
+        'context_processors': [
+            'django.contrib.auth.context_processors.auth',
+            'django.template.context_processors.debug',
+            'django.template.context_processors.i18n',
+            'django.template.context_processors.media',
+            'django.template.context_processors.static',
+            'django.template.context_processors.tz',
+            'django.template.context_processors.request',
+        ]
+    }
 }]
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -304,7 +303,7 @@ if REDIS_HOST:
         'host': REDIS_HOST,
         'port': 6379,
         'db': 0,
-        'prefix': 'session-{{ shop_tutorial }}',
+        'prefix': 'session-',
         'socket_timeout': 1
     }
 
@@ -360,7 +359,9 @@ LOGGING = {
 
 SILENCED_SYSTEM_CHECKS = ['auth.W004']
 
-FIXTURE_DIRS = [os.path.join(WORK_DIR, '{{ shop_tutorial }}', 'fixtures')]
+FIXTURE_DIRS = [
+    os.path.join(WORK_DIR, 'fixtures'),
+]
 
 ############################################
 # settings for sending mail
@@ -403,8 +404,8 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
     ],
-#    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-#    'PAGE_SIZE': 16,
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'PAGE_SIZE': 16,
 }
 
 REST_AUTH_SERIALIZERS = {
@@ -484,9 +485,10 @@ CMS_PLACEHOLDER_CONF = {
         },
     },
     'Static Footer': {
-        'plugins': ['BootstrapContainerPlugin', ],
+        'plugins': ['BootstrapContainerPlugin', 'BootstrapJumbotronPlugin'],
         'parent_classes': {
             'BootstrapContainerPlugin': None,
+            'BootstrapJumbotronPlugin': None,
         },
     },
 }
@@ -516,6 +518,7 @@ CMSPLUGIN_CASCADE = {
             ('shop/catalog/product-heading.html', _("Product Heading")),
             ('{{ cookiecutter.app_name }}/catalog/manufacturer-filter.html', _("Manufacturer Filter")),
         ],
+        # required to purchase real estate
         'ShopAddToCartPlugin': [
             (None, _("Default")),
             ('{{ cookiecutter.app_name }}/catalog/commodity-add2cart.html', _("Add Commodity to Cart")),
@@ -526,13 +529,13 @@ CMSPLUGIN_CASCADE = {
                                  'image_height', 'resize_options'],
         'BootstrapPicturePlugin': ['image_shapes', 'responsive_heights', 'image_size', 'resize_options'],
     },
-#    'plugins_with_extra_mixins': {
-#        'BootstrapRowPlugin': BootstrapUtilities(BootstrapUtilities.margins),
-#    },
-#     "The translation infrastructure cannot be initialized before the "
-#    django.core.exceptions.AppRegistryNotReady: The translation infrastructure cannot be initialized before the apps registry is ready.
-#    Check that you don't make non-lazy gettext calls at import time.
-#    in variable  choices_format       python3.6/site-packages/cmsplugin_cascade/bootstrap4/mixins.py", line 101, in margins
+    'plugins_with_extra_mixins': {
+        'BootstrapContainerPlugin': BootstrapUtilities(BootstrapUtilities.background_and_color),
+        'BootstrapRowPlugin': BootstrapUtilities(BootstrapUtilities.paddings),
+        'ShopLeftExtension': BootstrapUtilities(BootstrapUtilities.paddings),
+        'ShopRightExtension': BootstrapUtilities(BootstrapUtilities.paddings),
+        'ShopAddToCartPlugin': BootstrapUtilities(BootstrapUtilities.margins),
+    },
     'leaflet': {
         'tilesURL': 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
         'accessToken': 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
@@ -611,13 +614,13 @@ HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://{}:9200/'.format(ELASTICSEARCH_HOST),
-        'INDEX_NAME': '{{ cookiecutter.app_name }}-{{ shop_tutorial }}-en',
+        'INDEX_NAME': '{{ cookiecutter.app_name }}-en',
     },
 {%- if cookiecutter.use_i18n == 'y' %}
     'de': {
         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://{}:9200/'.format(ELASTICSEARCH_HOST),
-        'INDEX_NAME': '{{ cookiecutter.app_name }}-{{ shop_tutorial }}-de',
+        'INDEX_NAME': '{{ cookiecutter.app_name }}-de',
     }
 {% endif -%}
 }
@@ -631,60 +634,59 @@ HAYSTACK_ROUTERS = [
 
 SHOP_VALUE_ADDED_TAX = Decimal(19)
 SHOP_DEFAULT_CURRENCY = 'EUR'
-SHOP_PRODUCT_SUMMARY_SERIALIZER = '{{ cookiecutter.app_name }}.serializers.ProductSummarySerializer'
+SHOP_EDITCART_NG_MODEL_OPTIONS = "{updateOn: 'default blur', debounce: {'default': 2500, 'blur': 0}}"
+
 SHOP_CART_MODIFIERS = [
 {%- if cookiecutter.products_model == 'polymorphic' %}
     '{{ cookiecutter.app_name }}.polymorphic_modifiers.MyShopCartModifier',
 {%- else %}
     'shop.modifiers.defaults.DefaultCartModifier',
 {%- endif %}
+    'shop.modifiers.taxes.CartExcludedTaxModifier',
     '{{ cookiecutter.app_name }}.modifiers.PostalShippingModifier',
+{%- if cookiecutter.use_stripe %}
+    '{{ cookiecutter.app_name }}.modifiers.StripePaymentModifier',
+{%- endif %}
+    'shop.payment.modifiers.PayInAdvanceModifier',
+{%- if cookiecutter.use_sendcloud %}
+    'shop_sendcloud.modifiers.SendcloudShippingModifiers',
+    'shop.modifiers.defaults.WeightedCartModifier',
+{%- endif %}
+    'shop.shipping.modifiers.SelfCollectionModifier',
 ]
-
-SHOP_EDITCART_NG_MODEL_OPTIONS = "{updateOn: 'default blur', debounce: {'default': 2500, 'blur': 0}}"
 
 SHOP_ORDER_WORKFLOWS = [
     'shop.payment.workflows.ManualPaymentWorkflowMixin',
     'shop.payment.workflows.CancelOrderWorkflowMixin',
-{%- if cookiecutter.products_model == 'polymorphic' %}
-    'shop.shipping.worflows.PartialDeliveryWorkflowMixin',
+{%- if cookiecutter.delivery_handling == 'partial' %}
+    'shop.shipping.workflows.PartialDeliveryWorkflowMixin',
+{%- elif cookiecutter.delivery_handling == 'common' %}
+    'shop.shipping.workflows.CommissionGoodsWorkflowMixin',
 {%- else %}
-#    'shop.shipping.workflows.CommissionGoodsWorkflowMixin',
+    'shop.shipping.workflows.SimpleShippingWorkflowMixin',
+{%- endif %}
+{%- if cookiecutter.use_stripe %}
+    'shop_stripe.workflows.OrderWorkflowMixin',
 {%- endif %}
 ]
 
-if 'shop_stripe' in INSTALLED_APPS:
-    SHOP_CART_MODIFIERS.append('{{ cookiecutter.app_name }}.modifiers.StripePaymentModifier')
-    SHOP_ORDER_WORKFLOWS.append('shop_stripe.workflows.OrderWorkflowMixin')
-
-if 'shop_sendcloud' in INSTALLED_APPS:
-    SHOP_CART_MODIFIERS.append('shop_sendcloud.modifiers.SendcloudShippingModifiers')
-    SHOP_ORDER_WORKFLOWS.extend(['shop_sendcloud.workflows.SingularOrderWorkflowMixin',
-                                 'shop.shipping.workflows.CommissionGoodsWorkflowMixin'])
-
-
-SHOP_CART_MODIFIERS.extend([
-    'shop.modifiers.taxes.CartExcludedTaxModifier',
-    '{{ cookiecutter.app_name }}.modifiers.CustomerPickupModifier',
-    'shop.payment.modifiers.PayInAdvanceModifier',
-    'shop.modifiers.defaults.WeightedCartModifier',
-])
-
+{% if cookiecutter.use_stripe -%}
 SHOP_STRIPE = {
     'PUBKEY': 'pk_test_HlEp5oZyPonE21svenqowhXp',
     'APIKEY': 'sk_test_xUdHLeFasmOUDvmke4DHGRDP',
-    'PURCHASE_DESCRIPTION': _("Thanks for purchasing at {{ cookiecutter.app_name }}"),
+    'PURCHASE_DESCRIPTION': _("Thanks for purchasing at {{ cookiecutter.project_name }}"),
 }
 
 SHOP_STRIPE_PREFILL = True
+{%- endif %}
 
+{% if cookiecutter.use_sendcloud -%}
 SHOP_SENDCLOUD = {
     'API_KEY': os.getenv('SENDCLOUD_PUBLIC_KEY'),
     'API_SECRET': os.getenv('SENDCLOUD_SECRET_KEY'),
 }
+{%- endif %}
 
 SHOP_CASCADE_FORMS = {
     'CustomerForm': '{{ cookiecutter.app_name }}.forms.CustomerForm',
 }
-
-SHOP_MANUAL_SHIPPING_ID = False
