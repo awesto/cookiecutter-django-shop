@@ -21,13 +21,13 @@ and [npm](https://www.npmjs.com/get-npm) onto your operating system, for instanc
 on Ubuntu
 
 ```bash
-sudo apt-get install python-cookiecutter pipenv nodejs npm
+sudo apt-get install python-cookiecutter pipenv autopep8 nodejs npm
 ```
 
 on MacOS
 
 ```bash
-sudo brew install cookiecutter pipenv node
+sudo brew install cookiecutter pipenv autopep8 node
 ```
 
 > Note: If `pipenv` is not available through your package manager, try with `pip install pipenv`.

@@ -196,6 +196,19 @@ def set_flags_in_envs_deprecated(
     set_celery_flower_password(production_django_envs_path, value=DEBUG_VALUE if debug else None)
 
 
+def reformat_white_space():
+    try:
+        import autopep8
+    except ImportError:
+        print(WARNING + "Could not find 'autopep8', exceeding whitespace will not be removed!" + TERMINATOR)
+        return
+
+    merchant_dir_path = os.path.abspath("./{{ cookiecutter.app_name }}")
+    args = autopep8.parse_args(['--max-line-length 119', '--in-place', '--recursive'])
+    if os.path.exists(merchant_dir_path):
+        autopep8.fix_multiple_files([merchant_dir_path], args)
+
+
 def main():
     debug = "{{ cookiecutter.debug }}".lower() == "y"
 
@@ -231,6 +244,7 @@ pipenv run ./manage.py loaddata products-media
 pipenv run ./manage.py import_products
 """
     print(HINT + next_steps + TERMINATOR)
+    reformat_white_space()
     print(SUCCESS + "Project initialized, keep up the good work!" + TERMINATOR)
 
 
