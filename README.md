@@ -100,8 +100,9 @@ By answering the Cookiecutter builder with YES to `use_i18n`, multilingual suppo
 only English and German are configured, but this can easily be changed by adopting the LANGUAGE parameters in the
 project's `settings.py`.
 
-By answering the Cookiecutter builder with YES to `use_paypal`, **PayPal** support is added to the project. Currently
-this is not tested, so please be careful.
+By answering the Cookiecutter builder with YES to `use_paypal`, [PayPal](https://www.paypal.com/) support is added to
+the project. You have to apply for PayPal credentials and add them to your environment or into the project's
+`settings.py`.
 
 By answering the Cookiecutter builder with YES to `use_stripe`, [Stripe](https://stripe.com/) support is added to the
 project. Currently you may use the sandbox credentials provided with the demo, but feel free to apply for your own

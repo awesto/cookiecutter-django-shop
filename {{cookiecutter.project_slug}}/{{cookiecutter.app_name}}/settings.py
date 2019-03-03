@@ -644,6 +644,9 @@ SHOP_CART_MODIFIERS = [
 {%- endif %}
     'shop.modifiers.taxes.CartExcludedTaxModifier',
     '{{ cookiecutter.app_name }}.modifiers.PostalShippingModifier',
+{%- if cookiecutter.use_paypal %}
+    'shop_paypal.modifiers.PaymentModifier',
+{%- endif %}
 {%- if cookiecutter.use_stripe %}
     '{{ cookiecutter.app_name }}.modifiers.StripePaymentModifier',
 {%- endif %}
@@ -665,10 +668,23 @@ SHOP_ORDER_WORKFLOWS = [
 {%- else %}
     'shop.shipping.workflows.SimpleShippingWorkflowMixin',
 {%- endif %}
+{%- if cookiecutter.use_paypal %}
+    'shop_paypal.payment.OrderWorkflowMixin',
+{%- endif %}
 {%- if cookiecutter.use_stripe %}
     'shop_stripe.workflows.OrderWorkflowMixin',
 {%- endif %}
 ]
+
+{% if cookiecutter.use_paypal -%}
+SHOP_PAYPAL = {
+    'API_ENDPOINT': 'https://api.sandbox.paypal.com',
+    'MODE': 'sandbox',
+    'CLIENT_ID': os.getenv('PAYPAL_CLIENT_ID'),
+    'CLIENT_SECRET': os.getenv('PAYPAL_CLIENT_SECRET'),
+    'PURCHASE_DESCRIPTION': _("Thanks for purchasing at {{ cookiecutter.project_name }}"),
+}
+{%- endif %}
 
 {% if cookiecutter.use_stripe -%}
 SHOP_STRIPE = {
@@ -677,7 +693,9 @@ SHOP_STRIPE = {
     'PURCHASE_DESCRIPTION': _("Thanks for purchasing at {{ cookiecutter.project_name }}"),
 }
 
+    {%- if cookiecutter.debug == 'y' %}
 SHOP_STRIPE_PREFILL = True
+    {%- endif %}
 {%- endif %}
 
 {% if cookiecutter.use_sendcloud -%}
