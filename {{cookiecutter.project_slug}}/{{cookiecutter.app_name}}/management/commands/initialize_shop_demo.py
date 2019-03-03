@@ -84,3 +84,6 @@ class Command(BaseCommand):
         call_command('download_workdir', interactive=self.interactive)
         call_command('loaddata', 'products-media')
         call_command('import_products')
+{% if cookiecutter.use_sendcloud %}
+        call_command('sendcloud_import')
+{% endif %}
