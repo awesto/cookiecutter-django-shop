@@ -20,7 +20,7 @@ from shop.models.defaults.order import Order
 {%- if cookiecutter.printable_invoice == 'y' %}
 from shop.admin.order import PrintInvoiceAdminMixin
 {%- endif %}
-{%- if cookiecutter.delivery_handling %}
+{%- if cookiecutter.delivery_handling in ['partial', 'common'] %}
 from shop.admin.delivery import DeliveryOrderAdminMixin
 {%- endif %}
 {%- if cookiecutter.use_sendcloud == 'y' %}
@@ -43,7 +43,7 @@ admin.site.site_header = "{{ cookiecutter.project_name }} Administration"
 
 
 @admin.register(Order)
-class OrderAdmin({% if cookiecutter.printable_invoice == 'y' %}PrintInvoiceAdminMixin, {% endif %}{% if cookiecutter.use_sendcloud == 'y' %}SendCloudOrderAdminMixin, {% endif %}{% if cookiecutter.delivery_handling %}DeliveryOrderAdminMixin, {% endif %}OrderAdmin):
+class OrderAdmin({% if cookiecutter.printable_invoice == 'y' %}PrintInvoiceAdminMixin, {% endif %}{% if cookiecutter.use_sendcloud == 'y' %}SendCloudOrderAdminMixin, {% endif %}{% if cookiecutter.delivery_handling in ['partial', 'common'] %}DeliveryOrderAdminMixin, {% endif %}OrderAdmin):
     pass
 
 {% if cookiecutter.products_model == 'commodity' %}

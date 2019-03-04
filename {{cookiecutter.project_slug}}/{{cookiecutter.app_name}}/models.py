@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 {% if cookiecutter.products_model == 'commodity' -%}
 from shop.models.defaults.commodity import Commodity
-    {%- if cookiecutter.delivery_handling %}
+    {%- if cookiecutter.delivery_handling in ['partial', 'common'] %}
 from django.db import models
 from django.utils.translation import ugettext_lazy as _, pgettext_lazy
     {%- endif %}
@@ -29,7 +29,7 @@ from shop.models.product import BaseProduct, BaseProductManager, CMSPageReferenc
 {% endif -%}
 from shop.models.defaults.cart import Cart
 from shop.models.defaults.cart_item import CartItem
-{% if cookiecutter.delivery_handling -%}
+{% if cookiecutter.delivery_handling in ['partial', 'common'] -%}
 from shop.models.order import BaseOrderItem
 from shop.models.defaults.delivery import Delivery
 from shop.models.defaults.delivery_item import DeliveryItem
@@ -42,7 +42,7 @@ from shop_sendcloud.models.address import BillingAddress, ShippingAddress
 from shop_sendcloud.models.customer import Customer
 
 
-{% if cookiecutter.delivery_handling -%}
+{% if cookiecutter.delivery_handling in ['partial', 'common'] -%}
 
 class OrderItem(BaseOrderItem):
     quantity = models.IntegerField(_("Ordered quantity"))

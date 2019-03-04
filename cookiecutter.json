@@ -9,9 +9,9 @@
   "email": "{{ cookiecutter.author_name.lower()|replace(' ', '.') }}@{{ cookiecutter.domain_name }}",
   "version": "1.0.0",
   "timezone": "UTC",
-  "windows": "n",
   "use_pycharm": "n",
-  "use_docker": "n",
+  "dockerize": [
+  ],
   "use_i18n": "y",
   "use_paypal": "n",
   "use_stripe": "y",
@@ -20,7 +20,7 @@
   "delivery_handling": [
     "partial",
     "common",
-    false
+    "n"
   ],
   "products_model": [
     "polymorphic",
@@ -28,6 +28,5 @@
     "commodity"
   ],
   "use_compressor": "n",
-  "keep_local_envs_in_vcs": "y",
   "debug": "n"
 }
