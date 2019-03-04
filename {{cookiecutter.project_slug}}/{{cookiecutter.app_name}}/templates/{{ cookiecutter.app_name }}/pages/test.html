@@ -9,7 +9,7 @@
 	<meta name="robots" content="{{ ROBOTS_META_TAGS }}" />
 	<meta name="description" content="{% block meta-description %}{% endblock %}" />
 	{% block head %}{% endblock head %}
-	{% render_block "css" postprocessor "shop.sekizai_processors.compress" %}
+	{% render_block "css"{% endraw %}{% if cookiecutter.use_compressor == 'y' %} postprocessor "shop.sekizai_processors.compress"{% endif %}{% raw %} %}
 </head>
 
 {% addtoblock "css" %}<link href="{% sass_src {% endraw %}'{{ cookiecutter.app_name }}/css/default.scss'{% raw %} %}" rel="stylesheet" type="text/css" />{% endaddtoblock %}
@@ -32,7 +32,7 @@
 	{% block footer %}{% endblock footer %}
 	</footer>
 
-	{% render_block "js" postprocessor "shop.sekizai_processors.compress" %}
+	{% render_block "js"{% endraw %}{% if cookiecutter.use_compressor == 'y' %} postprocessor "shop.sekizai_processors.compress"{% endif %}{% raw %} %}
 	<script type="text/javascript">
 	angular.module('myShop', ['ngAnimate', 'ngSanitize', {% with_data "ng-requires" as ng_requires %}
 		{% for module in ng_requires %}'{{ module }}'{% if not forloop.last %}, {% endif %}{% endfor %}{% end_with_data %}

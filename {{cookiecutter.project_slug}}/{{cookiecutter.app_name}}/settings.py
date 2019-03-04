@@ -102,7 +102,9 @@ INSTALLED_APPS = [
     'cms',
     'menus',
     'treebeard',
+{%- if cookiecutter.use_compressor == 'y' %}
     'compressor',
+{%- endif %}
     'sass_processor',
     'sekizai',
     'django_filters',
@@ -245,7 +247,9 @@ STATICFILES_FINDERS = [
     '{{ cookiecutter.app_name }}.finders.FileSystemFinder',  # or 'django.contrib.staticfiles.finders.FileSystemFinder',
     '{{ cookiecutter.app_name }}.finders.AppDirectoriesFinder',  # or 'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'sass_processor.finders.CssFinder',
+{%- if cookiecutter.use_compressor == 'y' %}
     'compressor.finders.CompressorFinder',
+{%- endif %}
 ]
 
 STATICFILES_DIRS = [
@@ -293,8 +297,16 @@ TEMPLATES = [{
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-REDIS_HOST = os.getenv('REDIS_HOST')
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    },
+    'select2': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
 
+REDIS_HOST = os.getenv('REDIS_HOST')
 if REDIS_HOST:
     SESSION_ENGINE = 'redis_sessions.session'
     SESSION_SAVE_EVERY_REQUEST = True
@@ -307,23 +319,20 @@ if REDIS_HOST:
         'socket_timeout': 1
     }
 
-    CACHES = {
-        'default': {
-            'BACKEND': 'redis_cache.RedisCache',
-            'LOCATION': 'redis://{}:6379/1'.format(REDIS_HOST),
-             'OPTIONS': {
-                 'PICKLE_VERSION': 2 if six.PY2 else -1,
-             }
-        },
-        'compressor': {
-            'BACKEND': 'redis_cache.RedisCache',
-            'LOCATION': 'redis://{}:6379/2'.format(REDIS_HOST),
-        },
-        'select2': {
-            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-        },
+    CACHES['default'] = {
+        'BACKEND': 'redis_cache.RedisCache',
+        'LOCATION': 'redis://{}:6379/1'.format(REDIS_HOST),
+        'OPTIONS': {
+            'PICKLE_VERSION': 2 if six.PY2 else -1,
+        }
     }
-
+{% if cookiecutter.use_compressor == 'y' %}
+    COMPRESS_CACHE_BACKEND = 'compressor'
+    CACHES[COMPRESS_CACHE_BACKEND] = {
+        'BACKEND': 'redis_cache.RedisCache',
+        'LOCATION': 'redis://{}:6379/2'.format(REDIS_HOST),
+    }
+{% endif %}
     CACHE_MIDDLEWARE_ALIAS = 'default'
     CACHE_MIDDLEWARE_SECONDS = 3600
 
@@ -602,8 +611,6 @@ CKEDITOR_SETTINGS_DESCRIPTION = {
 SELECT2_CSS = 'node_modules/select2/dist/css/select2.min.css'
 SELECT2_JS = 'node_modules/select2/dist/js/select2.min.js'
 
-
-COMPRESS_CACHE_BACKEND = 'compressor'
 
 #############################################
 # settings for full index text search (Haystack)

@@ -6,7 +6,9 @@ name = "pypi"
 [packages]
 django = "<2"
 djangocms-cascade = "*"
+{% if cookiecutter.use_compressor == 'y' -%}
 django-compressor = "*"
+{% endif -%}
 django-allauth = "*"
 django-angular = "*"
 django-filer = "*"

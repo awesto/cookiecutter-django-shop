@@ -18,7 +18,7 @@ class {{ cookiecutter.appName }}(AppConfig):
             os.makedirs(settings.STATIC_ROOT)
         if not os.path.isdir(settings.MEDIA_ROOT):
             os.makedirs(settings.MEDIA_ROOT)
-        if not os.path.isdir(settings.COMPRESS_ROOT):
-            os.makedirs(settings.COMPRESS_ROOT)
+        if hasattr(settings, 'COMPRESS_ROOT') and not os.path.isdir(settings.COMPRESS_ROOT):
+           os.makedirs(settings.COMPRESS_ROOT)
         as_i18n = {% if cookiecutter.use_i18n == 'y' %}" as I18N"{% else %}""{% endif %}
         self.logger.info("Running as {{ cookiecutter.products_model }}{}".format(as_i18n))
