@@ -156,11 +156,11 @@ DATABASES = {
     'default': {
 {%- if cookiecutter.dockerize in ['http', 'uwsgi'] %}
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DATABASE_NAME', 'djangoshop'),
-        'USER': os.getenv('DATABASE_USER', 'djangoshop'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-        'HOST': os.getenv('DATABASE_HOST', 'localhost'),
-        'PORT': os.getenv('DATABASE_PORT', 5432),
+        'NAME': os.getenv('POSTGRES_DB', 'djangoshop'),
+        'USER': os.getenv('POSTGRES_USER', 'djangoshop'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+        'PORT': os.getenv('POSTGRES_PORT', 5432),
 {%- else %}
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(WORK_DIR, 'db.sqlite3'),
