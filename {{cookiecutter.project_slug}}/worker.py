@@ -18,7 +18,7 @@ if __name__ == '__main__':
     # schedule jobs
     schedule.every().minute.do(call_command, 'send_queued_mail')
     rebuild_at = timezone.now() + timezone.timedelta(minutes=6)
-    schedule.every().hour.at(rebuild_at.strftime('*:%M')).do(call_command, 'rebuild_index', interactive=False)
+    schedule.every().hour.at(rebuild_at.strftime(':%M')).do(call_command, 'rebuild_index', interactive=False)
     schedule.every().sunday.do(call_command, 'shopcustomers', delete_expired=True)
 {%- if cookiecutter.use_sendcloud %}
     schedule.every().monday.do(call_command, 'sendcloud_import')
