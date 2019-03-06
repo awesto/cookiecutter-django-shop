@@ -302,10 +302,11 @@ CACHES = {
     }
 }
 
+############################################
+# settings for caching and storing session data
 REDIS_HOST = os.getenv('REDIS_HOST')
 if REDIS_HOST:
     SESSION_ENGINE = 'redis_sessions.session'
-    SESSION_SAVE_EVERY_REQUEST = True
 
     SESSION_REDIS = {
         'host': REDIS_HOST,
@@ -331,6 +332,10 @@ if REDIS_HOST:
 {% endif %}
     CACHE_MIDDLEWARE_ALIAS = 'default'
     CACHE_MIDDLEWARE_SECONDS = 3600
+else:
+    SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+
+SESSION_SAVE_EVERY_REQUEST = True
 
 LOGGING = {
     'version': 1,
@@ -416,13 +421,6 @@ REST_FRAMEWORK = {
 REST_AUTH_SERIALIZERS = {
     'LOGIN_SERIALIZER': 'shop.serializers.auth.LoginSerializer',
 }
-
-############################################
-# settings for storing session data
-
-SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
-SESSION_SAVE_EVERY_REQUEST = True
-
 
 ############################################
 # settings for storing files and images
