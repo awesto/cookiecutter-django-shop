@@ -154,26 +154,22 @@ WSGI_APPLICATION = 'wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(WORK_DIR, 'db.sqlite3'),
-    }
-}
-{%- if cookiecutter.use_docker == 'y' %}
-if os.getenv('DATABASE_ENGINE') == 'django.db.backends.postgresql':
-    DATABASES['default'].update({
+{%- if cookiecutter.dockerize in ['http', 'uwsgi'] %}
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('DATABASE_NAME', 'djangoshop'),
         'USER': os.getenv('DATABASE_USER', 'djangoshop'),
         'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
         'HOST': os.getenv('DATABASE_HOST', 'localhost'),
         'PORT': os.getenv('DATABASE_PORT', 5432),
-    })
+{%- else %}
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(WORK_DIR, 'db.sqlite3'),
 {%- endif %}
-
+    }
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/stable/topics/i18n/
-
 LANGUAGE_CODE = 'en'
 {% if cookiecutter.use_i18n == 'y' %}
 USE_I18N = True
