@@ -10,7 +10,6 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
 from django.utils.translation import ugettext_lazy as _
-from django.utils.six.moves import input
 try:
     import czipfile as zipfile
 except ImportError:
@@ -48,6 +47,7 @@ class Command(BaseCommand):
     def handle(self, verbosity, *args, **options):
         self.set_options(**options)
         self.clear_compressor_cache()
+        call_command('migrate')
         initialize_file = os.path.join(settings.WORK_DIR, '.initialize')
         if os.path.isfile(initialize_file):
             self.stdout.write("Initializing project {{ cookiecutter.app_name }}")

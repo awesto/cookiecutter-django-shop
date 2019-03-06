@@ -28,14 +28,10 @@ COPY docker-files/uwsgi.ini /web/uwsgi.ini
 VOLUME /web/nginx-conf
 COPY docker-files/nginx-vhost.conf /web/nginx-conf/{{ cookiecutter.virtual_host }}
 
-# keep media files in external volume
-VOLUME $DJANGO_WORKDIR
-
 # handle static and files
 ENV DJANGO_STATIC_ROOT=$DJANGO_STATIC_ROOT
 ENV DJANGO_WORKDIR=$DJANGO_WORKDIR
 RUN mkdir -p $DJANGO_STATIC_ROOT/CACHE
-RUN mkdir -p $DJANGO_WORKDIR/{fixtures,media}
 COPY workdir/fixtures/skeleton.json $DJANGO_WORKDIR/fixtures/skeleton.json
 COPY workdir/media/filer_public $DJANGO_WORKDIR/media/filer_public
 COPY workdir/.initialize $DJANGO_WORKDIR/.initialize
@@ -46,3 +42,7 @@ RUN ./manage.py collectstatic --noinput --ignore='*.scss'
 RUN useradd -M -d /web -s /bin/bash django
 RUN chown -R django.django $DJANGO_STATIC_ROOT
 RUN chown -R django.django $DJANGO_WORKDIR
+RUN chown -R django.django /web/{{ cookiecutter.app_name }}/migrations
+
+# keep media files in external volume
+VOLUME $DJANGO_WORKDIR
