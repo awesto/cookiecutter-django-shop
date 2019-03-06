@@ -8,5 +8,6 @@
 !Pipfile
 !README.md
 !requirements.txt
+!workdir
 !worker.py
 !wsgi.py
