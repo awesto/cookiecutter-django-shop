@@ -695,8 +695,8 @@ SHOP_PAYPAL = {
 
 {% if cookiecutter.use_stripe -%}
 SHOP_STRIPE = {
-    'PUBKEY': 'pk_test_HlEp5oZyPonE21svenqowhXp',
-    'APIKEY': 'sk_test_xUdHLeFasmOUDvmke4DHGRDP',
+    'PUBKEY': os.getenv('STRIPE_PUBKEY', 'pk_test_HlEp5oZyPonE21svenqowhXp'),
+    'APIKEY': os.getenv('STRIPE_APIKEY', 'sk_test_xUdHLeFasmOUDvmke4DHGRDP'),
     'PURCHASE_DESCRIPTION': _("Thanks for purchasing at {{ cookiecutter.project_name }}"),
 }
 

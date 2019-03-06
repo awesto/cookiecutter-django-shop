@@ -1,4 +1,4 @@
-version: '2.0'
+version: '2.1'
 
 services:
   postgresdb:
@@ -38,12 +38,29 @@ services:
     restart: always
     build:
       context: .
-      dockerfile: docker-files/Dockerfile
+      dockerfile: docker-files/wsgiapp.dockerfile
     image: {{ cookiecutter.project_slug }}
     env_file:
       - docker-files/databases.environ
+{%- if cookiecutter.use_stripe %}
+      - docker-files/stripe.environ
+{%- endif %}
+{%- if cookiecutter.use_sendcloud %}
+      - docker-files/sendcloud.environ
+{%- endif %}
+    environment:
+      - VIRTUAL_HOST={{ cookiecutter.virtual_host }}
+{%- if cookiecutter.dockerize == 'uwsgi' %}
+      - VIRTUAL_PROTO=uwsgi
+      - LETSENCRYPT_HOST={{ cookiecutter.virtual_host }}
+      - LETSENCRYPT_EMAIL={{ cookiecutter.email }}
+{%- endif %}
+      - DJANGO_SETTINGS_MODULE={{ cookiecutter.app_name }}.settings
     volumes:
       - shopmedia:/web/workdir
+{%- if cookiecutter.dockerize == 'uwsgi' %}
+      - nginxproxy_nginxvhostd:/web/nginx-conf
+{%- endif %}
     command: uwsgi --ini uwsgi.ini
     depends_on:
       - postgresdb
@@ -51,8 +68,14 @@ services:
       - elasticsearch
     networks:
       - shopnet
+{%- if cookiecutter.dockerize == 'uwsgi' %}
+      - nginx-proxy
+    expose:
+      - 9009
+{%- else %}
     ports:
       - 9009:9009
+{%- endif %}
 
   worker:
     restart: always
@@ -73,9 +96,17 @@ services:
 
 networks:
   shopnet:
+{%- if cookiecutter.dockerize == 'uwsgi' %}
+  nginx-proxy:
+    external: true
+{%- endif %}
 
 volumes:
   pgdata:
   redisdata:
   shopmedia:
   esdata:
+{%- if cookiecutter.dockerize == 'uwsgi' %}
+  nginxproxy_nginxvhostd:
+    external: true
+{%- endif %}

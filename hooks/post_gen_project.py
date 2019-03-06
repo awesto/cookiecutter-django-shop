@@ -218,7 +218,7 @@ def main():
         remove_pycharm_files()
 
     next_steps = "Next steps to perform:"
-    if "{{ cookiecutter.use_docker }}".lower() == "y":
+    if "{{ cookiecutter.dockerize }}" in ['http', 'uwsgi']:
         pipenv_to_requirements()
         set_database_password("docker-files/databases.environ")
         next_steps += """

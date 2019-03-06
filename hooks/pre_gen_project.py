@@ -27,7 +27,7 @@ if hasattr(app_name, "isidentifier"):
 assert "\\" not in "{{ cookiecutter.author_name }}", "Don't include backslashes in author name."
 
 
-if "{{ cookiecutter.use_docker }}".lower() == "n":
+if "{{ cookiecutter.dockerize }}" in ['http', 'uwsgi']:
     python_major_version = sys.version_info[0]
     if python_major_version == 2:
         print(

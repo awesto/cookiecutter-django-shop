@@ -18,44 +18,26 @@ author_name:
 email:
     The email address you want to identify yourself in the project.
 
-domain_name:
+virtual_host:
     The domain name you plan to use for your project once it goes live.
     Note that it can be safely changed later on whenever you need to.
 
 version:
     The version of the project at its inception.
 
-open_source_license:
-    A software license for the project. The choices are:
-
-    1. MIT_
-    2. BSD_
-    3. GPLv3_
-    4. `Apache Software License 2.0`_
-    5. Not open source
-
 timezone:
     The value to be used for the ``TIME_ZONE`` setting of the project.
-
-windows:
-    Indicates whether the project should be configured for development on Windows.
 
 use_pycharm:
     Indicates whether the project should be configured for development with PyCharm_.
 
-use_docker:
+dockerize:
     Indicates whether the project should be configured to use Docker_ and `Docker Compose`_.
+    The choices are:
 
-postgresql_version:
-    Select a PostgreSQL_ version to use. The choices are:
-
-    1. 10.3
-    2. 10.2
-    3. 10.1
-    4. 9.6
-    5. 9.5
-    6. 9.4
-    7. 9.3
+    1. Do not use Docker.
+    2. Use Docker serving HTTP.
+    2. Use Docker behind NGiNX serving uwsgi.
 
 use_i18n:
     Indicates whether the project should be configured to use `Django Parler`_,
@@ -64,35 +46,10 @@ use_i18n:
 use_compressor:
     Indicates whether the project should be configured to use `Django Compressor`_.
 
-use_celery:
-    Indicates whether the project should be configured to use Celery_.
-
-use_mailhog:
-    Indicates whether the project should be configured to use MailHog_.
-
-use_sentry:
-    Indicates whether the project should be configured to use Sentry_.
-
-use_whitenoise:
-    Indicates whether the project should be configured to use WhiteNoise_.
-
-use_travisci:
-    Indicates whether the project should be configured to use `Travis CI`_.
-
-keep_local_envs_in_vcs:
-    Indicates whether the project's ``.envs/.local/`` should be kept in VCS
-    (comes in handy when working in teams where local environment reproducibility
-    is strongly encouraged).
-
 debug:
     Indicates whether the project should be configured for debugging.
     This option is relevant for Cookiecutter Django developers only.
 
-
-.. _MIT: https://opensource.org/licenses/MIT
-.. _BSD: https://opensource.org/licenses/BSD-3-Clause
-.. _GPLv3: https://www.gnu.org/licenses/gpl.html
-.. _Apache Software License 2.0: http://www.apache.org/licenses/LICENSE-2.0
 
 .. _PyCharm: https://www.jetbrains.com/pycharm/
 
@@ -101,18 +58,4 @@ debug:
 
 .. _PostgreSQL: https://www.postgresql.org/docs/
 
-.. _Gulp: https://github.com/gulpjs/gulp
-
 .. _Django Compressor: https://github.com/django-compressor/django-compressor
-
-.. _Celery: https://github.com/celery/celery
-
-.. _MailHog: https://github.com/mailhog/MailHog
-
-.. _Sentry: https://github.com/getsentry/sentry
-
-.. _WhiteNoise: https://github.com/evansd/whitenoise
-
-.. _Heroku: https://github.com/heroku/heroku-buildpack-python
-
-.. _Travis CI: https://travis-ci.org/
