@@ -38,8 +38,13 @@ from shop.models.defaults.order_item import OrderItem
 {% endif -%}
 from shop.models.defaults.order import Order
 from shop.models.defaults.mapping import ProductPage, ProductImage
+{% if cookiecutter.use_sendcloud == 'y' -%}
 from shop_sendcloud.models.address import BillingAddress, ShippingAddress
 from shop_sendcloud.models.customer import Customer
+{% else -%}
+from shop.models.defaults.address import BillingAddress, ShippingAddress
+from shop.models.defaults.customer import Customer
+{% endif -%}
 
 
 {% if cookiecutter.delivery_handling in ['partial', 'common'] -%}
