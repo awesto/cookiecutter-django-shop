@@ -63,7 +63,7 @@ pipenv run ./manage.py runserver
 After the above job has finished, point a browser onto http://localhost:8000/ and login with user
 *admin* and password *secret*.
 
-This demo uses SQLite as its database. It does neither support caching, nor full text searches.
+This demo uses SQLite as its database. It neither supports caching, nor full text searches.
 
 
 ## Run django-SHOP demo in Docker
