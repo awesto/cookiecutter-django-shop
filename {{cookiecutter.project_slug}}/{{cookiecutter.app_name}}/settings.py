@@ -645,14 +645,14 @@ SHOP_CART_MODIFIERS = [
 {%- endif %}
     'shop.modifiers.taxes.CartExcludedTaxModifier',
     '{{ cookiecutter.app_name }}.modifiers.PostalShippingModifier',
-{%- if cookiecutter.use_paypal %}
+{%- if cookiecutter.use_paypal == 'y' %}
     'shop_paypal.modifiers.PaymentModifier',
 {%- endif %}
-{%- if cookiecutter.use_stripe %}
+{%- if cookiecutter.use_stripe == 'y' %}
     '{{ cookiecutter.app_name }}.modifiers.StripePaymentModifier',
 {%- endif %}
     'shop.payment.modifiers.PayInAdvanceModifier',
-{%- if cookiecutter.use_sendcloud %}
+{%- if cookiecutter.use_sendcloud == 'y' %}
     'shop_sendcloud.modifiers.SendcloudShippingModifiers',
     'shop.modifiers.defaults.WeightedCartModifier',
 {%- endif %}
@@ -669,15 +669,15 @@ SHOP_ORDER_WORKFLOWS = [
 {%- else %}
     'shop.shipping.workflows.SimpleShippingWorkflowMixin',
 {%- endif %}
-{%- if cookiecutter.use_paypal %}
+{%- if cookiecutter.use_paypal == 'y' %}
     'shop_paypal.payment.OrderWorkflowMixin',
 {%- endif %}
-{%- if cookiecutter.use_stripe %}
+{%- if cookiecutter.use_stripe == 'y' %}
     'shop_stripe.workflows.OrderWorkflowMixin',
 {%- endif %}
 ]
 
-{% if cookiecutter.use_paypal -%}
+{% if cookiecutter.use_paypal == 'y' -%}
 SHOP_PAYPAL = {
     'API_ENDPOINT': 'https://api.sandbox.paypal.com',
     'MODE': 'sandbox',
@@ -687,7 +687,7 @@ SHOP_PAYPAL = {
 }
 {%- endif %}
 
-{% if cookiecutter.use_stripe -%}
+{% if cookiecutter.use_stripe == 'y' -%}
 SHOP_STRIPE = {
     'PUBKEY': os.getenv('STRIPE_PUBKEY', 'pk_test_HlEp5oZyPonE21svenqowhXp'),
     'APIKEY': os.getenv('STRIPE_APIKEY', 'sk_test_xUdHLeFasmOUDvmke4DHGRDP'),
@@ -699,7 +699,7 @@ SHOP_STRIPE_PREFILL = True
     {%- endif %}
 {%- endif %}
 
-{% if cookiecutter.use_sendcloud -%}
+{% if cookiecutter.use_sendcloud == 'y' -%}
 SHOP_SENDCLOUD = {
     'API_KEY': os.getenv('SENDCLOUD_PUBLIC_KEY'),
     'API_SECRET': os.getenv('SENDCLOUD_SECRET_KEY'),
