@@ -31,6 +31,7 @@ class Command(BaseCommand):
     def set_options(self, **options):
         self.interactive = options['interactive']
 
+{% if cookiecutter.use_compressor == 'y' -%}
     def clear_compressor_cache(self):
         from django.core.cache import caches
         from django.core.cache.backends.base import InvalidCacheBackendError
@@ -43,10 +44,13 @@ class Command(BaseCommand):
             caches['compressor'].clear()
         except InvalidCacheBackendError:
             pass
+{%- endif %}
 
     def handle(self, verbosity, *args, **options):
         self.set_options(**options)
+{%- if cookiecutter.use_compressor == 'y' %}
         self.clear_compressor_cache()
+{%- endif %}
         call_command('migrate')
         initialize_file = os.path.join(settings.WORK_DIR, '.initialize')
         if os.path.isfile(initialize_file):
