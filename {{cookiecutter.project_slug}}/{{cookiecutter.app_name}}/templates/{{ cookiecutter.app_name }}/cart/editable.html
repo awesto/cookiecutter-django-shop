@@ -1,0 +1,17 @@
+{{ '{%' }} extends "shop/cart/editable.html" {{ '%}' }}
+
+{%- if cookiecutter.products_model == 'commodity' %}{% raw %}
+
+{% block shop-cart-item-input %}
+<div class="col">
+	<div class="text-nowrap text-right mb-1 lead">
+		<div ng-bind="cart_item.unit_price"></div>
+	</div>
+	<div class="row text-muted text-nowrap mb-1" ng-repeat="extra_row in cart_item.extra_rows">
+		<div class="col text-right" ng-bind="extra_row.label"></div>
+		<div class="col text-right" ng-bind="extra_row.amount"></div>
+	</div>
+</div>
+{% endblock %}
+
+{% endraw %}{%- endif -%}
