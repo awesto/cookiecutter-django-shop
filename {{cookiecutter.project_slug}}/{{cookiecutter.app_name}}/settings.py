@@ -638,13 +638,11 @@ SHOP_DEFAULT_CURRENCY = 'EUR'
 SHOP_EDITCART_NG_MODEL_OPTIONS = "{updateOn: 'default blur', debounce: {'default': 2500, 'blur': 0}}"
 
 SHOP_CART_MODIFIERS = [
-{%- if cookiecutter.products_model == 'polymorphic' %}
-    '{{ cookiecutter.app_name }}.polymorphic_modifiers.MyShopCartModifier',
-{%- else %}
-    'shop.modifiers.defaults.DefaultCartModifier',
-{%- endif %}
+    '{{ cookiecutter.app_name }}.modifiers.PrimaryCartModifier',
     'shop.modifiers.taxes.CartExcludedTaxModifier',
+{%- if cookiecutter.products_model != 'commodity' %}
     '{{ cookiecutter.app_name }}.modifiers.PostalShippingModifier',
+{%- endif %}
 {%- if cookiecutter.use_paypal == 'y' %}
     'shop_paypal.modifiers.PaymentModifier',
 {%- endif %}
