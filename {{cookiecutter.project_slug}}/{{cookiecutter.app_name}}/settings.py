@@ -126,7 +126,6 @@ INSTALLED_APPS = [
     'shop_sendcloud',
 {%- endif %}
     'shop',
-    'html_email',
     '{{ cookiecutter.app_name }}',
 ]
 
@@ -271,11 +270,13 @@ TEMPLATES = [{
             'cms.context_processors.cms_settings',
             'shop.context_processors.customer',
             'shop.context_processors.shop_settings',
+{%- if cookiecutter.use_stripe == 'y' %}
             'shop_stripe.context_processors.public_keys',
+{%- endif %}
         ]
     }
 }, {
-    'BACKEND': 'html_email.template.backends.html_email.EmailTemplates',
+    'BACKEND': 'post_office.template.backends.html_email.EmailTemplates',
     'APP_DIRS': True,
     'DIRS': [],
     'OPTIONS': {
@@ -290,6 +291,10 @@ TEMPLATES = [{
         ]
     }
 }]
+
+POST_OFFICE = {
+    'TEMPLATE_ENGINE': 'html_email',
+}
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
