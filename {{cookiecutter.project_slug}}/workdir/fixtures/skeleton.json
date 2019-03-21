@@ -1,4 +1,4 @@
-[
+{% raw %}[
 {
   "model": "cmsplugin_cascade.cascadeclipboard",
   "pk": 25,
@@ -364,4 +364,4 @@
     ]
   }
 }
-]
+]{% endraw %}
