@@ -92,7 +92,7 @@
   "pk": 37,
   "fields": {
     "identifier": "register-customer",
-    "data": "{\"plugins\":[[\"BootstrapContainerPlugin\",{\"glossary\":{\"media_queries\":{\"xs\":[\"(max-width: 768px)\"],\"md\":[\"(min-width: 992px)\",\"(max-width: 1200px)\"],\"sm\":[\"(min-width: 768px)\",\"(max-width: 992px)\"],\"lg\":[\"(min-width: 1200px)\"]},\"container_max_widths\":{\"xs\":750,\"md\":970,\"sm\":750,\"lg\":1170},\"breakpoints\":[\"xs\",\"sm\",\"md\",\"lg\"],\"hide_plugin\":\"\",\"fluid\":\"\"},\"pk\":21797},[[\"BootstrapRowPlugin\",{\"glossary\":{\"extra_css_classes\":[],\"hide_plugin\":\"\",\"extra_inline_styles:Margins\":{\"margin-top\":\"\",\"margin-bottom\":\"\"}},\"pk\":21798},[[\"BootstrapColumnPlugin\",{\"glossary\":{\"xs-column-width\":\"col\",\"sm-column-width\":\"col-sm-10\",\"md-column-width\":\"col-md-8\",\"lg-column-width\":\"\",\"xs-column-offset\":\"\",\"sm-column-offset\":\"offset-sm-1\",\"md-column-offset\":\"offset-md-2\",\"lg-column-offset\":\"\",\"xs-column-ordering\":\"\",\"sm-column-ordering\":\"\",\"md-column-ordering\":\"\",\"lg-column-ordering\":\"\",\"xs-responsive-utils\":\"\",\"sm-responsive-utils\":\"\",\"md-responsive-utils\":\"\",\"lg-responsive-utils\":\"\",\"hide_plugin\":\"\",\"container_max_widths\":{\"xs\":720.0,\"md\":616.67,\"sm\":595.0,\"lg\":750.0}},\"pk\":21799},[[\"ShopAuthenticationPlugin\",{\"glossary\":{\"form_type\":\"register-user\",\"link\":{\"pk\":37,\"model\":\"cms.Page\",\"type\":\"cmspage\",\"section\":\"\"},\"hide_plugin\":\"\"},\"pk\":21800},[]]]]]]]]]}"
+    "data": "{\"plugins\":[[\"BootstrapContainerPlugin\",{\"glossary\":{\"media_queries\":{\"xs\":[\"(max-width: 768px)\"],\"md\":[\"(min-width: 992px)\",\"(max-width: 1200px)\"],\"sm\":[\"(min-width: 768px)\",\"(max-width: 992px)\"],\"lg\":[\"(min-width: 1200px)\"]},\"container_max_widths\":{\"xs\":750,\"md\":970,\"sm\":750,\"lg\":1170},\"breakpoints\":[\"xs\",\"sm\",\"md\",\"lg\"],\"hide_plugin\":\"\",\"fluid\":\"\"},\"pk\":958},[[\"BootstrapRowPlugin\",{\"glossary\":{\"extra_css_classes\":[],\"hide_plugin\":\"\",\"extra_inline_styles:Margins\":{\"margin-top\":\"\",\"margin-bottom\":\"\"}},\"pk\":959},[[\"BootstrapColumnPlugin\",{\"glossary\":{\"xs-column-width\":\"col\",\"sm-column-width\":\"col-sm-10\",\"md-column-width\":\"col-md-8\",\"lg-column-width\":\"\",\"xs-column-offset\":\"\",\"sm-column-offset\":\"offset-sm-1\",\"md-column-offset\":\"offset-md-2\",\"lg-column-offset\":\"\",\"xs-column-ordering\":\"\",\"sm-column-ordering\":\"\",\"md-column-ordering\":\"\",\"lg-column-ordering\":\"\",\"xs-responsive-utils\":\"\",\"sm-responsive-utils\":\"\",\"md-responsive-utils\":\"\",\"lg-responsive-utils\":\"\",\"hide_plugin\":\"\",\"container_max_widths\":{\"xs\":720.0,\"md\":616.67,\"sm\":595.0,\"lg\":750.0}},\"pk\":960},[[\"ShopAuthenticationPlugin\",{\"glossary\":{\"hide_plugin\":\"\",\"link\":{\"type\":\"cmspage\",\"model\":\"cms.Page\",\"pk\":26,\"section\":\"\"},\"form_type\":\"register-user\"},\"pk\":961},[]]]]]]]]]}"
   }
 },
 {
@@ -100,7 +100,7 @@
   "pk": 38,
   "fields": {
     "identifier": "change-password",
-    "data": "{\"plugins\":[[\"BootstrapContainerPlugin\",{\"glossary\":{\"breakpoints\":[\"xs\",\"sm\",\"md\",\"lg\",\"xl\"],\"fluid\":null},\"pk\":21806},[[\"BootstrapRowPlugin\",{\"glossary\":{},\"pk\":21807},[[\"BootstrapColumnPlugin\",{\"glossary\":{\"xs-column-width\":\"col-12\",\"sm-column-width\":\"\",\"md-column-width\":\"col-md-10\",\"lg-column-width\":\"\",\"xl-column-width\":\"\",\"xs-column-offset\":\"\",\"sm-column-offset\":\"\",\"md-column-offset\":\"offset-md-1\",\"lg-column-offset\":\"\",\"xl-column-offset\":\"\",\"xs-column-ordering\":\"\",\"sm-column-ordering\":\"\",\"md-column-ordering\":\"\",\"lg-column-ordering\":\"\",\"xl-column-ordering\":\"\",\"xs-responsive-utils\":\"\",\"sm-responsive-utils\":\"\",\"md-responsive-utils\":\"\",\"lg-responsive-utils\":\"\",\"xl-responsive-utils\":\"\",\"hide_plugin\":\"\"},\"pk\":21808},[[\"ShopAuthenticationPlugin\",{\"glossary\":{\"form_type\":\"password-change\"},\"pk\":21809},[]]]]]]]]]}"
+    "data": "{\"plugins\":[[\"BootstrapContainerPlugin\",{\"glossary\":{\"breakpoints\":[\"xs\",\"sm\",\"md\",\"lg\",\"xl\"],\"fluid\":null},\"pk\":972},[[\"BootstrapRowPlugin\",{\"glossary\":{},\"pk\":973},[[\"BootstrapColumnPlugin\",{\"glossary\":{\"xs-column-width\":\"col-12\",\"sm-column-width\":\"\",\"md-column-width\":\"col-md-10\",\"lg-column-width\":\"\",\"xl-column-width\":\"\",\"xs-column-offset\":\"\",\"sm-column-offset\":\"\",\"md-column-offset\":\"offset-md-1\",\"lg-column-offset\":\"\",\"xl-column-offset\":\"\",\"xs-column-ordering\":\"\",\"sm-column-ordering\":\"\",\"md-column-ordering\":\"\",\"lg-column-ordering\":\"\",\"xl-column-ordering\":\"\",\"xs-responsive-utils\":\"\",\"sm-responsive-utils\":\"\",\"md-responsive-utils\":\"\",\"lg-responsive-utils\":\"\",\"xl-responsive-utils\":\"\",\"hide_plugin\":\"\"},\"pk\":974},[[\"ShopAuthenticationPlugin\",{\"glossary\":{\"hide_plugin\":\"\",\"link\":{\"type\":\"cmspage\",\"model\":\"cms.Page\",\"pk\":26,\"section\":\"\"},\"form_type\":\"password-change\"},\"pk\":975},[]]]]]]]]]}"
   }
 },
 {
@@ -108,7 +108,7 @@
   "pk": 39,
   "fields": {
     "identifier": "request-password-reset",
-    "data": "{\"plugins\":[[\"BootstrapContainerPlugin\",{\"glossary\":{\"breakpoints\":[\"xs\",\"sm\",\"md\",\"lg\",\"xl\"],\"fluid\":\"\",\"background_and_color\":\"\",\"hide_plugin\":\"\",\"container_max_widths\":{\"xs\":750,\"md\":970,\"sm\":750,\"lg\":1170},\"media_queries\":{\"xs\":[\"(max-width: 768px)\"],\"md\":[\"(min-width: 992px)\",\"(max-width: 1200px)\"],\"sm\":[\"(min-width: 768px)\",\"(max-width: 992px)\"],\"lg\":[\"(min-width: 1200px)\"]}},\"pk\":21825},[[\"BootstrapRowPlugin\",{\"glossary\":{\"extra_css_classes\":[],\"hide_plugin\":\"\",\"extra_inline_styles:Margins\":{\"margin-top\":\"\",\"margin-bottom\":\"\"}},\"pk\":21826},[[\"BootstrapColumnPlugin\",{\"glossary\":{\"xs-column-width\":\"col-12\",\"sm-column-width\":\"\",\"md-column-width\":\"col-md-10\",\"lg-column-width\":\"\",\"xl-column-width\":\"\",\"xs-column-offset\":\"\",\"sm-column-offset\":\"\",\"md-column-offset\":\"offset-md-1\",\"lg-column-offset\":\"\",\"xl-column-offset\":\"\",\"xs-column-ordering\":\"\",\"sm-column-ordering\":\"\",\"md-column-ordering\":\"\",\"lg-column-ordering\":\"\",\"xl-column-ordering\":\"\",\"xs-responsive-utils\":\"\",\"sm-responsive-utils\":\"\",\"md-responsive-utils\":\"\",\"lg-responsive-utils\":\"\",\"xl-responsive-utils\":\"\",\"hide_plugin\":\"\",\"container_max_widths\":{\"xs\":720.0,\"md\":616.67,\"sm\":595.0,\"lg\":750.0}},\"pk\":21827},[[\"ShopAuthenticationPlugin\",{\"glossary\":{\"hide_plugin\":\"\",\"link\":{\"type\":\"cmspage\",\"model\":\"cms.Page\",\"pk\":78,\"section\":\"\"},\"form_type\":\"password-reset-request\"},\"pk\":21828},[]]]]]]]]]}"
+    "data": "{\"plugins\":[[\"BootstrapContainerPlugin\",{\"glossary\":{\"media_queries\":{\"xs\":[\"(max-width: 768px)\"],\"md\":[\"(min-width: 992px)\",\"(max-width: 1200px)\"],\"sm\":[\"(min-width: 768px)\",\"(max-width: 992px)\"],\"lg\":[\"(min-width: 1200px)\"]},\"container_max_widths\":{\"xs\":750,\"md\":970,\"sm\":750,\"lg\":1170},\"breakpoints\":[\"xs\",\"sm\",\"md\",\"lg\"],\"hide_plugin\":\"\",\"fluid\":\"\"},\"pk\":958},[[\"BootstrapRowPlugin\",{\"glossary\":{\"extra_css_classes\":[],\"hide_plugin\":\"\",\"extra_inline_styles:Margins\":{\"margin-top\":\"\",\"margin-bottom\":\"\"}},\"pk\":959},[[\"BootstrapColumnPlugin\",{\"glossary\":{\"xs-column-width\":\"col\",\"sm-column-width\":\"col-sm-10\",\"md-column-width\":\"col-md-8\",\"lg-column-width\":\"\",\"xs-column-offset\":\"\",\"sm-column-offset\":\"offset-sm-1\",\"md-column-offset\":\"offset-md-2\",\"lg-column-offset\":\"\",\"xs-column-ordering\":\"\",\"sm-column-ordering\":\"\",\"md-column-ordering\":\"\",\"lg-column-ordering\":\"\",\"xs-responsive-utils\":\"\",\"sm-responsive-utils\":\"\",\"md-responsive-utils\":\"\",\"lg-responsive-utils\":\"\",\"hide_plugin\":\"\",\"container_max_widths\":{\"xs\":720.0,\"md\":616.67,\"sm\":595.0,\"lg\":750.0}},\"pk\":960},[[\"ShopAuthenticationPlugin\",{\"glossary\":{\"hide_plugin\":\"\",\"link\":{\"type\":\"cmspage\",\"model\":\"cms.Page\",\"pk\":26,\"section\":\"\"},\"form_type\":\"register-user\"},\"pk\":961},[]]]]]]]]]}"
   }
 },
 {
@@ -116,7 +116,7 @@
   "pk": 40,
   "fields": {
     "identifier": "confirm-password-reset",
-    "data": "{\"plugins\":[[\"BootstrapContainerPlugin\",{\"glossary\":{\"breakpoints\":[\"xs\",\"sm\",\"md\",\"lg\",\"xl\"],\"fluid\":\"\",\"padding_xs\":\"\",\"padding_sm\":\"\",\"padding_md\":\"\",\"padding_lg\":\"\",\"hide_plugin\":\"\"},\"pk\":21839},[[\"BootstrapRowPlugin\",{\"glossary\":{\"hide_plugin\":\"\"},\"pk\":21840},[[\"BootstrapColumnPlugin\",{\"glossary\":{\"xs-column-width\":\"col\",\"sm-column-width\":\"\",\"md-column-width\":\"col-md-10\",\"lg-column-width\":\"\",\"xl-column-width\":\"\",\"xs-column-offset\":\"\",\"sm-column-offset\":\"\",\"md-column-offset\":\"offset-md-1\",\"lg-column-offset\":\"\",\"xl-column-offset\":\"\",\"xs-column-ordering\":\"\",\"sm-column-ordering\":\"\",\"md-column-ordering\":\"\",\"lg-column-ordering\":\"\",\"xl-column-ordering\":\"\",\"xs-responsive-utils\":\"\",\"sm-responsive-utils\":\"\",\"md-responsive-utils\":\"\",\"lg-responsive-utils\":\"\",\"xl-responsive-utils\":\"\",\"hide_plugin\":\"\"},\"pk\":21841},[[\"SegmentPlugin\",{\"glossary\":{\"open_tag\":\"if\",\"condition\":\"data.validlink\"},\"pk\":21842},[[\"ShopAuthenticationPlugin\",{\"glossary\":{\"hide_plugin\":\"\",\"link\":{\"type\":\"cmspage\",\"model\":\"cms.Page\",\"pk\":78,\"section\":\"\"},\"form_type\":\"password-reset-confirm\"},\"pk\":21843},[]]]],[\"SegmentPlugin\",{\"glossary\":{\"open_tag\":\"else\",\"condition\":\"\"},\"pk\":21844},[[\"BootstrapCardPlugin\",{\"glossary\":{\"header\":\"Password reset unsuccessful\",\"body_padding\":\"on\",\"footer\":\"\",\"background_and_color\":\"\",\"margins_xs\":\"\",\"margins_sm\":\"\",\"margins_md\":\"\",\"margins_lg\":\"\",\"hide_plugin\":\"\"},\"pk\":21845},[[\"TextPlugin\",{\"body\":\"<p>The password reset link was invalid, possibly because it has already been used.</p>\\n\\n<p>Please request a <cms-plugin alt=\\\"Link - new password reset \\\" title=\\\"Link - new password reset\\\" id=\\\"21847\\\"></cms-plugin>.</p>\",\"pk\":21846},[[\"TextLinkPlugin\",{\"glossary\":{\"target\":\"\",\"title\":\"\",\"render_template\":\"cascade/link/text-link.html\",\"link\":{\"type\":\"cmspage\",\"model\":\"cms.Page\",\"pk\":71,\"section\":\"\"},\"link_content\":\"new password reset\"},\"pk\":21847},[]]]]]]]]]]]]]]]}"
+    "data": "{\"plugins\":[[\"BootstrapContainerPlugin\",{\"glossary\":{\"breakpoints\":[\"xs\",\"sm\",\"md\",\"lg\",\"xl\"],\"fluid\":null},\"pk\":972},[[\"BootstrapRowPlugin\",{\"glossary\":{},\"pk\":973},[[\"BootstrapColumnPlugin\",{\"glossary\":{\"xs-column-width\":\"col-12\",\"sm-column-width\":\"\",\"md-column-width\":\"col-md-10\",\"lg-column-width\":\"\",\"xl-column-width\":\"\",\"xs-column-offset\":\"\",\"sm-column-offset\":\"\",\"md-column-offset\":\"offset-md-1\",\"lg-column-offset\":\"\",\"xl-column-offset\":\"\",\"xs-column-ordering\":\"\",\"sm-column-ordering\":\"\",\"md-column-ordering\":\"\",\"lg-column-ordering\":\"\",\"xl-column-ordering\":\"\",\"xs-responsive-utils\":\"\",\"sm-responsive-utils\":\"\",\"md-responsive-utils\":\"\",\"lg-responsive-utils\":\"\",\"xl-responsive-utils\":\"\",\"hide_plugin\":\"\"},\"pk\":974},[[\"ShopAuthenticationPlugin\",{\"glossary\":{\"hide_plugin\":\"\",\"link\":{\"type\":\"cmspage\",\"model\":\"cms.Page\",\"pk\":26,\"section\":\"\"},\"form_type\":\"password-change\"},\"pk\":975},[]]]]]]]]]}"
   }
 },
 {
@@ -302,6 +302,66 @@
     "rght": 2,
     "tree_id": 5,
     "level": 0
+  }
+},
+{
+  "model": "post_office.emailtemplate",
+  "pk": 1,
+  "fields": {
+    "name": "Order confirmation awaiting forward fund",
+    "description": "",
+    "created": "2019-03-20T12:10:19.821Z",
+    "last_updated": "2019-03-21T07:44:18.675Z",
+    "subject": "Order confirmation at MySHOP {{ order.number }}",
+    "content": "",
+    "html_content": "{% extends \"shop/email/base.html\" %}\r\n\r\n{% block email-title %}Thanks for purchasing at MySHOP{% endblock %}\r\n\r\n{% block email-head %}\r\n  {{ block.super }}\r\n  <p>To proceed with your order, please transfer {{ order.total }} onto our bank account:</p>\r\n  <pre>\r\nMySHOP\r\nIBAN: DE1234567890\r\n  </pre>\r\n  <p>As payment reference, please use {{ order.number }}.</p>\r\n{% endblock %}\r\n\r\n{% block email-body %}\r\n  {% include \"shop/email/order-detail.html\" %}\r\n  {% include \"shop/email/customer-information.html\" %}\r\n{% endblock %}",
+    "language": "",
+    "default_template": null
+  }
+},
+{
+  "model": "post_office.emailtemplate",
+  "pk": 2,
+  "fields": {
+    "name": "Order delivered",
+    "description": "",
+    "created": "2019-03-21T07:42:31.166Z",
+    "last_updated": "2019-03-21T07:44:47.945Z",
+    "subject": "Your order {{ order.number }} at MySHOP has been delivered",
+    "content": "",
+    "html_content": "{% extends \"shop/email/base.html\" %}\r\n\r\n{% block email-title %}Your order at MySHOP has been delivered{% endblock %}\r\n\r\n{% block email-head %}\r\n  {{ block.super }}\r\n {% endblock %}\r\n\r\n{% block email-body %}\r\n  {% include \"shop/email/order-detail.html\" %}\r\n  {% include \"shop/email/customer-information.html\" %}\r\n{% endblock %}",
+    "language": "",
+    "default_template": null
+  }
+},
+{
+  "model": "shop.notification",
+  "pk": 1,
+  "fields": {
+    "name": "Order confirmation awaiting forward fund",
+    "transition_target": "awaiting_payment",
+    "notify": "CUSTOMER",
+    "recipient": null,
+    "mail_template": [
+      "Order confirmation awaiting forward fund",
+      "",
+      null
+    ]
+  }
+},
+{
+  "model": "shop.notification",
+  "pk": 2,
+  "fields": {
+    "name": "Order delivered",
+    "transition_target": "ready_for_delivery",
+    "notify": "CUSTOMER",
+    "recipient": null,
+    "mail_template": [
+      "Order delivered",
+      "",
+      null
+    ]
   }
 }
 ]
