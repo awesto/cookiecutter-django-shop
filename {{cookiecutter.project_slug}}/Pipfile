@@ -52,7 +52,7 @@ paypalrestsdk = "<2"
 {% if cookiecutter.use_sendcloud == 'y' -%}
 "f8f74e0" = {file = "https://github.com/awesto/djangoshop-sendcloud/archive/releases/1.0.zip"}{# djangoshop-sendcloud = "{{ cookiecutter.version }}" #}
 {% endif -%}
-"8a232e5" = {file = "https://github.com/jrief/django-post_office/archive/template-engine-for-inlined-images.zip"}
+"3066ec4" = {file = "https://github.com/jrief/django-post_office/archive/inlined-images-template-engine.zip"}
 
 [dev-packages]
 tox = "*"
