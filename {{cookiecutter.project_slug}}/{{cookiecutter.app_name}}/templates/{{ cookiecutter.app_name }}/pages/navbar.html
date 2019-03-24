@@ -9,7 +9,7 @@
 	{% block navbar-brand %}
 	<div class="shop-brand-icon">
 		<a href="/">
-			<img src="{% static 'shop/django-shop-logo.svg' %}" alt="django-SHOP" aria-hidden="true">
+			<img src="{% static '{% endraw %}{{ cookiecutter.app_name }}{% raw %}/django-shop-logo.svg' %}" alt="django-SHOP" aria-hidden="true">
 		</a>
 	</div>
 	{% endblock %}
