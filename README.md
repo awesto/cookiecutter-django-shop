@@ -20,8 +20,18 @@ and [npm](https://www.npmjs.com/get-npm) onto your operating system, for instanc
 
 on Ubuntu
 
+Check that your default Python is version 3.5 or later. In Ubuntu-18.04, Python version 2.7 is the default, therefore
+activate Python-3.6 using:
+
 ```bash
-sudo apt-get install python-cookiecutter pipenv autopep8 nodejs npm
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.6 1
+```
+
+Before installing **django-SHOP**, a few additional packages must be added:
+
+```bash
+sudo apt install nodejs npm python3-pip python-autopep8 python-cookiecutter
+pip install --user pipenv
 ```
 
 on MacOS
