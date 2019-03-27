@@ -31,7 +31,8 @@ class Command(BaseCommand):
     def set_options(self, **options):
         self.interactive = options['interactive']
 
-{% if cookiecutter.use_compressor == 'y' -%}
+{%- if cookiecutter.use_compressor == 'y' %}
+
     def clear_compressor_cache(self):
         from django.core.cache import caches
         from django.core.cache.backends.base import InvalidCacheBackendError
