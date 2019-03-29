@@ -56,3 +56,16 @@ if "{{ cookiecutter.dockerize }}" in ['http', 'uwsgi']:
                     )
                     + TERMINATOR
                 )
+
+    if "{{ cookiecutter.use_compressor }}" == "n":
+        print(WARNING + "If 'dockerize' is set to 'uwsgi' or 'nginx', 'compressor' must be enabled." + TERMINATOR)
+        sys.exit(1)
+
+if "{{ cookiecutter.debug }}" == "y":
+    if "{{ cookiecutter.dockerize }}" in ["uwsgi", "nginx"]:
+        print(WARNING + "If 'dockerize' is set to 'uwsgi' or 'nginx', 'debug' must be disabled." + TERMINATOR)
+        sys.exit(1)
+else:
+    if "{{ cookiecutter.dockerize }}" == "runserver":
+        print(WARNING + "If 'dockerize' is set to 'runserver', 'debug' must be enabled." + TERMINATOR)
+        sys.exit(1)

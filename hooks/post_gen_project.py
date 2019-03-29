@@ -218,20 +218,20 @@ def main():
         remove_pycharm_files()
 
     next_steps = "Next steps to perform:"
-    if "{{ cookiecutter.dockerize }}" in ['http', 'uwsgi']:
-        pipenv_to_requirements()
-        set_database_password("docker-files/databases.environ")
-        next_steps += """
-cd {{ cookiecutter.project_slug }}
-docker-compose up --build -d
-"""
-    else:
+    if "{{ cookiecutter.dockerize }}" == "n":
         remove_docker_files()
         next_steps += """
 cd {{ cookiecutter.project_slug }}
 pipenv install --sequential
 npm install
 pipenv run ./manage.py initialize_shop_demo
+"""
+    else:
+        pipenv_to_requirements()
+        set_database_password("docker-files/databases.environ")
+        next_steps += """
+cd {{ cookiecutter.project_slug }}
+docker-compose up --build -d
 """
     print(HINT + next_steps + TERMINATOR)
     reformat_white_space()

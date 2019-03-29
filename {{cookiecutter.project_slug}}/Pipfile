@@ -22,7 +22,7 @@ drf-haystack = "*"
 django-parler = "*"
 "e007892" = {file = "https://github.com/jrief/django-parler-rest/archive/deserialize-TranslatedField.zip"}
 {% endif -%}
-{% if cookiecutter.dockerize in ['http', 'uwsgi'] -%}
+{% if cookiecutter.dockerize != "n" -%}
 psycopg2-binary = "*"
 django-redis-cache = "*"
 django-redis-sessions = "*"

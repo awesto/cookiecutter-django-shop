@@ -53,9 +53,10 @@ class Command(BaseCommand):
         else:
             for page in Page.objects.drafts():
                 self.stdout.write("Assign IconFont '{}' to CMS page: {}".format(identifier, page.get_title()))
-                CascadePage.objects.update_or_create(
+                _, created = CascadePage.objects.update_or_create(
                     extended_object=page,
                     defaults={'icon_font': fontawesome},
                 )
-                for language in get_public_languages():
-                    page.publish(language)
+                if created:
+                    for language in get_public_languages():
+                        page.publish(language)

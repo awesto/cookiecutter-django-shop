@@ -42,7 +42,9 @@ class Command(BaseCommand):
             class_name = '{{ cookiecutter.app_name }}.management.serializers.' + ProductModel.model_class().__name__ + 'Serializer'
             serializer_class = import_string(class_name)
             serializer = serializer_class(data=product)
-            assert serializer.is_valid(), serializer.errors
+            if not serializer.is_valid():
+                self.stderr.write(str(serializer.errors))
+                continue
             instance = serializer.save()
             self.assign_product_to_catalog(instance)
             self.stdout.write("{}. {}".format(number, instance))

@@ -34,41 +34,52 @@ services:
     networks:
       - shopnet
 
-  wsgiapp:
+  webapp:
     restart: always
     build:
       context: .
-      dockerfile: docker-files/wsgiapp.dockerfile
+      dockerfile: docker-files/webapp.dockerfile
     image: {{ cookiecutter.project_slug }}
     env_file:
       - docker-files/databases.environ
-{%- if cookiecutter.use_stripe %}
+{%- if cookiecutter.use_stripe == "y" %}
       - docker-files/stripe.environ
 {%- endif %}
-{%- if cookiecutter.use_sendcloud %}
+{%- if cookiecutter.use_sendcloud == "y" %}
       - docker-files/sendcloud.environ
 {%- endif %}
     environment:
       - VIRTUAL_HOST={{ cookiecutter.virtual_host }}
-{%- if cookiecutter.dockerize == 'uwsgi' %}
+{%- if cookiecutter.dockerize == "nginx" %}
       - VIRTUAL_PROTO=uwsgi
       - LETSENCRYPT_HOST={{ cookiecutter.virtual_host }}
       - LETSENCRYPT_EMAIL={{ cookiecutter.email }}
 {%- endif %}
+{%- if cookiecutter.debug == "y" %}
+      - DJANGO_DEBUG=1
+{%- endif %}
       - DJANGO_SETTINGS_MODULE={{ cookiecutter.app_name }}.settings
     volumes:
+{%- if cookiecutter.dockerize == "runserver" %}
+      - ./:/web
+{%- else %}
       - shopmedia:/web/workdir
-{%- if cookiecutter.dockerize == 'uwsgi' %}
+{%- endif %}
+{%- if cookiecutter.dockerize == "nginx" %}
       - nginxproxy_nginxvhostd:/web/nginx-conf
 {%- endif %}
-    command: uwsgi --ini uwsgi.ini
+{%- if cookiecutter.dockerize == "runserver" %}
+    command: runserver 0.0.0.0:9009
+{%- else %}
+    command: uwsgi --ini /etc/uwsgi.ini
+{%- endif %}
     depends_on:
       - postgresdb
       - redishost
       - elasticsearch
     networks:
       - shopnet
-{%- if cookiecutter.dockerize == 'uwsgi' %}
+{%- if cookiecutter.dockerize == "nginx" %}
       - nginx-proxy
     expose:
       - 9009
@@ -86,8 +97,10 @@ services:
       - docker-files/databases.environ
       - docker-files/email.environ
     command: su django -c /web/worker.py
+{%- if cookiecutter.dockerize != "runserver" %}
     volumes:
       - shopmedia:/web/workdir
+{%- endif %}
     depends_on:
       - postgresdb
       - redishost
@@ -96,7 +109,7 @@ services:
 
 networks:
   shopnet:
-{%- if cookiecutter.dockerize == 'uwsgi' %}
+{%- if cookiecutter.dockerize == "nginx" %}
   nginx-proxy:
     external: true
 {%- endif %}
@@ -104,9 +117,11 @@ networks:
 volumes:
   pgdata:
   redisdata:
+{%- if cookiecutter.dockerize != "runserver" %}
   shopmedia:
+{%- endif %}
   esdata:
-{%- if cookiecutter.dockerize == 'uwsgi' %}
+{%- if cookiecutter.dockerize == "nginx" %}
   nginxproxy_nginxvhostd:
     external: true
 {%- endif %}

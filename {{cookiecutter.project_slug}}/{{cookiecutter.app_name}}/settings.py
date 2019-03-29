@@ -153,7 +153,7 @@ WSGI_APPLICATION = 'wsgi.application'
 
 DATABASES = {
     'default': {
-{%- if cookiecutter.dockerize in ['http', 'uwsgi'] %}
+{%- if cookiecutter.dockerize != "n" %}
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv('POSTGRES_DB', 'djangoshop'),
         'USER': os.getenv('POSTGRES_USER', 'djangoshop'),

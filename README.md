@@ -1,7 +1,7 @@
 # Cookiecutter for django-SHOP
 
 Powered by [Cookiecutter](https://github.com/audreyr/cookiecutter), **cookiecutter-django-shop** is a set of templates
-for jumpstarting a **django-SHOP** project quickly.
+for jumpstarting a [django-SHOP](https://github.com/awesto/django-shop) project quickly.
 
 > Note: This documentation refers to the upcoming release 1.0.0 of django-SHOP. If you are looking for
   version 0.12.x, please check here: https://github.com/awesto/cookiecutter-django-shop/tree/releases/0.12
@@ -78,11 +78,12 @@ This demo uses SQLite as its database. It neither supports caching, nor full tex
 
 ## Run django-SHOP demo in Docker
 
-When asked by Cookiecutter: *Select dockerize*, and you choose `2 - http`, the merchant implementation is build with
-Docker support, listening for HTTP on port 9009.
+When asked by Cookiecutter: *Select dockerize*, and you choose `2 - runserver`, the merchant implementation is build
+with Docker support, using Django's `runserver` listening for HTTP on port 9009.
 
-Running the django-SHOP demo inside a Docker container, allows you to test all features such as full text search, proper
-caching, running asynchronous tasks and it uses a Postgres database, running in a separate container.
+Running the django-SHOP demo inside a Docker container, allows you to test all features such as full text search using
+Elasticsearch, Redis caching, running asynchronous tasks and it uses a Postgres database. All these services run in a
+separate container.
 
 First, check that your Docker machine is running. If unsure invoke `docker-machine ip`.
 
@@ -97,12 +98,19 @@ Point a browser onto http://<docker-machine-ip>:9009/ and start surfing. Determi
 In case you want to access the Django admin interface, log in as *admin* with password *secret*.
 
 
+### Run django-SHOP using uWSGI
+
+In productive environments, we shall never run the application server using Django's `runserver`. By chosing
+`3 - uwsgi` for *dockerize*, Django runs as a [uWSGI](https://uwsgi-docs.readthedocs.io/en/latest/) application runner,
+listening for HTTP on port 9009. This configuration can be used to run an unencrypted demo shop, for instance in a
+staging environment. Here the browser connects directly onto the Docker machine's IP address. 
+
+
 ### Run django-SHOP behind an NGiNX proxy
 
-In the previous configuration, the [uWSGI](https://uwsgi-docs.readthedocs.io/en/latest/) application runner is
-configured to listen on port 9009 for HTTP requests. There we can connect the browser directly onto the Docker machine's
-IP address. In a productive environment, we might want to use NGiNX as a reverse proxy in front of our Django
-application server. This allows us to dispatch our services on multiple domains. In addition it also supports https.
+In the previous configuration, the **uWSGI** application runner is configured to listen on port 9009 for HTTP requests.
+In a productive environment, we might want to use NGiNX as a reverse proxy in front of our Django application server.
+This allows us to dispatch our services on multiple domains. In addition it also supports https.
 
 First we must create two separate Docker containers. This has to be done only once per host. Using this setup, we can
 connect as many containers as our machine can handle. In a separte folder, named for instance `NGiNX-Proxy`, create a
@@ -153,7 +161,7 @@ docker-compose up -d
 ```
 
 If both containers are running, switch back to your working directory and recreate the project answering Cookiecutter
-on *Select dockerize* with `3 - uwsgi`. This creates a template which again can be built into a composition of Docker
+on *Select dockerize* with `4 - nginx`. This creates a template which again can be built into a composition of Docker
 containers using:
 
 ```bash

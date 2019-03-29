@@ -12,8 +12,9 @@
   "use_pycharm": "n",
   "dockerize": [
     "n",
-    "http",
-    "uwsgi"
+    "runserver",
+    "uwsgi",
+    "nginx"
   ],
   "use_i18n": "y",
   "use_paypal": "n",
