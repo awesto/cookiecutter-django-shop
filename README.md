@@ -78,43 +78,55 @@ This demo uses SQLite as its database. It neither supports caching, nor full tex
 
 ## Run django-SHOP demo in Docker
 
-When asked by Cookiecutter: *Select dockerize*, and you choose `2 - runserver`, the merchant implementation is build
-with Docker support, using Django's `runserver` listening for HTTP on port 9009.
-
 Running the django-SHOP demo inside a Docker container, allows you to test all features such as full text search using
-Elasticsearch, Redis caching, running asynchronous tasks and it uses a Postgres database. All these services run in a
-separate container.
+Elasticsearch, Redis caching, running asynchronous tasks and it uses Postgres instead of SQLite as the database.
+All these services run in a separate Docker containers, all managed by `docker-compose`.
 
-First, check that your Docker machine is running. If unsure invoke `docker-machine ip`.
+There are three different options to run the merchant implementation of **django-SHOP** inside a Docker container:
+* `runserver`: is intended for local development, for those who do not want to their own virtual environment.
+* `uwsgi`: is intended for testing a productive or staging system, without having set up NGiNX.
+* `nginx`: is intended for productive environments, where the application server runs behind NGiNX.
+
+After generating the project, all of them can be build using these commands:
 
 ```bash
 cd my-shop
 docker-compose up --build -d
 ```
 
-Point a browser onto http://<docker-machine-ip>:9009/ and start surfing. Determine the IP address using
-``docker-machine ip``.
 
-In case you want to access the Django admin interface, log in as *admin* with password *secret*.
+### Run django-SHOP in Docker using `runserver`
+
+When asked by Cookiecutter: *Select dockerize*, choose `2 - runserver` and `debug="y"`, to build the merchant
+implementation using Django's built-in `runserver`. This will start a webserver, listening on the IP-address of
+the docker-machine and on port 9009 (if unsure invoke `docker-machine ip`). Here the working directory is mountet
+inside your local file system. After editing a file, the webserver is restarted, so this setup is well suited
+during development.
+
+Point a browser onto http://<docker-machine-ip>:9009/ and start surfing. To access the Django admin interface,
+log in as *admin* with password *secret*.
 
 
-### Run django-SHOP using uWSGI
+### Run django-SHOP in Docker using `uwsgi`
 
 In productive environments, we shall never run the application server using Django's `runserver`. By chosing
-`3 - uwsgi` for *dockerize*, Django runs as a [uWSGI](https://uwsgi-docs.readthedocs.io/en/latest/) application runner,
-listening for HTTP on port 9009. This configuration can be used to run an unencrypted demo shop, for instance in a
-staging environment. Here the browser connects directly onto the Docker machine's IP address. 
+`3 - uwsgi` for *dockerize*, Django runs as a [uWSGI](https://uwsgi-docs.readthedocs.io/en/latest/) application runner.
+This configuration can be used to run an unencrypted demo shop, for instance in a staging environment.
+
+Point a browser onto http://<docker-machine-ip>:9009/ and start surfing. To access the Django admin interface,
+log in as *admin* with password *secret*.
 
 
 ### Run django-SHOP behind an NGiNX proxy
 
 In the previous configuration, the **uWSGI** application runner is configured to listen on port 9009 for HTTP requests.
 In a productive environment, we might want to use NGiNX as a reverse proxy in front of our Django application server.
-This allows us to dispatch our services on multiple domains. In addition it also supports https.
+This allows us to dispatch our services on multiple domains. In addition NGiNX also supports https via
+[Let's Encrypt](https://letsencrypt.org/).
 
-First we must create two separate Docker containers. This has to be done only once per host. Using this setup, we can
-connect as many containers as our machine can handle. In a separte folder, named for instance `NGiNX-Proxy`, create a
-file named `docker-compose.yml` and add this content:
+First we must create two separate Docker containers. This step must be done only once per host. Behind this setup, we
+can connect as many application servers as our machine can handle. In a separte folder, named for instance
+`NGiNX-Proxy`, create a file named `docker-compose.yml` adding this content:
 
 ```yaml
 version: '2.0'
@@ -154,23 +166,19 @@ volumes:
   nginxvhostd:
 ```
 
-Now start the proxy together with its companion:
+Start both containers, the proxy together with its companion:
 
 ```bash
 docker-compose up -d
 ```
 
-If both containers are running, switch back to your working directory and recreate the project answering Cookiecutter
+If both containers are running, switch back to your the directory and recreate the project answering Cookiecutter
 on *Select dockerize* with `4 - nginx`. This creates a template which again can be built into a composition of Docker
-containers using:
+containers with our usual build command (see above).
 
-```bash
-cd my-shop
-docker-compose up --build -d
-```
-
-Here it is important that your server is listening on the IP address referenced by the answer given on question
-*virtual_host*. Then point a browser onto http://<virtual_host>/ and start surfing.
+Here it is important to note that the webserver is listening on the IP address referenced by the answer given on
+the Cookiecutter question *virtual_host*. Then point a browser onto `http://<virtual_host>/` and start surfing.
+After a few minutes, the SSL-certificate shall be ready. then you can even browse using https.
 
 
 ## Where to proceed from here?

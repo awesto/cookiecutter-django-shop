@@ -69,7 +69,7 @@ services:
       - nginxproxy_nginxvhostd:/web/nginx-conf
 {%- endif %}
 {%- if cookiecutter.dockerize == "runserver" %}
-    command: runserver 0.0.0.0:9009
+    entrypoint: /usr/local/bin/entrypoint.sh
 {%- else %}
     command: uwsgi --ini /etc/uwsgi.ini
 {%- endif %}
@@ -96,9 +96,15 @@ services:
     env_file:
       - docker-files/databases.environ
       - docker-files/email.environ
+{%- if cookiecutter.dockerize == "runserver" %}
+    command: /web/worker.py
+{%- else %}
     command: su django -c /web/worker.py
-{%- if cookiecutter.dockerize != "runserver" %}
+{%- endif %}
     volumes:
+{%- if cookiecutter.dockerize == "runserver" %}
+      - ./:/web
+{%- else %}
       - shopmedia:/web/workdir
 {%- endif %}
     depends_on:
