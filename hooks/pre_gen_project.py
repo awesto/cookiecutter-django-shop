@@ -11,7 +11,7 @@ from __future__ import print_function
 import sys
 
 TERMINATOR = "\x1b[0m"
-ERROR = "\x1b[1;34m [ERROR]: "
+ERROR = "\x1b[1;31m [ERROR]: "
 WARNING = "\x1b[1;33m [WARNING]: "
 INFO = "\x1b[1;33m [INFO]: "
 HINT = "\x1b[3;33m"
@@ -63,7 +63,7 @@ if "{{ cookiecutter.dockerize }}" in ['http', 'uwsgi']:
         sys.exit(1)
 
 if "{{ cookiecutter.debug }}" == "y":
-    if "{{ cookiecutter.dockerize }}" == "nginx":
+    if "{{ cookiecutter.dockerize }}" != "runserver":
         print(ERROR + "If 'dockerize' is set to 'uwsgi' or 'nginx', 'debug' must be disabled." + TERMINATOR)
         sys.exit(1)
 else:
