@@ -1,6 +1,8 @@
 {
   "name": "{{ cookiecutter.project_slug }}",
   "version": "{{ cookiecutter.version }}",
+  "description": "{{ cookiecutter.description }}",
+  "private": true,
   "dependencies": {
     "angular": "^1.7.7",
     "angular-animate": "^1.7.7",
