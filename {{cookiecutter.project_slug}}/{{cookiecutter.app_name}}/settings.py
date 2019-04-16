@@ -550,11 +550,6 @@ CMSPLUGIN_CASCADE = {
         'BootstrapRowPlugin': BootstrapUtilities(BootstrapUtilities.paddings),
         'BootstrapYoutubePlugin': BootstrapUtilities(BootstrapUtilities.margins),
         'BootstrapButtonPlugin': BootstrapUtilities(BootstrapUtilities.floats),
-        'ShopLeftExtension': BootstrapUtilities(BootstrapUtilities.paddings),
-        'ShopRightExtension': BootstrapUtilities(BootstrapUtilities.paddings),
-        'ShopAddToCartPlugin': BootstrapUtilities(BootstrapUtilities.margins),
-        'ProcessNextStepPlugin': BootstrapUtilities(BootstrapUtilities.floats),
-        'ShopProceedButton': BootstrapUtilities(BootstrapUtilities.floats),
     },
     'leaflet': {
         'tilesURL': 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
