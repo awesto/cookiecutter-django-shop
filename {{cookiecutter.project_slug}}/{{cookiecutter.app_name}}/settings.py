@@ -18,6 +18,7 @@ from django.urls import reverse_lazy
 from django.utils.text import format_lazy
 from django.utils.translation import ugettext_lazy as _
 from cmsplugin_cascade.bootstrap4.mixins import BootstrapUtilities
+from cmsplugin_cascade.extra_fields.config import PluginExtraFieldsConfig
 
 SHOP_APP_LABEL = '{{ cookiecutter.app_name }}'
 BASE_DIR = os.path.dirname(__file__)
@@ -276,7 +277,7 @@ TEMPLATES = [{
         ]
     }
 }, {
-    'BACKEND': 'post_office.template.backends.html_email.EmailTemplates',
+    'BACKEND': 'post_office.template.backends.post_office.PostOfficeTemplates',
     'APP_DIRS': True,
     'DIRS': [],
     'OPTIONS': {
@@ -293,7 +294,7 @@ TEMPLATES = [{
 }]
 
 POST_OFFICE = {
-    'TEMPLATE_ENGINE': 'html_email',
+    'TEMPLATE_ENGINE': 'post_office',
 }
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -537,12 +538,23 @@ CMSPLUGIN_CASCADE = {
                                  'image_height', 'resize_options'],
         'BootstrapPicturePlugin': ['image_shapes', 'responsive_heights', 'image_size', 'resize_options'],
     },
+    'plugins_with_extra_fields': {
+        'BootstrapCardPlugin': PluginExtraFieldsConfig(),
+        'BootstrapCardHeaderPlugin': PluginExtraFieldsConfig(),
+        'BootstrapCardBodyPlugin': PluginExtraFieldsConfig(),
+        'BootstrapCardFooterPlugin': PluginExtraFieldsConfig(),
+        'SimpleIconPlugin': PluginExtraFieldsConfig(),
+    },
     'plugins_with_extra_mixins': {
         'BootstrapContainerPlugin': BootstrapUtilities(BootstrapUtilities.background_and_color),
         'BootstrapRowPlugin': BootstrapUtilities(BootstrapUtilities.paddings),
+        'BootstrapYoutubePlugin': BootstrapUtilities(BootstrapUtilities.margins),
+        'BootstrapButtonPlugin': BootstrapUtilities(BootstrapUtilities.floats),
         'ShopLeftExtension': BootstrapUtilities(BootstrapUtilities.paddings),
         'ShopRightExtension': BootstrapUtilities(BootstrapUtilities.paddings),
         'ShopAddToCartPlugin': BootstrapUtilities(BootstrapUtilities.margins),
+        'ProcessNextStepPlugin': BootstrapUtilities(BootstrapUtilities.floats),
+        'ShopProceedButton': BootstrapUtilities(BootstrapUtilities.floats),
     },
     'leaflet': {
         'tilesURL': 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
@@ -573,7 +585,7 @@ CKEDITOR_SETTINGS = {
         ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Table'],
         ['Source']
     ],
-    'stylesSet': format_lazy('default:{}', reverse_lazy('admin:cascade_texticon_wysiwig_config')),
+    'stylesSet': format_lazy('default:{}', reverse_lazy('admin:cascade_texteditor_config')),
 }
 
 CKEDITOR_SETTINGS_CAPTION = {

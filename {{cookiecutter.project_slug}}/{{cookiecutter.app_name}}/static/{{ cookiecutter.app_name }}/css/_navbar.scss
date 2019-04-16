@@ -53,6 +53,8 @@ body {
 		.shop-social-icons {
 			.nav-link {
 				display: inline-block;
+				padding-left: 0.25rem;
+				padding-right: 0.25rem;
 			}
 			@include media-breakpoint-down(md) {
 				order: 4;
@@ -63,6 +65,9 @@ body {
 			}
 			@include media-breakpoint-up(lg) {
 				align-self: flex-end;
+			}
+			.cms-placeholder {
+				display: inline-block;
 			}
 		}
 		.shop-primary-menu {

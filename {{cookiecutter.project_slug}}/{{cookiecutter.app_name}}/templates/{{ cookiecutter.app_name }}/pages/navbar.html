@@ -18,15 +18,7 @@
 
 	<div class="collapse navbar-collapse" uib-collapse="isNavCollapsed">
 		<ul class="navbar-nav flex-wrap align-content-between w-100">
-			<li class="nav-item shop-social-icons">
-				<a class="nav-link" href="tel:+12345678900"><i class="fa fa-phone"></i></a>
-				<a class="nav-link" href="mailto:info@example.com"><i class="fa fa-envelope-o"></i></a>
-				<a class="nav-link" href="https://www.awesto.com/"><i class="fa fa-link"></i></a>
-				<a class="nav-link" href="https://www.linkedin.com/in/jacob-rief-27884016a/"><i class="fa fa-linkedin"></i></a>
-				<a class="nav-link" href="https://twitter.com/djangoshop"><i class="fa fa-twitter"></i></a>
-				<a class="nav-link" href="https://github.com/awesto/django-shop/"><i class="fa fa-github"></i></a>
-				<a class="nav-link" href="https://django-shop.readthedocs.io/"><i class="fa fa-book"></i></a>
-			</li>
+			<li class="nav-item shop-social-icons">{% static_placeholder "Social Icons" %}</li>
 			<li class="mx-auto"></li>
 			{% include "shop/navbar/login-logout.html" with item_class="shop-secondary-menu" %}
 			{% with item_class="shop-secondary-menu" %}{% language_chooser "shop/navbar/language-chooser.html" %}{% endwith %}

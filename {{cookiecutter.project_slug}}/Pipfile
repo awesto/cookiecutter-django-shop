@@ -23,7 +23,7 @@ django-parler = "*"
 "e007892" = {file = "https://github.com/jrief/django-parler-rest/archive/deserialize-TranslatedField.zip"}
 {% endif -%}
 {% if cookiecutter.dockerize != "n" -%}
-psycopg2-binary = "*"
+psycopg2-binary = "<2.8"
 django-redis-cache = "*"
 django-redis-sessions = "*"
 schedule = "*"

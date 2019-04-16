@@ -62,6 +62,7 @@ class Command(BaseCommand):
             call_command('loaddata', 'skeleton')
             call_command('shop', 'check-pages', add_recommended=True)
             call_command('assign_iconfonts')
+            call_command('create_social_icons')
             call_command('download_workdir', interactive=self.interactive)
             call_command('loaddata', 'products-media')
             call_command('import_products')

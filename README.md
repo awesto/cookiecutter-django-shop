@@ -134,7 +134,7 @@ can connect as many application servers as our machine can handle. In a separte 
 `NGiNX-Proxy`, create a file named `docker-compose.yml` adding this content:
 
 ```yaml
-version: '2.0'
+version: '2.0'  # or later
 
 services:
   nginx-proxy:
