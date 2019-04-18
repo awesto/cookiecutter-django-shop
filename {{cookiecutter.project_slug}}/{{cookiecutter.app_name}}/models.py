@@ -53,10 +53,6 @@ class OrderItem(BaseOrderItem):
     quantity = models.IntegerField(_("Ordered quantity"))
     canceled = models.BooleanField(_("Item canceled "), default=False)
 
-    class Meta:
-        verbose_name = pgettext_lazy('order_models', "Ordered Item")
-        verbose_name_plural = pgettext_lazy('order_models', "Ordered Items")
-
     {%- if cookiecutter.products_model == 'polymorphic' %}
 
     def populate_from_cart_item(self, cart_item, request):
