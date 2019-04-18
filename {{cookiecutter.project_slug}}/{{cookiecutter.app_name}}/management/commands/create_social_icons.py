@@ -15,26 +15,18 @@ class Command(BaseCommand):
         self.create_social_icons()
 
     def create_social_icons(self):
-        from cms.models.pagemodel import Page
         from cms.utils.i18n import get_public_languages
 
         default_language = get_public_languages()[0]
 
         try:
-            home_page = Page.objects.drafts().get(is_home=True)
             clipboard = CascadeClipboard.objects.get(identifier='social-icons')
-        except Page.DoesNotExist:
-            self.stderr.write("Home Page does not exist yet.")
         except CascadeClipboard.DoesNotExist:
             self.stderr.write("No Persisted Clipboard named 'social-icons' found.")
         else:
-            static_placeholder = StaticPlaceholder.objects.create(
-                code='Social Icons')
-            deserialize_to_placeholder(
-                static_placeholder.public, clipboard.data, default_language)
-            deserialize_to_placeholder(
-                static_placeholder.draft, clipboard.data, default_language)
-            self.publish_in_all_languages(home_page)
+            static_placeholder = StaticPlaceholder.objects.create(code='Social Icons')
+            deserialize_to_placeholder(static_placeholder.public, clipboard.data, default_language)
+            deserialize_to_placeholder(static_placeholder.draft, clipboard.data, default_language)
             self.stdout.write("Added Social Icons to Static Placeholder")
 
     def publish_in_all_languages(self, page):
