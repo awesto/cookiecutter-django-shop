@@ -25,7 +25,6 @@ class Command(BaseCommand):
                 zip_ref = zipfile.ZipFile(file.file, 'r')
             except zipfile.BadZipFile as exc:
                 self.stderr.write("Unable to unpack {}: {}".format(file.label, exc))
-                continue
             else:
                 if not IconFont.objects.filter(zip_file=file).exists():
                     font_folder, config_data = unzip_archive(file.label, zip_ref)
@@ -34,6 +33,5 @@ class Command(BaseCommand):
                         config_data=config_data,
                         zip_file=file,
                         font_folder=font_folder,
-                )
-            finally:
+                    )
                 zip_ref.close()
