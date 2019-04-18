@@ -63,7 +63,7 @@ if "{{ cookiecutter.dockerize }}" in ['http', 'uwsgi']:
         sys.exit(1)
 
 if "{{ cookiecutter.debug }}" == "y":
-    if "{{ cookiecutter.dockerize }}" != "runserver":
+    if "{{ cookiecutter.dockerize }}" in ["uwsgi", "nginx"]:
         print(ERROR + "If 'dockerize' is set to 'uwsgi' or 'nginx', 'debug' must be disabled." + TERMINATOR)
         sys.exit(1)
 else:
