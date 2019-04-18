@@ -1,23 +1,26 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 {% if cookiecutter.products_model == 'commodity' -%}
 from shop.models.defaults.commodity import Commodity
     {%- if cookiecutter.delivery_handling in ['partial', 'common'] %}
 from django.db import models
-from django.utils.translation import ugettext_lazy as _, pgettext_lazy
+from django.utils.translation import ugettext_lazy as _
     {%- endif %}
 {% else -%}
+    {%- if cookiecutter.products_model == 'polymorphic' %}
 from decimal import Decimal
+        {%- if cookiecutter.delivery_handling in ['partial', 'common'] %}
 from django.core.exceptions import ObjectDoesNotExist
+        {%- endif %}
+    {%- endif %}
 from django.db import models
-from django.utils.translation import ugettext_lazy as _, pgettext_lazy
+from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
 from djangocms_text_ckeditor.fields import HTMLField
     {%- if cookiecutter.use_i18n == 'y' %}
 from polymorphic.query import PolymorphicQuerySet
 from parler.managers import TranslatableManager, TranslatableQuerySet
-from parler.models import TranslatableModelMixin, TranslatedFieldsModel, TranslatedFields
+from parler.models import TranslatableModelMixin, TranslatedFieldsModel{% if cookiecutter.products_model == 'polymorphic' %}, TranslatedFields{% endif %}
 from parler.fields import TranslatedField
     {%- endif %}
     {%- if cookiecutter.products_model == 'polymorphic' %}
@@ -44,8 +47,9 @@ from shop_sendcloud.models.customer import Customer
 {% else -%}
 from shop.models.defaults.address import BillingAddress, ShippingAddress
 from shop.models.defaults.customer import Customer
-{% endif -%}
+{% endif %}
 
+__all__ = ['Cart', 'CartItem', 'Order', {% if cookiecutter.delivery_handling in ['partial', 'common'] %}'Delivery', 'DeliveryItem'{% else %}'OrderItem'{% endif %}, 'BillingAddress', 'ShippingAddress', 'Customer',{% if cookiecutter.products_model == 'commodity' %} 'Commodity',{%- endif %}]
 
 {% if cookiecutter.delivery_handling in ['partial', 'common'] -%}
 
@@ -570,8 +574,4 @@ class SmartPhoneVariant(models.Model):
     def get_price(self, request):
         return self.unit_price
 
-{%- endif %}
-{%- if cookiecutter.products_model == 'commodity' %}
-
-__all__ = ['Commodity']
 {%- endif %}
