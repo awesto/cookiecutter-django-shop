@@ -160,6 +160,19 @@
   }
 },
 {
+  "model": "cmsplugin_cascade.pluginextrafields",
+  "pk": 1,
+  "fields": {
+    "plugin_type": "SimpleIconPlugin",
+    "site": [
+      "example.com"
+    ],
+    "allow_id_tag": false,
+    "css_classes": "{\"class_names\":\"nav-link\",\"multiple\":\"\"}",
+    "inline_styles": "{\"extra_fields:Margins\":[],\"extra_units:Margins\":\"px,em,rem,%\",\"extra_fields:Paddings\":[],\"extra_units:Paddings\":\"px,em,rem,%\",\"extra_fields:Widths\":[],\"extra_units:Widths\":\"px,em,rem,%\",\"extra_fields:Heights\":[],\"extra_units:Heights\":\"px,em,rem,%\",\"extra_fields:Text Alignement\":[],\"extra_fields:Font Size\":[],\"extra_units:Font Size\":\"px,em,rem,%\",\"extra_fields:Line Height\":[],\"extra_fields:Colors\":[],\"extra_fields:Overflow\":[]}"
+  }
+},
+{
   "model": "email_auth.user",
   "pk": 1,
   "fields": {
