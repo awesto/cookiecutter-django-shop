@@ -270,7 +270,7 @@ class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Tran
     caption = HTMLField(
         _("Caption"),
         configuration='CKEDITOR_SETTINGS_CAPTION',
-        help_text=_("Short description used in the catalog's list view of products."),
+        help_text=_("Short description used in the catalog's list view."),
     )
 
         {%- endif %}
@@ -306,15 +306,15 @@ class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Tran
 
     card_type = models.CharField(
         _("Card Type"),
-        choices=(2 * ('{}{}'.format(s, t),)
-                 for t in ('SD', 'SDXC', 'SDHC', 'SDHC II') for s in ('', 'micro ')),
+        choices=[2 * ('{}{}'.format(s, t),)
+                 for t in ['SD', 'SDXC', 'SDHC', 'SDHC II'] for s in ['', 'micro ']],
         max_length=15,
     )
 
     speed = models.CharField(
         _("Transfer Speed"),
-        choices=((str(s), "{} MB/s".format(s))
-                 for s in (4, 20, 30, 40, 48, 80, 95, 280)),
+        choices=[(str(s), "{} MB/s".format(s))
+                 for s in [4, 20, 30, 40, 48, 80, 95, 280]],
         max_length=8,
     )
 
@@ -334,7 +334,7 @@ class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Tran
     description = HTMLField(
         _("Description"),
         configuration='CKEDITOR_SETTINGS_DESCRIPTION',
-        help_text=_("Description for the list view of products."),
+        help_text=_("Long description for the detail view of this product."),
     )
 
     {%- endif %}
