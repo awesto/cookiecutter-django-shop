@@ -30,17 +30,16 @@ sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.6 1
 Before installing **django-SHOP**, a few additional packages must be added:
 
 ```bash
-sudo apt install nodejs npm python3-pip python-autopep8 unzip
-pip install --user pipenv cookiecutter
+sudo apt install nodejs npm python3-pip
+pip install --user pipenv cookiecutter autopep8
 ```
 
 on MacOS
 
 ```bash
-sudo brew install cookiecutter pipenv autopep8 node
+sudo brew install autopep8 node
+pip install --user pipenv cookiecutter autopep8
 ```
-
-> Note: If `pipenv` is not available through your package manager, try with `pip install pipenv`.
 
 then change into your projects directory and invoke
 
