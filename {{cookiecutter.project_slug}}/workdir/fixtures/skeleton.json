@@ -182,7 +182,7 @@
     "username": "admin",
     "first_name": "Adam",
     "last_name": "De Mol",
-    "email": "jacob.rief@gmail.com",
+    "email": "admin@example.com",
     "is_staff": true,
     "is_active": true,
     "date_joined": "2015-10-16T13:01:57.437Z",
