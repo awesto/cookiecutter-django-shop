@@ -3,12 +3,9 @@
 Powered by [Cookiecutter](https://github.com/audreyr/cookiecutter), **cookiecutter-django-shop** is a set of templates
 for jumpstarting a [django-SHOP](https://github.com/awesto/django-shop) project quickly.
 
-> Note: This documentation refers to the upcoming release 1.0.0 of django-SHOP. If you are looking for
-  version 0.12.x, please check here: https://github.com/awesto/cookiecutter-django-shop/tree/releases/0.12
-
 Use these Cookiecutter Templates to run one of the demo merchant implementations.
 
-* Use them to get a first impression on its features.
+* To get a first impression on its features.
 * Select the configuration example which is the most similar to your own requirements. Then replace the
   product models and templates with your own implementations.
 
@@ -37,7 +34,7 @@ pip install --user pipenv cookiecutter autopep8
 on MacOS
 
 ```bash
-sudo brew install autopep8 node
+sudo brew install node
 pip install --user pipenv cookiecutter autopep8
 ```
 
