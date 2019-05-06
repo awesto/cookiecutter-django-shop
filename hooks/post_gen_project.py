@@ -210,8 +210,6 @@ def reformat_white_space():
 
 
 def main():
-    debug = "{{ cookiecutter.debug }}".lower() == "y"
-
     set_django_secret_key(os.path.join("{{ cookiecutter.app_name }}", "settings.py"))
 
     if "{{ cookiecutter.use_pycharm }}".lower() == "n":
@@ -225,6 +223,7 @@ cd {{ cookiecutter.project_slug }}
 pipenv install --sequential
 npm install
 pipenv run ./manage.py initialize_shop_demo
+pipenv run ./manage.py runserver
 """
     else:
         pipenv_to_requirements()

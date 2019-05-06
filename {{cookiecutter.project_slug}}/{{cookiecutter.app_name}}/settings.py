@@ -38,7 +38,7 @@ ADMINS = [("The Merchant", 'the.merchant@example.com')]
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '!!!SET DJANGO_SECRET_KEY!!!')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get('DJANGO_DEBUG'))
+DEBUG = {% if cookiecutter.debug == 'y' %}True{% else %}bool(os.environ.get('DJANGO_DEBUG')){% endif %}
 
 ALLOWED_HOSTS = ['*']
 
