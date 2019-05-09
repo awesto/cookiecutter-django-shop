@@ -12,7 +12,7 @@ from shop.shipping.modifiers import ShippingModifier
 from shop_stripe import modifiers
 {%- endif %}
 {%- if cookiecutter.products_model == 'commodity' %}
-from myshop.models import Commodity
+from {{ cookiecutter.app_name }}.models import Commodity
 {%- endif %}
 
 
