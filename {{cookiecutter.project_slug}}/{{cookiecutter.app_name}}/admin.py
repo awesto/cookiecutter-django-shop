@@ -60,7 +60,7 @@ __all__ = ['customer']
 class SmartCardAdmin(InvalidateProductCacheMixin, SortableAdminMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableAdmin,{% endif %} CMSPageAsCategoryMixin, {% if cookiecutter.products_model == 'polymorphic' %}PolymorphicChildModelAdmin{% else %}admin.ModelAdmin{% endif %}):
     fieldsets = [
         (None, {
-            'fields': ['product_name', 'slug', 'product_code', 'unit_price', 'active'{% if cookiecutter.use_i18n != 'y' %}, 'caption', 'description'{% endif %}],
+            'fields': ['product_name', 'slug', 'product_code', 'unit_price',{% if cookiecutter.stock_management == 'simple' %} 'quantity',{% endif %} 'active'{% if cookiecutter.use_i18n != 'y' %}, 'caption', 'description'{% endif %}],
         }),
         {%- if cookiecutter.use_i18n == 'y' %}
         (_("Translatable Fields"), {
@@ -85,7 +85,7 @@ class CommodityAdmin(InvalidateProductCacheMixin, SortableAdminMixin,{% if cooki
     Since our Commodity model inherits from polymorphic Product, we have to redefine its admin class.
     """
     base_model = Product
-    fields = ['product_name', 'slug', 'product_code', 'unit_price', 'active', 'caption', 'manufacturer']
+    fields = ['product_name', 'slug', 'product_code', 'unit_price',{% if cookiecutter.stock_management == 'simple' %} 'quantity',{% endif %} 'active', 'caption', 'manufacturer']
     filter_horizontal = ['cms_pages']
     inlines = [ProductImageInline]
     prepopulated_fields = {'slug': ['product_name']}
@@ -97,7 +97,7 @@ class SmartCardAdmin(InvalidateProductCacheMixin, SortableAdminMixin,{% if cooki
     base_model = Product
     fieldsets = (
         (None, {
-            'fields': ['product_name', 'slug', 'product_code', 'unit_price', 'active'{% if cookiecutter.use_i18n != 'y' %}, 'caption', 'description'{% endif %}],
+            'fields': ['product_name', 'slug', 'product_code', 'unit_price',{% if cookiecutter.stock_management == 'simple' %} 'quantity',{% endif %} 'active'{% if cookiecutter.use_i18n != 'y' %}, 'caption', 'description'{% endif %}],
         }),
         {%- if cookiecutter.use_i18n  == 'y' %}
         (_("Translatable Fields"), {

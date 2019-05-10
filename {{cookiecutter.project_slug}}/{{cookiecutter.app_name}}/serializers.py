@@ -4,8 +4,9 @@ from __future__ import unicode_literals
 from django.utils.safestring import mark_safe
 from rest_framework import serializers
 from shop.search.serializers import ProductSearchSerializer as BaseProductSearchSerializer
+{%- if cookiecutter.products_model != 'polymorphic' %}
 from shop.serializers.bases import ProductSerializer
-{%- if cookiecutter.products_model == 'polymorphic' %}
+{%- else %}
 from rest_framework.fields import empty
 from shop.models.cart import CartModel
 from shop.serializers.defaults.catalog import AddToCartSerializer
@@ -71,8 +72,9 @@ class AddSmartPhoneToCartSerializer(AddToCartSerializer):
     """
     def get_instance(self, context, data, extra_args):
         product = context['product']
+        request = context['request']
         try:
-            cart = CartModel.objects.get_from_request(context['request'])
+            cart = CartModel.objects.get_from_request(request)
         except CartModel.DoesNotExist:
             cart = None
         if data is empty:
@@ -92,6 +94,7 @@ class AddSmartPhoneToCartSerializer(AddToCartSerializer):
             'unit_price': variant.unit_price,
             'is_in_cart': bool(product.is_in_cart(cart, product_code=variant.product_code)),
             'extra': extra,
+            'availability': product.get_availability(request, **extra),
         }
         return instance
 {% endif %}

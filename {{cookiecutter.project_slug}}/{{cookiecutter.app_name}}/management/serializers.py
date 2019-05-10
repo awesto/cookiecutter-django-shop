@@ -82,7 +82,7 @@ class SmartCardSerializer(TranslatableModelSerializerMixin, ProductSerializer):
 class SmartphoneVariantSerializer(serializers.ModelSerializer):
     class Meta:
         model = SmartPhoneVariant
-        fields = ['product_code', 'unit_price', 'storage']
+        fields = ['product_code', 'unit_price', 'storage'{% if cookiecutter.stock_management == 'simple' %}, 'quantity'{% endif %}]
 
 
 class SmartPhoneModelSerializer(TranslatableModelSerializerMixin, ProductSerializer):

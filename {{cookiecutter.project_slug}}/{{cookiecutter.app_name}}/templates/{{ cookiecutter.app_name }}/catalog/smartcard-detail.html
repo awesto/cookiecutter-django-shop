@@ -29,7 +29,7 @@
 				</li>
 			</ul>
 			<!-- include "Add to Cart" dialog box -->
-			{% include "shop/catalog/product-add2cart.html" with card_css_classes="mb-3" %}
+			{% include "shop/catalog/{% endraw %}{% if cookiecutter.stock_management != 'n' %}available-{% endif %}{% raw %}product-add2cart.html" with card_css_classes="mb-3" %}
 		</div>
 	</div>
 </div>

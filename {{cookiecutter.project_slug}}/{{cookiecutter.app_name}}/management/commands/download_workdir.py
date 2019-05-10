@@ -17,7 +17,7 @@ except ImportError:
 
 
 class Command(BaseCommand):
-    version = 17
+    version = 18
     help = "Download workdir to run a demo of django-SHOP."
     download_url = 'http://downloads.django-shop.org/django-shop-workdir-{version}.zip'
 

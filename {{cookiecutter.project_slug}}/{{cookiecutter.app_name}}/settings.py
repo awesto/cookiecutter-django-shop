@@ -32,7 +32,7 @@ WORK_DIR = os.environ.get('DJANGO_WORKDIR', os.path.abspath(os.path.join(PROJECT
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
-ADMINS = [("The Merchant", 'the.merchant@example.com')]
+ADMINS = [("{{ cookiecutter.author_name }}", '{{ cookiecutter.email }}')]
 
 # SECURITY WARNING: in production, inject the secret key through the environment
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '!!!SET DJANGO_SECRET_KEY!!!')

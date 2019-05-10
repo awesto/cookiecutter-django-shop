@@ -1,24 +1,5 @@
 {% raw %}{% extends "shop/catalog/product-add2cart.html" %}
-{% load i18n %}
 
-{% block add-product-to-cart-body %}
-<div class="card-body pb-0">
-	<div class="d-flex justify-content-between">
-		<div class="d-flex flex-column">
-			<span class="label">{% trans "Unit Price" %}</span>
-			<div class="lead mt-1">
-			{% verbatim %}{{ context.unit_price }}{% endverbatim %}
-			</div>
-		</div>
-		<div class="d-flex flex-column">
-			<span class="label">{% trans "Subtotal" %}</span>
-			<div class="lead mt-1 font-weight-bold">
-			{% verbatim %}{{ context.subtotal }}<sup>*</sup>{% endverbatim %}
-			</div>
-		</div>
-	</div>
-	<div class="text-muted text-right mb-3">
-		<small><sup>*</sup>&nbsp;incl. VAT</small>
-	</div>
-</div>
-{% endblock add-product-to-cart-body %}{% endraw %}
+{% block available-quantity-in-stock %}{# intentionally empty #}{% endblock %}
+
+{% block change-purchasing-quantity %}{# intentionally empty #}{% endblock %}{% endraw %}

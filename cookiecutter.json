@@ -32,5 +32,10 @@
     "commodity"
   ],
   "use_compressor": "n",
+  "stock_management": [
+    "simple",
+    "inventory",
+    "n"
+  ],
   "debug": "n"
 }

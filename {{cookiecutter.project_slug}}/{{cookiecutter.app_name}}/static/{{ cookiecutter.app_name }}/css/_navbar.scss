@@ -78,6 +78,9 @@ body {
 			}
 			@include media-breakpoint-up(lg) {
 				font-size: 150%;
+				.dropdown-toggle::after {
+					font-size: initial;
+				}
 			}
 		}
 		.shop-secondary-menu {
