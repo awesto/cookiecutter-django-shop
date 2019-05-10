@@ -1,5 +1,12 @@
-{% raw %}{% extends "shop/catalog/product-add2cart.html" %}
+{% raw %}{% extends "shop/catalog/available-product-add2cart.html" %}
+{% load i18n %}
 
 {% block available-quantity-in-stock %}{# intentionally empty #}{% endblock %}
 
-{% block change-purchasing-quantity %}{# intentionally empty #}{% endblock %}{% endraw %}
+{% block change-purchasing-quantity %}
+<div class="d-flex flex-column w-25" ng-hide="context.availability.quantity">
+	<div class="lead mt-1">
+		{% trans "This item has already been sold" %}
+	</div>
+</div>
+{% endblock %}{% endraw %}
