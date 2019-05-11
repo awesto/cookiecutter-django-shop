@@ -30,6 +30,9 @@ from shop.money import Money, MoneyMaker
     {%- endif %}
 from shop.money.fields import MoneyField
 from shop.models.product import BaseProduct, BaseProductManager,{% if cookiecutter.stock_management == 'simple' %} AvailableProductMixin,{% endif %} CMSPageReferenceMixin
+    {%- if cookiecutter.stock_management == 'inventory' %}
+from shop.models.inventory import AvailableProductMixin
+    {%- endif %}
 {% endif -%}
 from shop.models.defaults.cart import Cart
 from shop.models.defaults.cart_item import CartItem
