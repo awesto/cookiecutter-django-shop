@@ -69,6 +69,9 @@ class Command(BaseCommand):
 {%- if cookiecutter.products_model == 'polymorphic' %}
             self.create_polymorphic_subcategories()
 {%- endif %}
+{%- if cookiecutter.stock_management == 'inventory' %}
+            call_command('initialize_inventories')
+{%- endif %}
 {%- if cookiecutter.use_sendcloud == 'y' %}
             call_command('sendcloud_import')
 {%- endif %}
