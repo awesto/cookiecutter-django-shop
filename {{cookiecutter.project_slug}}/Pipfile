@@ -32,7 +32,7 @@ uWSGI = "*"
 djangorestframework = "<3.9"
 django-rest-auth = "*"
 django_polymorphic = "<2"
-django-admin-sortable2 = "0.7.1"
+django-admin-sortable2 = "*"
 django-fsm = "*"
 django-fsm-admin = "*"
 django-phonenumber-field = "*"
@@ -41,7 +41,7 @@ phonenumbers = "*"
 djangocms-bootstrap = "*"
 elasticsearch = "<1.8"
 libsass = "*"
-django-shop = "*" {# {{ cookiecutter.version }}" #}
+"b26de6a" = {file = "https://github.com/awesto/django-shop/archive/releases/1.1.x.zip"}
 {% if cookiecutter.use_stripe == 'y' -%}
 djangoshop-stripe = "*"  {# "{{ cookiecutter.version }}" #}
 stripe = "<1.54"
