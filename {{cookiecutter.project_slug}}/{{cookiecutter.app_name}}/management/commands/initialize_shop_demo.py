@@ -7,7 +7,7 @@ try:
 except ImportError:
     from io import BytesIO as StringIO
 from django.conf import settings
-from django.core.management.base import BaseCommand
+from django.core.management.base import BaseCommand, CommandError
 from django.core.management import call_command
 from django.utils.translation import ugettext_lazy as _
 try:
@@ -73,7 +73,10 @@ class Command(BaseCommand):
             call_command('initialize_inventories')
 {%- endif %}
 {%- if cookiecutter.use_sendcloud == 'y' %}
-            call_command('sendcloud_import')
+            try:
+                call_command('sendcloud_import')
+            except CommandError:
+                pass
 {%- endif %}
         else:
             self.stdout.write("Project {{ cookiecutter.app_name }} already initialized")
