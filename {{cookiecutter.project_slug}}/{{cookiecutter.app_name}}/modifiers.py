@@ -16,16 +16,8 @@ from myshop.models import Commodity
 {%- endif %}
 
 
+{%- if cookiecutter.products_model == 'polymorphic' %}
 class PrimaryCartModifier(DefaultCartModifier):
-{%- if cookiecutter.products_model == 'commodity' %}
-    """
-    Extended default cart modifier which restricts the quantity of a unique commodity to one
-    """
-    def pre_process_cart_item(self, cart, item, request):
-        if isinstance(item.product, Commodity):
-            item.quantity = 1
-
-{%- elif cookiecutter.products_model == 'polymorphic' %}
     """
     Extended default cart modifier which handles the price for product variations
     """
@@ -35,8 +27,6 @@ class PrimaryCartModifier(DefaultCartModifier):
         cart_item.line_total = cart_item.unit_price * cart_item.quantity
         # grandparent super
         return super(DefaultCartModifier, self).process_cart_item(cart_item, request)
-{%- else %}
-    pass
 {%- endif %}
 
 

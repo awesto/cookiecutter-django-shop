@@ -31,7 +31,7 @@ from shop.money import Money, MoneyMaker
 from shop.money.fields import MoneyField
 from shop.models.product import BaseProduct, BaseProductManager,{% if cookiecutter.stock_management == 'simple' %} AvailableProductMixin,{% endif %} CMSPageReferenceMixin
     {%- if cookiecutter.stock_management == 'inventory' %}
-from shop.models.inventory import AvailableProductMixin
+from shop.models.inventory import BaseInventory, AvailableProductMixin
     {%- endif %}
 {% endif -%}
 from shop.models.defaults.cart import Cart
@@ -58,7 +58,7 @@ __all__ = ['Cart', 'CartItem', 'Order', {% if cookiecutter.delivery_handling in 
 {% if cookiecutter.delivery_handling in ['partial', 'common'] -%}
 
 class OrderItem(BaseOrderItem):
-    quantity = models.IntegerField(_("Ordered quantity"))
+    quantity = models.PositiveIntegerField(_("Ordered quantity"))
     canceled = models.BooleanField(_("Item canceled "), default=False)
 
     {%- if cookiecutter.products_model == 'polymorphic' %}
@@ -112,7 +112,7 @@ class ProductManager(BaseProductManager):
 
 
 @python_2_unicode_compatible
-class Product(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableModelMixin,{% endif %}{% if cookiecutter.stock_management != 'n' %} AvailableProductMixin,{% endif %} BaseProduct):
+class Product(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableModelMixin,{% endif %} BaseProduct):
     """
     Base class to describe a polymorphic product. Here we declare common fields available in all of
     our different product types. These common fields are also used to build up the view displaying
@@ -207,7 +207,7 @@ class ProductTranslation(TranslatedFieldsModel):
     {%- if cookiecutter.products_model == 'polymorphic' %}
 
 
-class Commodity(Product):
+class Commodity({% if cookiecutter.stock_management != 'n' %}AvailableProductMixin, {% endif %}Product):
     """
     This Commodity model inherits from polymorphic Product, and therefore has to be redefined.
     """
@@ -251,7 +251,7 @@ class Commodity(Product):
 
 
 @python_2_unicode_compatible
-class SmartCard(Product):
+class SmartCard({% if cookiecutter.stock_management != 'n' %}AvailableProductMixin, {% endif %}Product):
         {%- if cookiecutter.use_i18n == 'y' %}
     multilingual = TranslatedFields(
         description=HTMLField(
@@ -266,7 +266,7 @@ class SmartCard(Product):
 
 
 @python_2_unicode_compatible
-class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableModelMixin,{% endif %} BaseProduct):
+class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableModelMixin,{% endif %}{% if cookiecutter.stock_management != 'n' %} AvailableProductMixin,{% endif %} BaseProduct):
     product_name = models.CharField(
         max_length=255,
         verbose_name=_("Product Name"),
@@ -619,4 +619,49 @@ class SmartPhoneVariant({% if cookiecutter.stock_management != 'n' %}AvailablePr
     def get_price(self, request):
         return self.unit_price
 
+    {%- if cookiecutter.stock_management == 'inventory' %}
+
+
+class CommodityInventory(BaseInventory):
+    product = models.ForeignKey(
+        Commodity,
+        related_name='inventory_set',
+    )
+
+    quantity = models.PositiveIntegerField(
+        _("Quantity"),
+        default=0,
+        validators=[MinValueValidator(0)],
+        help_text=_("Available quantity in stock")
+    )
+
+
+class SmartCardInventory(BaseInventory):
+    product = models.ForeignKey(
+        SmartCard,
+        related_name='inventory_set',
+    )
+
+    quantity = models.PositiveIntegerField(
+        _("Quantity"),
+        default=0,
+        validators=[MinValueValidator(0)],
+        help_text=_("Available quantity in stock")
+    )
+
+
+class SmartPhoneInventory(BaseInventory):
+    product = models.ForeignKey(
+        SmartPhoneVariant,
+        related_name='inventory_set',
+    )
+
+    quantity = models.PositiveIntegerField(
+        _("Quantity"),
+        default=0,
+        validators=[MinValueValidator(0)],
+        help_text=_("Available quantity in stock")
+    )
+
+    {%- endif %}  {# cookiecutter.stock_management == 'inventory' #}
 {%- endif %}

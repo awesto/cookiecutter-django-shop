@@ -650,7 +650,11 @@ SHOP_DEFAULT_CURRENCY = 'EUR'
 SHOP_EDITCART_NG_MODEL_OPTIONS = "{updateOn: 'default blur', debounce: {'default': 2500, 'blur': 0}}"
 
 SHOP_CART_MODIFIERS = [
+{%- if cookiecutter.products_model == 'polymorphic' %}
     '{{ cookiecutter.app_name }}.modifiers.PrimaryCartModifier',
+{%- else %}
+    'shop.modifiers.defaults.DefaultCartModifier',
+{%- endif %}
     'shop.modifiers.taxes.CartExcludedTaxModifier',
 {%- if cookiecutter.products_model != 'commodity' %}
     '{{ cookiecutter.app_name }}.modifiers.PostalShippingModifier',
