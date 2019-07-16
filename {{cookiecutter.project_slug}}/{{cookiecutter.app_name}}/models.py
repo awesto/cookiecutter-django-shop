@@ -149,7 +149,7 @@ class Product(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Transl
     )
 
     # controlling the catalog
-    order = models.PositiveIntegerField(https://github.com/awesto/cookiecutter-django-shop/tree/master/%7B%7Bcookiecutter.project_slug%7D%7D
+    order = models.PositiveIntegerField(
         _("Sort by"),
         db_index=True,
     )
