@@ -3,6 +3,7 @@ name = "my-shop"
 version = "0.1.0"
 description = ""
 license = "MIT"
+author = ['Haricot']
 #packages = [
 #    { include = "/home/np/GIT/shop_path8/django-shop" },
 
