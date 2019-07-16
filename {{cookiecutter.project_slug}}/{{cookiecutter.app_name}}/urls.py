@@ -21,7 +21,7 @@ def render_robots(request):
 
 
 i18n_urls = (
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
     url(r'^', include('cms.urls')),
 )
 urlpatterns = [
