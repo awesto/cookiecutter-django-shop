@@ -149,14 +149,14 @@ class Product(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Transl
     )
 
     # controlling the catalog
-    order = models.PositiveIntegerField(
+    order = models.PositiveIntegerField(https://github.com/awesto/cookiecutter-django-shop/tree/master/%7B%7Bcookiecutter.project_slug%7D%7D
         _("Sort by"),
         db_index=True,
     )
 
     cms_pages = models.ManyToManyField(
         'cms.Page',
-        through=ProductPage,
+        through=ProductPage.named_model('Product'),
         help_text=_("Choose list view this product shall appear on."),
     )
 
@@ -303,7 +303,7 @@ class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Tran
 
     cms_pages = models.ManyToManyField(
         'cms.Page',
-        through=ProductPage,
+        through=ProductPage.named_model('SmartCar'),
         help_text=_("Choose list view this product shall appear on."),
     )
 
