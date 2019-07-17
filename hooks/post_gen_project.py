@@ -173,7 +173,11 @@ def pipenv_to_requirements():
         fh.write(ret.decode('utf-8'))
 
 def venv_poetry_to_requirements():
-    ret = subprocess.check_output(['poetry', 'install'])
+  #  ret = subprocess.check_output(['poetry', 'install'])
+    cms = "poetry install;"
+    subprocess.run(cmd, shell=True)
+    
+
     ret.decode('utf-8')
   #  with open('requirements.txt', 'w') as fh:
   #      fh.write(ret.decode('utf-8'))
