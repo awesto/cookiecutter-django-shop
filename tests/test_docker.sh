@@ -15,7 +15,8 @@ cookiecutter ../../  -v --no-input  --overwrite-if-exists  dockerize="runserver"
 cd my-shop
 # run the project's tests
 docker-compose -f up --build -d
-docker-compose run ls -l
+docker-compose exec web /bin/bash ls -l
+ docker-compose run /bin/bash python
 docker-compose run python manage.py pytest
 
 # return non-zero status code if there are migrations that have not been created
