@@ -14,7 +14,8 @@ cd .cache/docker
 cookiecutter ../../  -v --no-input  --overwrite-if-exists  dockerize="runserver" debug="y"
 cd my-shop
 # run the project's tests
-docker-compose -f up --build -d
+docker-compose build -t . web
+#docker-compose -f up --build -d
 docker-compose up
 #list images 
 
