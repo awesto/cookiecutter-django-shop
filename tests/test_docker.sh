@@ -24,3 +24,5 @@ docker-compose run django python manage.py makemigrations --dry-run --check || {
 
 # Test support for translations
 docker-compose  run django python manage.py makemessages
+
+exit
