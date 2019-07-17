@@ -1,4 +1,4 @@
-version: '3'services:
+version: '3'
   db:
     image: postgres
   web:
