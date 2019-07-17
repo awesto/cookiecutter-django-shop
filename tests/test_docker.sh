@@ -20,13 +20,7 @@ ls
 #docker build -t carlad/sinatra .
 #docker-compose build -t . web
 docker-compose -f up --build -d
-docker-compose run exec . /bin/sh ls
- 
-#list images 
 
-docker-compose ps  -q 
-docker-machine config
-docker-compose ps -a
 
 
 #docker-compose exec web /bin/bash poetry shell &&
