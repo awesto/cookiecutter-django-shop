@@ -15,8 +15,10 @@ cookiecutter ../../  -v --no-input  --overwrite-if-exists  dockerize="runserver"
 cd my-shop
 # run the project's tests
 docker-compose -f up --build -d
-docker-compose exec /bin/sh ls
-docker-compose exec /bin/sh poetry shell &&
+docker-compose up
+docker-compose exec web /bin/bash
+docker-compose exec web /bin/sh ls
+docker-compose exec web /bin/sh poetry shell &&
 #docker-compose exec web /bin/bash poetry shell &&
 # docker-compose run /bin/bash python
 #docker-compose run python manage.py pytest
