@@ -39,8 +39,8 @@
   ],
   "debug": "n",
   "_copy_without_render": [
+     	"docker-compose.yml",
       "pyproject.toml",
       "local.yml", 	
-      "docker-compose.yml"
   ]
 }
