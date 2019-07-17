@@ -12,6 +12,8 @@ cd .cache/docker
 
 # create the project using the default settings in cookiecutter.json
 cookiecutter ../../ --no-input --overwrite-if-exists use_docker=y
+ls
+ls ../../ 
 cd my_shop
 
 # run the project's tests
