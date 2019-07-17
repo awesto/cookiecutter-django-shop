@@ -13,9 +13,8 @@ cd .cache/docker
 # create the project using the default settings in cookiecutter.json
 cookiecutter ../../  -v --no-input  --overwrite-if-exists  dockerize="runserver" debug="y"
 cd my-shop
-
 # run the project's tests
-#docker-compose -f up --build -d
+docker-compose -f up --build -d
 docker-compose run ls -l
 docker-compose run python manage.py pytest
 
