@@ -178,7 +178,7 @@ def venv_poetry_to_requirements():
     subprocess.run(cmd, shell=True)
     
 
-    ret.decode('utf-8')
+   # ret.decode('utf-8')
   #  with open('requirements.txt', 'w') as fh:
   #      fh.write(ret.decode('utf-8'))
         
