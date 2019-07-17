@@ -1,0 +1,12 @@
+version: '3'services:
+  db:
+    image: postgres
+  web:
+    build: .
+    command: python3 manage.py runserver 0.0.0.0:8990
+    volumes:
+      - .:/django-docker
+    ports:
+      - "8990:8990"
+    depends_on:
+- db
