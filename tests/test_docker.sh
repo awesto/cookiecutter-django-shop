@@ -11,8 +11,10 @@ mkdir -p .cache/docker
 cd .cache/docker
 
 # create the project using the default settings in cookiecutter.json
-cookiecutter ../../  -v --no-input  --overwrite-if-exists  dockerize="runserver" debug="y"
+cookiecutter ../../  -v --no-input  --overwrite-if-exists  dockerize="runserver" debug="y
+ls
 cd my-shop
+ls
 # run the project's tests
 docker-compose build -t . web
 #docker-compose -f up --build -d
