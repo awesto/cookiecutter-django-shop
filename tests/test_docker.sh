@@ -14,6 +14,8 @@ ls
 cookiecutter ../../  -v --config-file  --no-input  --overwrite-if-exists  dockerize=runserver debug=y 
 cd my-shop
 ls
+echo ' '
+ls ..
 # run the project's tests
 docker-compose -f up --build -d
 
