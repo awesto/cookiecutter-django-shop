@@ -11,7 +11,7 @@ mkdir -p .cache/docker
 cd .cache/docker
 ls 
 # create the project using the default settings in cookiecutter.json
-cookiecutter ../../  -v --replay --no-input --overwrite-if-exists use_docker=y 
+cookiecutter ../../  -v  --no-input --overwrite-if-exists use_docker=y 
 ls
 cd my-shop
 ls
