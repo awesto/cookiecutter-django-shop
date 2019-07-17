@@ -37,5 +37,8 @@
     "inventory",
     "n"
   ],
-  "debug": "n"
+  "debug": "n",
+  "_copy_without_render": [
+      "*.pyproject.toml",
+  ]
 }
