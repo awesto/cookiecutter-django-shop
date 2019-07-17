@@ -44,7 +44,7 @@ def remove_pycharm_files():
 
 def remove_docker_files():
     shutil.rmtree("docker-files")
-    file_names = [".dockerignore", "docker-compose.yml"]
+    file_names = [".dockerignore",]
     for file_name in file_names:
         os.remove(file_name)
 
