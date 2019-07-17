@@ -27,6 +27,7 @@ COPY requirements.txt /tmp/requirements.txt
 
 # install project specific requirements
 RUN poetry install 
+RUN poetry shell
 #RUN pip install -r /tmp/requirements.txt
 {%- if cookiecutter.dockerize != "runserver" %}
 RUN npm install
