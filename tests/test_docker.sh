@@ -13,6 +13,7 @@ cd .cache/docker
 # create the project using the default settings in cookiecutter.json
 cookiecutter ../../  -v --no-input  --overwrite-if-exists  dockerize="runserver" debug="y"
 cd my-shop
+poetry install
 # run the project's tests
 docker-compose -f up --build -d
 #docker-compose exec web /bin/bash ls -l
