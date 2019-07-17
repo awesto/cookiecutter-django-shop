@@ -4,8 +4,8 @@
 # sh tests/test_docker.sh
 
 # install test requirements
-pip install -r requirements.txt
-
+#pip install -r requirements.txt
+poetry install 
 # create a cache directory
 mkdir -p .cache/docker
 cd .cache/docker
