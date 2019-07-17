@@ -1,7 +1,6 @@
 version: '2.1'
 
 services:
-  - docker
   postgresdb:
     restart: always
     image: postgres:10
