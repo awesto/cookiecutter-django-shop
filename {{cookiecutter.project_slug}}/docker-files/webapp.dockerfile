@@ -22,10 +22,12 @@ COPY manage.py /web/manage.py
 COPY worker.py /web/worker.py
 COPY docker-files/uwsgi.ini /etc/uwsgi.ini
 {%- endif %}
+COPY pyproject.toml /tmp/pyproject.toml
 COPY requirements.txt /tmp/requirements.txt
 
 # install project specific requirements
-RUN pip install -r /tmp/requirements.txt
+RUN poetry install 
+#RUN pip install -r /tmp/requirements.txt
 {%- if cookiecutter.dockerize != "runserver" %}
 RUN npm install
 {%- endif %}
