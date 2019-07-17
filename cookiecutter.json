@@ -39,6 +39,7 @@
   ],
   "debug": "n",
   "_copy_without_render": [
-      "*.pyproject.toml"
+      "pyproject.toml",
+      "local.yml"
   ]
 }
