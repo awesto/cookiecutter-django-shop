@@ -23,6 +23,10 @@ docker-compose ps  -q
 docker-machine ip
 docker-machine config
 docker-compose ps -a
+docker-compose run \
+  -e DJANGO_SETTINGS_MODULE=my-shop.settings \
+  --no-deps --rm app py.test;
+
 docker-compose exec web /bin/bash
 docker-compose exec web /bin/sh ls
 docker-compose exec web /bin/sh poetry shell &&
