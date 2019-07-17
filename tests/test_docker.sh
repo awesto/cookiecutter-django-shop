@@ -16,10 +16,12 @@ ls
 cd my-shop
 ls
 # run the project's tests
-docker-compose build web
+docker-compose build shop/hub
+#docker build -t carlad/sinatra .
 #docker-compose build -t . web
 #docker-compose -f up --build -d
-docker-compose run web 
+docker-compose run exec hop/hub /bin/sh ls
+ 
 #list images 
 
 docker-compose ps  -q 
