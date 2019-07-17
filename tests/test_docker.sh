@@ -15,7 +15,7 @@ cookiecutter ../../ --no-input --overwrite-if-exists use_docker=y
 ls
 ls ../../ 
 cd my_shop
-
+ls
 # run the project's tests
 docker-compose -f local.yml run django python manage.py pytest
 
