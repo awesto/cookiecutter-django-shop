@@ -16,9 +16,10 @@ ls
 cd my-shop
 ls
 # run the project's tests
-docker-compose build -t . web
+docker-compose build web
+#docker-compose build -t . web
 #docker-compose -f up --build -d
-docker-compose up
+docker-compose run web 
 #list images 
 
 docker-compose ps  -q 
