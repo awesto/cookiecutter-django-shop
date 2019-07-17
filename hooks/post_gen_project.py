@@ -172,7 +172,7 @@ def pipenv_to_requirements():
     with open('requirements.txt', 'w') as fh:
         fh.write(ret.decode('utf-8'))
 
-def poetry_to_requirements():
+def venv_poetry_to_requirements():
     ret = subprocess.check_output(['poetry', 'install'])
     ret.decode('utf-8')
   #  with open('requirements.txt', 'w') as fh:
@@ -232,7 +232,8 @@ pipenv run ./manage.py initialize_shop_demo
 pipenv run ./manage.py runserver
 """
     else:
-        pipenv_to_requirements()
+        venv_poetry_to_requirements()
+        #pipenv_to_requirements()
         set_database_password("docker-files/databases.environ")
         next_steps += """
 cd {{ cookiecutter.project_slug }}
