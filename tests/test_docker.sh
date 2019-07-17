@@ -17,7 +17,7 @@ cd my-shop
 docker-compose -f up --build -d
 docker-compose up
 #list images 
-docker-compose images  
+docker-compose ps -a
 docker-compose exec web /bin/bash
 docker-compose exec web /bin/sh ls
 docker-compose exec web /bin/sh poetry shell &&
