@@ -12,11 +12,12 @@ cd .cache/docker
 
 # create the project using the default settings in cookiecutter.json
 cookiecutter ../../ --no-input --overwrite-if-exists use_docker=y
-ls
-ls ../../ 
-cd my_shop
-ls
+
+cd my-shop
+ 
 # run the project's tests
+docker-compose -f up --build -d
+
 docker-compose -f local.yml run django python manage.py pytest
 
 # return non-zero status code if there are migrations that have not been created
