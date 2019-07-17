@@ -9,23 +9,18 @@
 # create a cache directory
 mkdir -p .cache/docker
 cd .cache/docker
-ls
-echo 'test'
+
 # create the project using the default settings in cookiecutter.json
 cookiecutter ../../  -v --no-input  --overwrite-if-exists  dockerize="runserver" debug="y"
 cd my-shop
-ls
-echo 'test ls ..'
-ls ..
 
-ls ../..
 # run the project's tests
 docker-compose -f up --build -d
 
-#docker-compose -f docker-compose.yml run django python manage.py pytest
+docker-compose run django python manage.py pytest
 
 # return non-zero status code if there are migrations that have not been created
-#docker-compose -f local.yml run django python manage.py makemigrations --dry-run --check || { echo "ERROR: there were changes in the models, but migration listed above have not been created and are not saved in version control"; exit 1; }
+docker-compose run django python manage.py makemigrations --dry-run --check || { echo "ERROR: there were changes in the models, but migration listed above have not been created and are not saved in version control"; exit 1; }
 
 # Test support for translations
-#docker-compose -f local.yml run django python manage.py makemessages
+docker-compose  run django python manage.py makemessages
