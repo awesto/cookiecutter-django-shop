@@ -174,7 +174,7 @@ def pipenv_to_requirements():
 
 def venv_poetry_to_requirements():
   #  ret = subprocess.check_output(['poetry', 'install'])
-    cms = "poetry install;"
+    cmd = "poetry install;"
     subprocess.run(cmd, shell=True)
     
 
