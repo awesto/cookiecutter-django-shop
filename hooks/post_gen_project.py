@@ -172,7 +172,13 @@ def pipenv_to_requirements():
     with open('requirements.txt', 'w') as fh:
         fh.write(ret.decode('utf-8'))
 
-
+def poetry_to_requirements():
+    ret = subprocess.check_output(['poetry', 'install'])
+    ret.decode('utf-8')
+  #  with open('requirements.txt', 'w') as fh:
+  #      fh.write(ret.decode('utf-8'))
+        
+        
 def set_flags_in_envs_deprecated(
     postgres_user,
     celery_flower_user,
