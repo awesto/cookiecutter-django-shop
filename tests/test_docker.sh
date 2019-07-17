@@ -15,7 +15,7 @@ cookiecutter ../../  -v --no-input  --overwrite-if-exists  dockerize="runserver"
 cd my-shop
 
 # run the project's tests
-docker-compose -f up --build -d
+#docker-compose -f up --build -d
 
 docker-compose run django python manage.py pytest
 
