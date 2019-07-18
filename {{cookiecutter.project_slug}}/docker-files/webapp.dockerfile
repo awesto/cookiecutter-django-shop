@@ -46,7 +46,7 @@ COPY docker-files/nginx-vhost.conf /web/nginx-conf/{{ cookiecutter.virtual_host 
 ENV DJANGO_STATIC_ROOT=$DJANGO_STATIC_ROOT
 ENV DJANGO_WORKDIR=$DJANGO_WORKDIR
 RUN mkdir -p $DJANGO_STATIC_ROOT/CACHE
-DJANGO_WORKDIR
+
 
 
 {%- if cookiecutter.dockerize != "runserver" %}
