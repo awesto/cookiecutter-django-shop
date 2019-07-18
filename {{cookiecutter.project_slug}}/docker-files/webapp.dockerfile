@@ -5,7 +5,6 @@ WORKDIR /web
 ARG DJANGO_WORKDIR=/web/workdir
 ARG DJANGO_STATIC_ROOT=/web/staticfiles
 
-ENV HOME=$(pwd)
 
 # install packages outside of PyPI
 RUN apt-get upgrade -y
@@ -25,8 +24,8 @@ RUN echo $(ls -a)
 RUN echo $(pwd)
 RUN echo $HOME
 RUN pip --version
-RUN $HOME/.poetry/bin/poetry install 
-COPY $HOME/.cache/pypoetry/virtualenvs /web/.venv
+RUN /.poetry/bin/poetry install 
+COPY /.cache/pypoetry/virtualenvs /web/.venv
 RUN echo $(which python)
 RUN npm install
 COPY node_modules web/node_modules
