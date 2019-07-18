@@ -14,12 +14,12 @@ cd my-shop
 ls
 
 #docker-compose run python manage.py pytest
-docker-compose -f docker-compose.yml run webapp python manage.py pytest
+docker-compose -f docker-compose.yml run django python manage.py pytest
 
 # return non-zero status code if there are migrations that have not been created
-docker-compose -f docker-compose.yml run webapp python manage.py makemigrations --dry-run --check || { echo "ERROR: there were changes in the models, but migration listed above have not been created and are not saved in version control"; exit 1; }
+docker-compose -f docker-compose.yml run django python manage.py makemigrations --dry-run --check || { echo "ERROR: there were changes in the models, but migration listed above have not been created and are not saved in version control"; exit 1; }
 
 # Test support for translations
-docker-compose -f docker-compose.yml run webapp python manage.py makemessages
+docker-compose -f docker-compose.yml run django python manage.py makemessages
 
 exit 0
