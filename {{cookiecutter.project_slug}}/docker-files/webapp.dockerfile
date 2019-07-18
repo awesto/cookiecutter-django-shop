@@ -29,7 +29,7 @@ COPY pyproject.toml /tmp/pyproject.toml
 # install project specific requirements
 
 RUN ls
-RUN .poetry/bin/poetry install 
+RUN $HOME/.poetry/bin/poetry install 
 COPY .venv /tmp/venv
 RUN npm install
 COPY node_modules web/node_modules
