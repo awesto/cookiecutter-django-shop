@@ -53,6 +53,8 @@ elasticsearch = "<1.8"
 libsass = "*"
 django-shop = { git = "https://github.com/haricot/django-shop.git", branch="patch-9" }
 #django-shop = "*"
+djangoshop_stripe = "*"
+djangoshop_sendcloud = "*"
 
 [dev-packages]
 tox = "*"
@@ -63,6 +65,11 @@ lxml = "*"
 factory-boy = "*"
 pytest-factoryboy = "*"
 autopep8 = "*"
+
+#[options-packages]
+#djangoshop_stripe = "*"
+#djangoshop_sendcloud = "*"
+
 
 
 [build-system]
