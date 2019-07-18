@@ -13,8 +13,7 @@ ENV HOME=$PWD
 RUN apt-get upgrade -y
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apt-get install -y nodejs optipng jpegoptim
-RUN pip install --upgrade pip
-RUN pip --version
+RUN sudo pip install --upgrade pip
 RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
 
 {%- if cookiecutter.dockerize == "runserver" %}
