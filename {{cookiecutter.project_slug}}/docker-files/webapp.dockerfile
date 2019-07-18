@@ -5,7 +5,7 @@ WORKDIR /web
 ARG DJANGO_WORKDIR=/web/workdir
 ARG DJANGO_STATIC_ROOT=/web/staticfiles
 
-ENV HOME=WORKDIR
+ENV HOME=echo $(pwd)
 
 # install packages outside of PyPI
 RUN apt-get upgrade -y
