@@ -27,8 +27,8 @@ COPY pyproject.toml /tmp/pyproject.toml
 #COPY requirements.txt /tmp/requirements.txt
 
 # install project specific requirements
-RUN poetry install 
-COPY .venv /tmp/
+#RUN poetry install 
+#COPY .venv /tmp/
 RUN npm install
 COPY node_modules web/node_modules
 #RUN pip install -r /tmp/requirements.txt
