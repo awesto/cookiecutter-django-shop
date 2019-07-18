@@ -29,7 +29,7 @@ COPY pyproject.toml /web/pyproject.toml
 #COPY requirements.txt /tmp/requirements.txt
 
 # install project specific requirements
-RUN echo $(ls)
+RUN echo $(ls -a)
 RUN echo $HOME
 RUN $HOME/.poetry/bin/poetry install 
 COPY .venv /tmp/venv
