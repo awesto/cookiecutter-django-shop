@@ -13,14 +13,11 @@ cookiecutter ../../  --no-input  --overwrite-if-exists  dockerize="runserver" de
 cd my-shop
 
 
-docker-compose -f docker-compose.yml run webapp bash
-docker-compose -f docker-compose.yml run webapp bash
-docker-compose -f docker-compose.yml run
-#docker-compose run python manage.py pytest
+docker-compose -f docker-compose.yml run webapp bash ls
 docker-compose -f docker-compose.yml run webapp python manage.py pytest
 
 # return non-zero status code if there are migrations that have not been created
-docker-compose -f docker-compose.yml run python manage.py makemigrations --dry-run --check || { echo "ERROR: there were changes in the models, but migration listed above have not been created and are not saved in version control"; exit 1; }
+docker-compose -f docker-compose.yml run  webapp  python manage.py makemigrations --dry-run --check || { echo "ERROR: there were changes in the models, but migration listed above have not been created and are not saved in version control"; exit 1; }
 
 # Test support for translations
 docker-compose -f docker-compose.yml run python manage.py makemessages
