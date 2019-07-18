@@ -1,135 +1,134 @@
 version: '2.1'
 
 services:
-  django:
-    postgresdb:
-      restart: always
-      image: postgres:10
-      env_file:
-        - docker-files/databases.environ
-      volumes:
-        - pgdata:/var/lib/postgresql/data
-      networks:
-        - shopnet
-
-    redishost:
-      image: redis
-      volumes:
-        - 'redisdata:/data'
-      networks:
-        - shopnet
-
-    elasticsearch:
-    image: elasticsearch:1.7.5
-    container_name: elasticsearch
-    environment:
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
+  postgresdb:
+    restart: always
+    image: postgres:10
+    env_file:
+      - docker-files/databases.environ
     volumes:
-      - esdata:/usr/share/elasticsearch/data
+      - pgdata:/var/lib/postgresql/data
     networks:
       - shopnet
 
-  webapp:
-    restart: always
-    build:
-      context: .
-      dockerfile: docker-files/webapp.dockerfile
-    image: {{ cookiecutter.project_slug }}
-    env_file:
-      - docker-files/databases.environ
+  redishost:
+    image: redis
+    volumes:
+      - 'redisdata:/data'
+    networks:
+      - shopnet
+
+  elasticsearch:
+  image: elasticsearch:1.7.5
+  container_name: elasticsearch
+  environment:
+    - cluster.name=docker-cluster
+    - bootstrap.memory_lock=true
+    - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  ulimits:
+    memlock:
+      soft: -1
+      hard: -1
+  volumes:
+    - esdata:/usr/share/elasticsearch/data
+  networks:
+    - shopnet
+
+webapp:
+  restart: always
+  build:
+    context: .
+    dockerfile: docker-files/webapp.dockerfile
+  image: {{ cookiecutter.project_slug }}
+  env_file:
+    - docker-files/databases.environ
 {%- if cookiecutter.use_stripe == "y" %}
-      - docker-files/stripe.environ
+    - docker-files/stripe.environ
 {%- endif %}
 {%- if cookiecutter.use_sendcloud == "y" %}
-      - docker-files/sendcloud.environ
+    - docker-files/sendcloud.environ
 {%- endif %}
-    environment:
-      - VIRTUAL_HOST={{ cookiecutter.virtual_host }}
+  environment:
+    - VIRTUAL_HOST={{ cookiecutter.virtual_host }}
 {%- if cookiecutter.dockerize == "nginx" %}
-      - VIRTUAL_PROTO=uwsgi
-      - LETSENCRYPT_HOST={{ cookiecutter.virtual_host }}
-      - LETSENCRYPT_EMAIL={{ cookiecutter.email }}
+    - VIRTUAL_PROTO=uwsgi
+    - LETSENCRYPT_HOST={{ cookiecutter.virtual_host }}
+    - LETSENCRYPT_EMAIL={{ cookiecutter.email }}
 {%- endif %}
 {%- if cookiecutter.debug == "y" %}
-      - DJANGO_DEBUG=1
+    - DJANGO_DEBUG=1
 {%- endif %}
-      - DJANGO_SETTINGS_MODULE={{ cookiecutter.app_name }}.settings
-    volumes:
+    - DJANGO_SETTINGS_MODULE={{ cookiecutter.app_name }}.settings
+  volumes:
 {%- if cookiecutter.dockerize == "runserver" %}
-      - ./:/web
+    - ./:/web
 {%- else %}
-      - shopmedia:/web/workdir
+    - shopmedia:/web/workdir
 {%- endif %}
 {%- if cookiecutter.dockerize == "nginx" %}
-      - nginxproxy_nginxvhostd:/web/nginx-conf
+    - nginxproxy_nginxvhostd:/web/nginx-conf
 {%- endif %}
 {%- if cookiecutter.dockerize == "runserver" %}
-    entrypoint: /usr/local/bin/entrypoint.sh
+  entrypoint: /usr/local/bin/entrypoint.sh
 {%- else %}
-    command: uwsgi --ini /etc/uwsgi.ini
+  command: uwsgi --ini /etc/uwsgi.ini
 {%- endif %}
-    depends_on:
-      - postgresdb
-      - redishost
-      - elasticsearch
-    networks:
-      - shopnet
+  depends_on:
+    - postgresdb
+    - redishost
+    - elasticsearch
+  networks:
+    - shopnet
 {%- if cookiecutter.dockerize == "nginx" %}
-      - nginx-proxy
-    expose:
-      - 9009
+    - nginx-proxy
+  expose:
+    - 9009
 {%- else %}
-    ports:
-      - 9009:9009
+  ports:
+    - 9009:9009
 {%- endif %}
 
-  worker:
-    restart: always
-    image: {{ cookiecutter.project_slug }}
-    environment:
-      - DJANGO_SETTINGS_MODULE={{ cookiecutter.app_name }}.settings
-    env_file:
-      - docker-files/databases.environ
-      - docker-files/email.environ
+worker:
+  restart: always
+  image: {{ cookiecutter.project_slug }}
+  environment:
+    - DJANGO_SETTINGS_MODULE={{ cookiecutter.app_name }}.settings
+  env_file:
+    - docker-files/databases.environ
+    - docker-files/email.environ
 {%- if cookiecutter.dockerize == "runserver" %}
-    command: /web/worker.py
+  command: /web/worker.py
 {%- else %}
-    command: su django -c /web/worker.py
+  command: su django -c /web/worker.py
 {%- endif %}
-    volumes:
+  volumes:
 {%- if cookiecutter.dockerize == "runserver" %}
-      - ./:/web
+    - ./:/web
 {%- else %}
-      - shopmedia:/web/workdir
+    - shopmedia:/web/workdir
 {%- endif %}
-    depends_on:
-      - postgresdb
-      - redishost
-    networks:
-      - shopnet
+  depends_on:
+    - postgresdb
+    - redishost
+  networks:
+    - shopnet
 
 networks:
-  shopnet:
+shopnet:
 {%- if cookiecutter.dockerize == "nginx" %}
-  nginx-proxy:
-    external: true
+nginx-proxy:
+  external: true
 {%- endif %}
 
 volumes:
-  pgdata:
-  redisdata:
+pgdata:
+redisdata:
 {%- if cookiecutter.dockerize != "runserver" %}
-  shopmedia:
+shopmedia:
 {%- endif %}
-  esdata:
+esdata:
 {%- if cookiecutter.dockerize == "nginx" %}
-  nginxproxy_nginxvhostd:
-    external: true
+nginxproxy_nginxvhostd:
+  external: true
 {%- endif %}
 
