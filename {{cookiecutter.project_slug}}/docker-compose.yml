@@ -1,24 +1,25 @@
 version: '2.1'
 
 services:
-  postgresdb:
-    restart: always
-    image: postgres:10
-    env_file:
-      - docker-files/databases.environ
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-    networks:
-      - shopnet
+  django:
+    postgresdb:
+      restart: always
+      image: postgres:10
+      env_file:
+        - docker-files/databases.environ
+      volumes:
+        - pgdata:/var/lib/postgresql/data
+      networks:
+        - shopnet
 
-  redishost:
-    image: redis
-    volumes:
-      - 'redisdata:/data'
-    networks:
-      - shopnet
+    redishost:
+      image: redis
+      volumes:
+        - 'redisdata:/data'
+      networks:
+        - shopnet
 
-  elasticsearch:
+    elasticsearch:
     image: elasticsearch:1.7.5
     container_name: elasticsearch
     environment:
