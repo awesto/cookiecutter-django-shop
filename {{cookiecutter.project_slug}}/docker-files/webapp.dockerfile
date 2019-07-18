@@ -25,7 +25,7 @@ COPY manage.py /web/manage.py
 COPY worker.py /web/worker.py
 COPY docker-files/uwsgi.ini /etc/uwsgi.ini
 {%- endif %}
-COPY pyproject.toml /tmp/pyproject.toml
+COPY pyproject.toml /web/pyproject.toml
 #COPY requirements.txt /tmp/requirements.txt
 
 # install project specific requirements
