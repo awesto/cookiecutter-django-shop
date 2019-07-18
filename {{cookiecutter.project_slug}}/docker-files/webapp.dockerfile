@@ -7,7 +7,7 @@ ARG DJANGO_STATIC_ROOT=/web/staticfiles
 
 #ENV VENV=/venv
 #ENV HOME=$VENV
-ENV HOME=$PWD
+
 
 # install packages outside of PyPI
 RUN apt-get upgrade -y
