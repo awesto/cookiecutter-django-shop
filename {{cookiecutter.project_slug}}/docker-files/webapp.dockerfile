@@ -32,7 +32,7 @@ COPY pyproject.toml /web/pyproject.toml
 RUN echo $(ls -a)
 RUN echo $HOME
 RUN $HOME/.poetry/bin/poetry install 
-COPY .venv /tmp/venv
+COPY WORKDIR/.cache/pypoetry/virtualenvs /web
 RUN npm install
 COPY node_modules web/node_modules
 #RUN pip install -r /tmp/requirements.txt
