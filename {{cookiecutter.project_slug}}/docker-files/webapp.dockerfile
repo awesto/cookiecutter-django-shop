@@ -18,7 +18,8 @@ COPY pyproject.toml /web/pyproject.toml
 
 # install project specific requirements
 RUN $HOME/.poetry/bin/poetry install 
-COPY .cache/pypoetry/virtualenvs /web/.venv
+RUN echo $(echo $TRAVIS_BUILD_DIR)
+COPY $TRAVIS_BUILD_DIR/.cache/pypoetry/virtualenvs /web/.venv
 RUN echo $(which python)
 RUN npm install
 COPY node_modules web/node_modules
@@ -49,8 +50,6 @@ COPY docker-files/nginx-vhost.conf /web/nginx-conf/{{ cookiecutter.virtual_host 
 ENV DJANGO_STATIC_ROOT=$DJANGO_STATIC_ROOT
 ENV DJANGO_WORKDIR=$DJANGO_WORKDIR
 RUN mkdir -p $DJANGO_STATIC_ROOT/CACHE
-
-
 
 {%- if cookiecutter.dockerize != "runserver" %}
 COPY workdir/fixtures/skeleton.json $DJANGO_WORKDIR/fixtures/skeleton.json
