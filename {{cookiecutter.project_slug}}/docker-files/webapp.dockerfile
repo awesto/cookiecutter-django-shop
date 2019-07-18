@@ -26,10 +26,8 @@ COPY pyproject.toml /tmp/pyproject.toml
 COPY requirements.txt /tmp/requirements.txt
 
 # install project specific requirements
-RUN poetry install 
-RUN which python
-RUN poetry shell
-RUN which python
+#RUN poetry install 
+COPY .venv /tmp/
 #RUN pip install -r /tmp/requirements.txt
 {%- if cookiecutter.dockerize != "runserver" %}
 RUN npm install
