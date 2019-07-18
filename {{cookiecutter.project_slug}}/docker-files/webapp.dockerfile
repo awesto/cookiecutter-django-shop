@@ -5,10 +5,6 @@ WORKDIR /web
 ARG DJANGO_WORKDIR=/web/workdir
 ARG DJANGO_STATIC_ROOT=/web/staticfiles
 
-#ENV VENV=/venv
-#ENV HOME=$VENV
-
-
 # install packages outside of PyPI
 RUN apt-get upgrade -y
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
@@ -21,13 +17,8 @@ COPY pyproject.toml /web/pyproject.toml
 #COPY requirements.txt /tmp/requirements.txt
 
 # install project specific requirements
-RUN echo $(which python)
-RUN echo $(ls -a)
-RUN echo $(pwd)
-RUN echo $HOME
-RUN pip --version
 RUN $HOME/.poetry/bin/poetry install 
-COPY $HOME/.cache/pypoetry/virtualenvs /web/.venv
+COPY /root/.cache/pypoetry/virtualenvs /web/.venv
 RUN echo $(which python)
 RUN npm install
 COPY node_modules web/node_modules
