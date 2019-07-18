@@ -33,7 +33,7 @@ RUN echo $(which python)
 RUN echo $(ls -a)
 RUN echo $HOME
 RUN $HOME/.poetry/bin/poetry install 
-COPY $WORKDIR/.cache/pypoetry/virtualenvs /web
+COPY $HOME/.cache/pypoetry/virtualenvs /web/.venv
 RUN echo $(which python)
 RUN npm install
 COPY node_modules web/node_modules
