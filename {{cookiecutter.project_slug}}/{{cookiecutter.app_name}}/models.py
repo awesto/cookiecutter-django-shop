@@ -146,6 +146,7 @@ class Product(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Transl
     manufacturer = models.ForeignKey(
         Manufacturer,
         verbose_name=_("Manufacturer"),
+        on_delete=models.CASCADE,
     )
 
     # controlling the catalog
@@ -190,6 +191,7 @@ class ProductTranslation(TranslatedFieldsModel):
         Product,
         related_name='translations',
         null=True,
+        on_delete=models.CASCADE,
     )
 
     caption = HTMLField(
@@ -293,6 +295,7 @@ class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Tran
     manufacturer = models.ForeignKey(
         Manufacturer,
         verbose_name=_("Manufacturer"),
+        on_delete=models.CASCADE,
     )
 
     # controlling the catalog
@@ -396,6 +399,7 @@ class SmartCardTranslation(TranslatedFieldsModel):
         SmartCard,
         related_name='translations',
         null=True,
+        on_delete=models.CASCADE,
     )
 
     caption = HTMLField(
@@ -484,6 +488,7 @@ class SmartPhoneModel(Product):
     operating_system = models.ForeignKey(
         OperatingSystem,
         verbose_name=_("Operating System"),
+        on_delete=models.CASCADE,
     )
 
     width = models.DecimalField(
@@ -587,6 +592,7 @@ class SmartPhoneVariant({% if cookiecutter.stock_management != 'n' %}AvailablePr
         SmartPhoneModel,
         verbose_name=_("Smartphone Model"),
         related_name='variants',
+        on_delete=models.CASCADE,
     )
 
     product_code = models.CharField(
@@ -640,6 +646,7 @@ class SmartCardInventory(BaseInventory):
     product = models.ForeignKey(
         SmartCard,
         related_name='inventory_set',
+        on_delete=models.CASCADE,
     )
 
     quantity = models.PositiveIntegerField(
@@ -654,6 +661,7 @@ class SmartPhoneInventory(BaseInventory):
     product = models.ForeignKey(
         SmartPhoneVariant,
         related_name='inventory_set',
+        on_delete=models.CASCADE,
     )
 
     quantity = models.PositiveIntegerField(
