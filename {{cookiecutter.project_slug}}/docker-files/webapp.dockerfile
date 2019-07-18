@@ -29,10 +29,12 @@ COPY pyproject.toml /web/pyproject.toml
 #COPY requirements.txt /tmp/requirements.txt
 
 # install project specific requirements
+RUN echo $(which python)
 RUN echo $(ls -a)
 RUN echo $HOME
 RUN $HOME/.poetry/bin/poetry install 
-COPY WORKDIR/.cache/pypoetry/virtualenvs /web
+COPY $WORKDIR/.cache/pypoetry/virtualenvs /web
+RUN echo $(which python)
 RUN npm install
 COPY node_modules web/node_modules
 #RUN pip install -r /tmp/requirements.txt
