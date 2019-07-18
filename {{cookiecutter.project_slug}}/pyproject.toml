@@ -54,7 +54,7 @@ libsass = "*"
 django-shop = { git = "https://github.com/haricot/django-shop.git", branch="patch-9" }
 #django-shop = "*"
 djangoshop_stripe = "*"
-djangoshop_sendcloud = "*"
+djangoshop_sendcloud = { git = "https://github.com/haricot/django-shop.git", branch="wip_django2" }
 
 [dev-packages]
 tox = "*"
