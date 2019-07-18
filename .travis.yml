@@ -20,7 +20,6 @@ script:
 
 install:
   - pip install cookiecutter
-  - pip install poetry
   - pip install tox
 
 notifications:
