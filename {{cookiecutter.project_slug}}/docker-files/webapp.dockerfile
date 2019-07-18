@@ -11,6 +11,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apt-get install -y nodejs optipng jpegoptim
 RUN pip install --upgrade pip
 RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+
 {%- if cookiecutter.dockerize == "runserver" %}
 COPY docker-files/entrypoint.sh /usr/local/bin/entrypoint.sh
 {%- else %}
@@ -23,11 +24,12 @@ COPY worker.py /web/worker.py
 COPY docker-files/uwsgi.ini /etc/uwsgi.ini
 {%- endif %}
 COPY pyproject.toml /tmp/pyproject.toml
-COPY requirements.txt /tmp/requirements.txt
+#COPY requirements.txt /tmp/requirements.txt
 
 # install project specific requirements
 #RUN poetry install 
-COPY .venv /tmp/
+#COPY .venv /tmp/
+
 #RUN pip install -r /tmp/requirements.txt
 {%- if cookiecutter.dockerize != "runserver" %}
 RUN npm install
