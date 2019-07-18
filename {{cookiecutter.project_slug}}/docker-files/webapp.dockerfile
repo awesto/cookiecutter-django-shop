@@ -1,4 +1,4 @@
-FROM python:3.6.6
+                                                                                                                                                                    FROM python:3.6.6
 LABEL Description="{{ cookiecutter.description }}" Maintainer="{{ cookiecutter.author_name }}"
 RUN mkdir /web
 WORKDIR /web
@@ -65,6 +65,11 @@ RUN useradd -M -d /web -s /bin/bash django
 
 {% if cookiecutter.dockerize == "runserver" -%}
 USER django
+RUN chown -R django.django $DJANGO_STATIC_ROOT
+RUN chown -R django.django $DJANGO_WORKDIR
+RUN chown -R django.django /web/{{ cookiecutter.app_name }}/migrations
+# keep media files in external volume
+VOLUME $DJANGO_WORKDIR
 {%- else %}
 # handle permissions
 RUN chown -R django.django $DJANGO_STATIC_ROOT
