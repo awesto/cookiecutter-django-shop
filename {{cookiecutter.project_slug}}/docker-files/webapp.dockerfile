@@ -20,7 +20,7 @@ COPY pyproject.toml /web/pyproject.toml
 RUN python  -m venv .venv
 RUN $HOME/.poetry/bin/poetry install 
 
-COPY .cache/pypoetry/virtualenvs /web/.venv
+COPY .venv /web/.venv
 RUN echo $(which python)
 RUN npm install
 COPY node_modules web/node_modules
