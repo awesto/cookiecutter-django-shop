@@ -17,9 +17,10 @@ COPY pyproject.toml /web/pyproject.toml
 #COPY requirements.txt /tmp/requirements.txt
 
 # install project specific requirements
+RUN python  -m venv .venv
 RUN $HOME/.poetry/bin/poetry install 
-RUN echo $(echo $TRAVIS_BUILD_DIR)
-COPY $TRAVIS_BUILD_DIR/.cache/pypoetry/virtualenvs /web/.venv
+
+COPY .cache/pypoetry/virtualenvs /web/.venv
 RUN echo $(which python)
 RUN npm install
 COPY node_modules web/node_modules
