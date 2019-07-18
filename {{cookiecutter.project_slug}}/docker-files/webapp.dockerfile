@@ -5,7 +5,7 @@ WORKDIR /web
 ARG DJANGO_WORKDIR=/web/workdir
 ARG DJANGO_STATIC_ROOT=/web/staticfiles
 
-ENV HOME=.
+ENV HOME=WORKDIR
 
 # install packages outside of PyPI
 RUN apt-get upgrade -y
@@ -29,7 +29,7 @@ COPY pyproject.toml /tmp/pyproject.toml
 #COPY requirements.txt /tmp/requirements.txt
 
 # install project specific requirements
-
+RUN echo $(ls)
 RUN echo $HOME
 RUN $HOME/.poetry/bin/poetry install 
 COPY .venv /tmp/venv
