@@ -20,9 +20,8 @@ COPY pyproject.toml /web/pyproject.toml
 RUN $HOME/.poetry/bin/poetry config settings.virtualenvs.create false 
 RUN $HOME/.poetry/bin/poetry install 
 
-COPY . /web
 RUN npm install
-COPY node_modules web/node_modules
+COPY . /web
 
 COPY docker-files/entrypoint.sh /usr/local/bin/entrypoint.sh
 {%- else %}
