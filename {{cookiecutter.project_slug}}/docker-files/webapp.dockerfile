@@ -12,9 +12,25 @@ RUN apt-get upgrade -y
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apt-get install -y nodejs optipng jpegoptim
 RUN pip install --upgrade pip
+RUN pip --version
 RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
 
 {%- if cookiecutter.dockerize == "runserver" %}
+COPY pyproject.toml /web/pyproject.toml
+#COPY requirements.txt /tmp/requirements.txt
+
+# install project specific requirements
+RUN echo $(which python)
+RUN echo $(ls -a)
+RUN echo $(pwd)
+RUN echo $HOME
+RUN pip --version
+RUN $HOME/.poetry/bin/poetry install 
+COPY $HOME/.cache/pypoetry/virtualenvs /web/.venv
+RUN echo $(which python)
+RUN npm install
+COPY node_modules web/node_modules
+
 COPY docker-files/entrypoint.sh /usr/local/bin/entrypoint.sh
 {%- else %}
 # copy project relevant files into container
@@ -25,19 +41,7 @@ COPY manage.py /web/manage.py
 COPY worker.py /web/worker.py
 COPY docker-files/uwsgi.ini /etc/uwsgi.ini
 {%- endif %}
-COPY pyproject.toml /web/pyproject.toml
-#COPY requirements.txt /tmp/requirements.txt
 
-# install project specific requirements
-RUN echo $(which python)
-RUN echo $(ls -a)
-RUN echo $(pwd)
-RUN echo $HOME
-RUN $HOME/.poetry/bin/poetry install 
-COPY $HOME/.cache/pypoetry/virtualenvs /web/.venv
-RUN echo $(which python)
-RUN npm install
-COPY node_modules web/node_modules
 #RUN pip install -r /tmp/requirements.txt
 {%- if cookiecutter.dockerize != "runserver" %}
 RUN npm install
