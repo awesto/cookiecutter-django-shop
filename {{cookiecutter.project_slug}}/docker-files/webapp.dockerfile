@@ -20,8 +20,6 @@ COPY pyproject.toml /web/pyproject.toml
 RUN $HOME/.poetry/bin/poetry config settings.virtualenvs.create false 
 RUN $HOME/.poetry/bin/poetry install 
 
-RUN npm install
-
 COPY docker-files/entrypoint.sh /usr/local/bin/entrypoint.sh
 {%- else %}
 # copy project relevant files into container
@@ -59,13 +57,11 @@ RUN ./manage.py compilescss    user: ${CURRENT_UID}
 RUN ./manage.py collectstatic --noinput --ignore='*.scss'
 {%- endif %}
 
+COPY  . /web
 # run Django as different user
 RUN useradd -M -d /web -s /bin/bash django
+
 {% if cookiecutter.dockerize == "runserver" -%}
-
-#{UID
-
-COPY --chown=django:django . /web
 RUN chown -R django.django $DJANGO_STATIC_ROOT
 RUN chown -R django.django $DJANGO_WORKDIR
 RUN chown -R django.django /web/{{ cookiecutter.app_name }}/migrations
