@@ -4,6 +4,8 @@ RUN mkdir /web
 WORKDIR /web
 ARG DJANGO_WORKDIR=/web/workdir
 ARG DJANGO_STATIC_ROOT=/web/staticfiles
+ENV UID=${UID}
+ENV GID=${GID}
 
 # install packages outside of PyPI
 RUN apt-get upgrade -y
@@ -55,7 +57,7 @@ COPY workdir/media/filer_public $DJANGO_WORKDIR/media/filer_public
 COPY workdir/.initialize $DJANGO_WORKDIR/.initialize
 {%- endif %}
 {%- if cookiecutter.debug == "n" %}
-RUN ./manage.py compilescss
+RUN ./manage.py compilescss    user: ${CURRENT_UID}
 RUN ./manage.py collectstatic --noinput --ignore='*.scss'
 {%- endif %}
 
@@ -63,7 +65,9 @@ RUN ./manage.py collectstatic --noinput --ignore='*.scss'
 
 {% if cookiecutter.dockerize == "runserver" -%}
 USER django
-COPY --chown=$USER:$USER . /web
+#RUN useradd -M -d /web -s /bin/bash django
+#{UID
+COPY --chown=$UID:$GID . /web
 
 # keep media files in external volume
 VOLUME $DJANGO_WORKDIR
