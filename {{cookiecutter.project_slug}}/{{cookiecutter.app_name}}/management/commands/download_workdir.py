@@ -65,7 +65,7 @@ Type 'yes' to continue, or 'no' to cancel:
                 zip_ref.close()
             url_valided=True
         else:
-            msg="There is no fixtures downdoadind workdir for this version: {version}"
-            self.stdout.write(msg.format(self.version))
+            msg="There is no fixtures downdoadind workdir for this version"
+            self.stdout.write(msg)
             url_valided=False
         return url_valided
