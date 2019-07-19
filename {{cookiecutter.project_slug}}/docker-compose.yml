@@ -36,6 +36,7 @@ services:
 
   webapp:
     restart: always
+    user: "${UID}:${GID}"
     build:
       context: .
       dockerfile: docker-files/webapp.dockerfile
