@@ -51,14 +51,11 @@ Type 'yes' to continue, or 'no' to cancel:
             else:
                     self.stdout.write(self.style.WARNING("Can not override downloaded data in input-less mode."))
                     return
-
-        extract_to = os.path.join(settings.WORK_DIR, os.pardir)
-        msg = "Downloading workdir and extracting to {}. Please wait ..."
-        self.stdout.write(msg.format(extract_to))
-        download_url = self.download_url.format(version=self.version) 
-        print(args)
-        print(options)
-        if not 'no-input' in args: 
+        if self.interactive:
+            extract_to = os.path.join(settings.WORK_DIR, os.pardir)
+            msg = "Downloading workdir and extracting to {}. Please wait ..."
+            self.stdout.write(msg.format(extract_to))
+            download_url = self.download_url.format(version=self.version) 
             response = requests.get(download_url, stream=True)
             zip_ref = zipfile.ZipFile(StringIO(response.content))
             try:
