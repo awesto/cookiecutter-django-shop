@@ -22,6 +22,8 @@ RUN $HOME/.poetry/bin/poetry install
 
 RUN npm install
 USER django
+RUN useradd -M -d /web -s /bin/bash django
+
 COPY --chown=django:django . /web
 
 COPY docker-files/entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -62,7 +64,6 @@ RUN ./manage.py collectstatic --noinput --ignore='*.scss'
 {%- endif %}
 
 # run Django as different user
-RUN useradd -M -d /web -s /bin/bash django
 
 {% if cookiecutter.dockerize == "runserver" -%}
 USER django
