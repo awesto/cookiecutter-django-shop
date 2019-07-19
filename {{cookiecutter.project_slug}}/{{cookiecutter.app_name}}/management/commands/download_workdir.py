@@ -56,7 +56,9 @@ Type 'yes' to continue, or 'no' to cancel:
         msg = "Downloading workdir and extracting to {}. Please wait ..."
         self.stdout.write(msg.format(extract_to))
         download_url = self.download_url.format(version=self.version) 
-        if not args['no-input']: 
+        print(args)
+        print(options)
+        if not 'no-input' in args: 
             response = requests.get(download_url, stream=True)
             zip_ref = zipfile.ZipFile(StringIO(response.content))
             try:
