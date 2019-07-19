@@ -68,7 +68,7 @@ class Command(BaseCommand):
                 call_command('loaddata', 'products-media')
                 call_command('import_products')
 {%- if cookiecutter.products_model == 'polymorphic' %}
-            self.create_polymorphic_subcategories()
+                self.create_polymorphic_subcategories()
 {%- endif %}
 {%- if cookiecutter.stock_management == 'inventory' %}
             call_command('initialize_inventories')
