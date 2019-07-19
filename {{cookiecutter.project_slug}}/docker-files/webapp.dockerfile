@@ -64,11 +64,12 @@ RUN useradd -M -d /web -s /bin/bash django
 {% if cookiecutter.dockerize == "runserver" -%}
 
 #{UID
-USER django
+
 COPY --chown=django:django . /web
 RUN chown -R django.django $DJANGO_STATIC_ROOT
 RUN chown -R django.django $DJANGO_WORKDIR
 RUN chown -R django.django /web/{{ cookiecutter.app_name }}/migrations
+USER django
 # keep media files in external volume
 VOLUME $DJANGO_WORKDIR
 {%- else %}
