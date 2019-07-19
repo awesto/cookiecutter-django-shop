@@ -4,8 +4,6 @@ RUN mkdir /web
 WORKDIR /web
 ARG DJANGO_WORKDIR=/web/workdir
 ARG DJANGO_STATIC_ROOT=/web/staticfiles
-ENV UID=${UID}
-ENV GID=${GID}
 
 # install packages outside of PyPI
 RUN apt-get upgrade -y
@@ -64,10 +62,10 @@ RUN ./manage.py collectstatic --noinput --ignore='*.scss'
 # run Django as different user
 
 {% if cookiecutter.dockerize == "runserver" -%}
-USER django
+#USER django
 #RUN useradd -M -d /web -s /bin/bash django
 #{UID
-COPY --chown=$UID:$GID . /web
+COPY . /web
 
 # keep media files in external volume
 VOLUME $DJANGO_WORKDIR
