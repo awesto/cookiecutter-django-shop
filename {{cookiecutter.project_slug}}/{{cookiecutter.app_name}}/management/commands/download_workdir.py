@@ -57,7 +57,7 @@ Type 'yes' to continue, or 'no' to cancel:
         self.stdout.write(msg.format(extract_to))
         download_url = self.download_url.format(version=self.version) 
         response = requests.get(download_url, stream=True)
-        if not response.status_code == '404:
+        if not response.status_code == '404':
             zip_ref = zipfile.ZipFile(StringIO(response.content))
             try:
                 zip_ref.extractall(extract_to)
