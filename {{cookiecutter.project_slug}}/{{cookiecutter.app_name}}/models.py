@@ -157,7 +157,7 @@ class Product(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Transl
 
     cms_pages = models.ManyToManyField(
         'cms.Page',
-        through=ProductPage,
+        through=ProductPage.named_model('Product'),
         help_text=_("Choose list view this product shall appear on."),
     )
 
