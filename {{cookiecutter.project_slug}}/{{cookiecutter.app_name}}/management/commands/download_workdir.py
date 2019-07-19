@@ -51,16 +51,21 @@ Type 'yes' to continue, or 'no' to cancel:
             else:
                     self.stdout.write(self.style.WARNING("Can not override downloaded data in input-less mode."))
                     return
-        if self.interactive:
-            extract_to = os.path.join(settings.WORK_DIR, os.pardir)
-            msg = "Downloading workdir and extracting to {}. Please wait ..."
-            self.stdout.write(msg.format(extract_to))
-            download_url = self.download_url.format(version=self.version) 
-            response = requests.get(download_url, stream=True)
+
+        extract_to = os.path.join(settings.WORK_DIR, os.pardir)
+        msg = "Downloading workdir and extracting to {}. Please wait ..."
+        self.stdout.write(msg.format(extract_to))
+        download_url = self.download_url.format(version=self.version) 
+        response = requests.get(download_url, stream=True)
+        if not response.status_code == '404:
             zip_ref = zipfile.ZipFile(StringIO(response.content))
             try:
                 zip_ref.extractall(extract_to)
             finally:
                 zip_ref.close()
+            url_valided=True
         else:
-            self.stdout.write('Downloading workdir url is not set.')
+            msg="There is no fixtures downdoadind workdir for this version: {version}"
+            self.stdout.write(msg.format(self.version))
+            url_valided=False
+        return url_valided
