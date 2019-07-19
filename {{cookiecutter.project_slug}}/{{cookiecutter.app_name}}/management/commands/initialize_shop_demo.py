@@ -63,8 +63,11 @@ class Command(BaseCommand):
             call_command('shop', 'check-pages', add_recommended=True)
             call_command('assign_iconfonts')
             call_command('create_social_icons')
+            print(cookiecutter.__dict__)
+            {%- if not cookiecutter.noinput %}
             call_command('download_workdir', interactive=self.interactive)
             call_command('loaddata', 'products-media')
+            {%- endif %}
             call_command('import_products')
 {%- if cookiecutter.products_model == 'polymorphic' %}
             self.create_polymorphic_subcategories()
