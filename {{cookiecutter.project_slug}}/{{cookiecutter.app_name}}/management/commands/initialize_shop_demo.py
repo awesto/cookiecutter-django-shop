@@ -66,7 +66,7 @@ class Command(BaseCommand):
             url_valided=call_command('download_workdir', interactive=self.interactive)
             if url_valided:
                 call_command('loaddata', 'products-media')
-            call_command('import_products')
+                call_command('import_products')
 {%- if cookiecutter.products_model == 'polymorphic' %}
             self.create_polymorphic_subcategories()
 {%- endif %}
