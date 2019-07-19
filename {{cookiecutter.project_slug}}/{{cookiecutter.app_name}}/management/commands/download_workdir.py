@@ -55,10 +55,13 @@ Type 'yes' to continue, or 'no' to cancel:
         extract_to = os.path.join(settings.WORK_DIR, os.pardir)
         msg = "Downloading workdir and extracting to {}. Please wait ..."
         self.stdout.write(msg.format(extract_to))
-        download_url = self.download_url.format(version=self.version)
-        response = requests.get(download_url, stream=True)
-        zip_ref = zipfile.ZipFile(StringIO(response.content))
-        try:
-            zip_ref.extractall(extract_to)
-        finally:
-            zip_ref.close()
+        download_url = self.download_url.format(version=self.version) 
+        if download_url: 
+            response = requests.get(download_url, stream=True)
+            zip_ref = zipfile.ZipFile(StringIO(response.content))
+            try:
+                zip_ref.extractall(extract_to)
+            finally:
+                zip_ref.close()
+        else:
+            self.stdout.write(msg.format('Downloading workdir url is not defined'))
