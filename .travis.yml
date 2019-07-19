@@ -15,7 +15,7 @@ env:
   #- #docker -v
 
 script:
-  - tox -e $TOX_ENV
+  #- tox -e $TOX_ENV
   - sh tests/test_docker.sh
 
 install:
