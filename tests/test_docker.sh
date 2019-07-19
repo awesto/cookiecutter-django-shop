@@ -15,7 +15,6 @@ cookiecutter ../../  --no-input  --overwrite-if-exists  dockerize="runserver" de
 
 cd my-shop
 
-docker-compose -f docker-compose.yml run -u django  webapp bash ls
 docker-compose -f docker-compose.yml run -u django  webapp python manage.py pytest
 
 # return non-zero status code if there are migrations that have not been created
