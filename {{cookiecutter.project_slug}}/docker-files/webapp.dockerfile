@@ -47,6 +47,8 @@ ENV DJANGO_STATIC_ROOT=$DJANGO_STATIC_ROOT
 ENV DJANGO_WORKDIR=$DJANGO_WORKDIR
 RUN mkdir -p $DJANGO_STATIC_ROOT/CACHE
 
+RUN npm install
+
 {%- if cookiecutter.dockerize != "runserver" %}
 COPY workdir/fixtures/skeleton.json $DJANGO_WORKDIR/fixtures/skeleton.json
 COPY workdir/media/filer_public $DJANGO_WORKDIR/media/filer_public
