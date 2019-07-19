@@ -63,4 +63,4 @@ Type 'yes' to continue, or 'no' to cancel:
             finally:
                 zip_ref.close()
         else:
-            self.stdout.write(msg.format('Downloading workdir url is not defined'))
+            self.stdout.write('Downloading workdir url is not set.')
