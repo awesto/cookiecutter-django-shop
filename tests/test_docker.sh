@@ -7,6 +7,9 @@
 mkdir -p .cache/docker
 cd .cache/docker
 
+export UID=${UID}
+export GID=${GID}
+
 # create the project using the default settings in cookiecutter.json
 cookiecutter ../../  --no-input  --overwrite-if-exists  dockerize="runserver" debug="y"
 
