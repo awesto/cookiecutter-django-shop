@@ -60,12 +60,13 @@ RUN ./manage.py collectstatic --noinput --ignore='*.scss'
 {%- endif %}
 
 # run Django as different user
-
+RUN useradd -M -d /web -s /bin/bash django
 {% if cookiecutter.dockerize == "runserver" -%}
-#USER django
-#RUN useradd -M -d /web -s /bin/bash django
+
 #{UID
-COPY . /web
+USER django
+COPY --chown=django:django . /web
+#
 
 # keep media files in external volume
 VOLUME $DJANGO_WORKDIR
