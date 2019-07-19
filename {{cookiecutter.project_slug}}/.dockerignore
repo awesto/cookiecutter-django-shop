@@ -1,4 +1,5 @@
 *
+!poetry.lock
 !pyproject.toml
 !docker-compose.yml
 !docker-files
