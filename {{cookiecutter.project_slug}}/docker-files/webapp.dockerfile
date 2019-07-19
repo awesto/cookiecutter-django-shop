@@ -21,7 +21,8 @@ RUN $HOME/.poetry/bin/poetry config settings.virtualenvs.create false
 RUN $HOME/.poetry/bin/poetry install 
 
 RUN npm install
-COPY . /web
+
+COPY --chown=django:django . /web
 
 COPY docker-files/entrypoint.sh /usr/local/bin/entrypoint.sh
 {%- else %}
@@ -65,9 +66,7 @@ RUN useradd -M -d /web -s /bin/bash django
 
 {% if cookiecutter.dockerize == "runserver" -%}
 USER django
-RUN chown -R django:django $DJANGO_STATIC_ROOT
-RUN chown -R django:django $DJANGO_WORKDIR
-RUN chown -R django:django /web/{{ cookiecutter.app_name }}/migrations
+
 # keep media files in external volume
 VOLUME $DJANGO_WORKDIR
 {%- else %}
