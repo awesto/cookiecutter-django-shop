@@ -7,20 +7,19 @@
 mkdir -p .cache/docker
 cd .cache/docker
 
-export UID=${UID}
-export GID=${GID}
-
 # create the project using the default settings in cookiecutter.json
 cookiecutter ../../  --no-input  --overwrite-if-exists  dockerize="runserver" debug="y"
 
 cd my-shop
 
-docker-compose -f docker-compose.yml run -u django  webapp python manage.py pytest
+
+#docker-compose -f docker-compose.yml run webapp bash source $HOME/.venv/bin activate
+docker-compose -f docker-compose.yml run webapp python manage.py pytest
 
 # return non-zero status code if there are migrations that have not been created
-docker-compose -f docker-compose.yml run webapp -u django  python manage.py makemigrations --dry-run --check || { echo "ERROR: there were changes in the models, but migration listed above have not been created and are not saved in version control"; exit 1; }
+docker-compose -f docker-compose.yml run  webapp  python manage.py makemigrations --dry-run --check || { echo "ERROR: there were changes in the models, but migration listed above have not been created and are not saved in version control"; exit 1; }
 
 # Test support for translations
-docker-compose -f docker-compose.yml run -u django python manage.py makemessages
+docker-compose -f docker-compose.yml run webapp  python manage.py makemessages
 
 exit 0
