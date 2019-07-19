@@ -21,7 +21,7 @@ RUN $HOME/.poetry/bin/poetry config settings.virtualenvs.create false
 RUN $HOME/.poetry/bin/poetry install 
 
 RUN npm install
-
+USER django
 COPY --chown=django:django . /web
 
 COPY docker-files/entrypoint.sh /usr/local/bin/entrypoint.sh
