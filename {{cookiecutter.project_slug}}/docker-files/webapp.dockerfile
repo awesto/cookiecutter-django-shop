@@ -21,10 +21,6 @@ RUN $HOME/.poetry/bin/poetry config settings.virtualenvs.create false
 RUN $HOME/.poetry/bin/poetry install 
 
 RUN npm install
-USER django
-RUN useradd -M -d /web -s /bin/bash django
-
-COPY --chown=django:django . /web
 
 COPY docker-files/entrypoint.sh /usr/local/bin/entrypoint.sh
 {%- else %}
@@ -67,6 +63,7 @@ RUN ./manage.py collectstatic --noinput --ignore='*.scss'
 
 {% if cookiecutter.dockerize == "runserver" -%}
 USER django
+COPY --chown=$USER:$USER . /web
 
 # keep media files in external volume
 VOLUME $DJANGO_WORKDIR
