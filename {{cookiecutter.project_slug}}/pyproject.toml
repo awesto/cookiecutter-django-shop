@@ -7,11 +7,8 @@ authors = ["Haricot"]
 
 #packages = [
 #    { include = "/home/np/GIT/shop_path8/django-shop" },
-
-    #{ include = "django-shop" },
 #    { include = "extra_package/**/*.py" },
 #]
-
 
 [tool.poetry.dependencies]
 python = "^3.6"
@@ -20,7 +17,7 @@ python = "^3.6"
 django = "<2.2"
 #djangocms-cascade = "*"
 #djangocms-cascade = { git = "https://github.com/jrief/djangocms-cascade", branch = "releases/1.0.x" }
-djangocms-cascade =  { git = "https://github.com/haricot/djangocms-cascade.git", branch="patch-33" }
+djangocms-cascade =  { git = "https://github.com/haricot/djangocms-cascade.git", branch="wip_shop_django2" }
 django-compressor = "*"
 django-allauth = "*"
 django-angular = "*"
@@ -48,10 +45,10 @@ django-fsm-admin = "*"
 django-phonenumber-field = "*"
 django-post_office = "*"
 phonenumbers = "*"
-djangocms-bootstrap =  { git = "https://github.com/haricot/djangocms-bootstrap3.git", branch="patch-9" }
+djangocms-bootstrap =  { git = "https://github.com/haricot/djangocms-bootstrap3.git", branch="wip_django2" }
 elasticsearch = "<1.8"
 libsass = "*"
-django-shop = { git = "https://github.com/haricot/django-shop.git", branch="patch-9" }
+django-shop = { git = "https://github.com/haricot/django-shop.git", branch="wip_django2" }
 #django-shop = "*"
 djangoshop_stripe = "*"
 djangoshop_sendcloud = { git = "https://github.com/haricot/djangoshop-sendcloud.git", branch="wip_django2" }
