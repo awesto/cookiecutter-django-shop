@@ -23,7 +23,7 @@ django-allauth = "*"
 django-angular = "*"
 #django-filer = "*"
 #AdminFileWidget Media dependency #1116
-django-filer =  { git = "https://github.com/divio/django-filer.git", branch="develop" } 
+django-filer =  { git = "https://github.com/divio/django-filer", branch="develop" } 
 django-ipware = "*"
 django-sass-processor = "*"
 django-select2 = "*"
