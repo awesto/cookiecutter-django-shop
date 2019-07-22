@@ -22,8 +22,8 @@ django-compressor = "*"
 django-allauth = "*"
 django-angular = "*"
 #django-filer = "*"
-#v1.5.0 Add jQuery as AdminFileWidget Media dependency #1116
-django-filer = "https://github.com/stefanw/django-filer/archive/26c1ad273a52411bbcf51a5adc0a48ac172f5349.zip"  
+#AdminFileWidget Media dependency #1116
+django-filer =  { git = "https://github.com/divio/django-filer.git", branch="develop" } 
 django-ipware = "*"
 django-sass-processor = "*"
 django-select2 = "*"
