@@ -382,7 +382,7 @@ django-rest-auth = ">=0.9.1"
 djangorestframework = "<3.10"
 
 [package.source]
-reference = "5bf5f12830739c2c625c55ab809106d9bdaff5c5"
+reference = "c624bff643a9f04f67ffda39428a616d10fdb511"
 type = "git"
 url = "https://github.com/haricot/django-shop.git"
 [[package]]
@@ -745,7 +745,7 @@ python-versions = "*"
 version = "0.5.1"
 
 [metadata]
-content-hash = "83b92d569158433a6b4db5c0bd2bac1f805c898e193f5c27cbb064dd8e1e9e2b"
+content-hash = "e94448df49b3c4c2f622191b4b57eb0c4ca0d28acc0e162a6c88c8d75ee1edd9"
 python-versions = "^3.6"
 
 [metadata.hashes]
