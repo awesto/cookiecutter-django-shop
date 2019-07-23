@@ -45,13 +45,12 @@ from shop.models.defaults.order_item import OrderItem
 {% endif -%}
 from shop.models.defaults.order import Order
 from shop.models.defaults.mapping import ProductImage
-from shop.models.defaults.commodity import ProductPage as CommodityProductPage
+
 from shop.models.related import BaseProductPage
+{% if cookiecutter.products_model == 'commodity' -%}
+from shop.models.defaults.commodity import ProductPage as CommodityProductPage
+{% endif -%}
 
-        
-        
-
-    
 {% if cookiecutter.use_sendcloud == 'y' -%}
 from shop_sendcloud.models.address import BillingAddress, ShippingAddress
 from shop_sendcloud.models.customer import Customer
