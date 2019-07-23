@@ -85,7 +85,7 @@ class OrderItem(BaseOrderItem):
 {% if cookiecutter.products_model != 'commodity' %}
 
 class ProductPageProduct(BaseProductPage,):
-    product=models.ForeignKey('Commodity', on_delete=models.CASCADE)
+    product=models.ForeignKey('Product', on_delete=models.CASCADE)
     class Meta(BaseProductPage.Meta):
         abstract = False   
     
