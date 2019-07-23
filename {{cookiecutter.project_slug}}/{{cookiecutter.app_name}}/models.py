@@ -44,7 +44,14 @@ from shop.models.defaults.delivery_item import DeliveryItem
 from shop.models.defaults.order_item import OrderItem
 {% endif -%}
 from shop.models.defaults.order import Order
-from shop.models.defaults.mapping import ProductPage, ProductImage
+from shop.models.defaults.mapping import ProductImage
+from shop.models.defaults.commodity import ProductPage as CommodityProductPage
+from shop.models.related import BaseProductPage
+
+        
+        
+
+    
 {% if cookiecutter.use_sendcloud == 'y' -%}
 from shop_sendcloud.models.address import BillingAddress, ShippingAddress
 from shop_sendcloud.models.customer import Customer
@@ -78,6 +85,11 @@ class OrderItem(BaseOrderItem):
 
 {% if cookiecutter.products_model != 'commodity' %}
 
+class ProductPageProduct(BaseProductPage,):
+    product=models.ForeignKey('Commodity', on_delete=models.CASCADE)
+    class Meta(BaseProductPage.Meta):
+        abstract = False   
+    
 
 @python_2_unicode_compatible
 class Manufacturer(models.Model):
@@ -157,7 +169,7 @@ class Product(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Transl
 
     cms_pages = models.ManyToManyField(
         'cms.Page',
-        through=ProductPage.named_model_key('Product'),
+        through=ProductPageProduct,
         help_text=_("Choose list view this product shall appear on."),
     )
 
@@ -267,6 +279,12 @@ class SmartCard({% if cookiecutter.stock_management != 'n' %}AvailableProductMix
     {%- else %}  {# cookiecutter.products_model != 'polymorphic' #}
 
 
+class ProductPageSmartcard(BaseProductPage,):
+    product=models.ForeignKey('Commodity', on_delete=models.CASCADE)
+    class Meta(BaseProductPage.Meta):
+        abstract = False
+        
+        
 @python_2_unicode_compatible
 class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableModelMixin,{% endif %}{% if cookiecutter.stock_management != 'n' %} AvailableProductMixin,{% endif %} BaseProduct):
     product_name = models.CharField(
@@ -306,7 +324,7 @@ class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Tran
 
     cms_pages = models.ManyToManyField(
         'cms.Page',
-        through=ProductPage.named_model('SmartCar'),
+        through=ProductPageSmartCard,
         help_text=_("Choose list view this product shall appear on."),
     )
 
