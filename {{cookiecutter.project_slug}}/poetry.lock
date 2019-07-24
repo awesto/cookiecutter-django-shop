@@ -146,12 +146,16 @@ python-versions = "*"
 version = "1.5.0"
 
 [package.dependencies]
-Django = ">=1.8,<3.0"
 Unidecode = ">=0.04,<1.1"
+django = ">=1.11,<3.0"
 django-mptt = ">=0.6,<1.0"
 django_polymorphic = ">=0.7,<2.1"
 easy-thumbnails = ">=2,<3.0"
 
+[package.source]
+reference = "0ed2710cbe6d55746221d3c69cd78d853c7bdbdb"
+type = "git"
+url = "https://github.com/haricot/django-filer"
 [[package]]
 category = "dev"
 description = "Django-filter is a reusable Django application for allowing users to filter querysets dynamically."
@@ -382,7 +386,7 @@ django-rest-auth = ">=0.9.1"
 djangorestframework = "<3.10"
 
 [package.source]
-reference = "c624bff643a9f04f67ffda39428a616d10fdb511"
+reference = "6f9583f3fbc45cc1f8870e5c64cb58c0feca9673"
 type = "git"
 url = "https://github.com/haricot/django-shop.git"
 [[package]]
@@ -762,7 +766,7 @@ django-classy-tags = ["38b4546a8053499e2fef7af679a58d7c868298717d645b8b8227acba5
 django-cms = ["873a87cf5aa8b01050b31cda59998f88033f37ecaf1c3778feb1f916670f3aa0", "9c8fa13d9948b73f1d046a00454922af8d8c52c8d17b88de5466d14fcd9e304a"]
 django-compressor = ["47c86347f75c64954a06afbbfc820a750619e10c23a49272b865020a407b7edd", "da9ee5ce4fc8b9211dcecd2229520514a4ba9ac3bcdc59b48092ec4d7f6b96b0"]
 django-entangled = ["e51cb1748f30d3dc474fd32d195f051307507a3dbbe789f0fed29b80ce2e6a35"]
-django-filer = ["23562564e681c1292d6c9aadbe9cb14cca1c822dd6c6422c71e8009787603fbe"]
+django-filer = []
 django-filter = ["558c727bce3ffa89c4a7a0b13bc8976745d63e5fd576b3a9a851650ef11c401b", "c3deb57f0dd7ff94d7dce52a047516822013e2b441bed472b722a317658cfd14"]
 django-formtools = ["7703793f1675aa6e871f9fed147e8563816d7a5b9affdc5e3459899596217f7c", "cb2bd7c29c2104278e5a0e76f7ff256b9570acf11485d547ee0c1b35347359fb"]
 django-fsm = ["96f776736042b8cde03483cb4b27c3a62580da40fc9b942845349718afdf5d0f", "cacd5485c726b411c6728c9ae3120303c9badf8aa0edff2db3aecdbe3a906945"]
