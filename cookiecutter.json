@@ -1,5 +1,5 @@
 {
-  "project_name": "MySHOP",
+  "project_name": "My-SHOP",
   "project_slug": "{{ cookiecutter.project_name.lower()|replace(' ', '-') }}",
   "app_name": "{{ cookiecutter.project_slug|replace('-', '') }}",
   "appName": "{{ cookiecutter.project_name|replace('-', '')|replace(' ', '') }}",
