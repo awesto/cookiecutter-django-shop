@@ -1,14 +1,9 @@
 [tool.poetry]
-name = "my-shop"
-version = "0.1.0"
-description = ""
+name = "{{ cookiecutter.project_name }}"
+version = "{{ cookiecutter.version }}"
+description = "{{ cookiecutter.description }}"
 license = "MIT"
-authors = ["Haricot"]
-
-#packages = [
-#    { include = "/home/np/GIT/shop_path8/django-shop" },
-#    { include = "extra_package/**/*.py" },
-#]
+authors = "{{ cookiecutter.author_name }}"
 
 [tool.poetry.dependencies]
 python = "^3.6"
@@ -68,7 +63,6 @@ autopep8 = "*"
 #[options-packages]
 #djangoshop_stripe = "*"
 #djangoshop_sendcloud = "*"
-
 
 
 [build-system]
