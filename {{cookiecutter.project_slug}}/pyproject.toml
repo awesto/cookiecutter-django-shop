@@ -10,14 +10,10 @@ python = "^3.6"
 
 [tool.poetry.dev-dependencies]
 django = "<2.2"
-#djangocms-cascade = "*"
-#djangocms-cascade = { git = "https://github.com/jrief/djangocms-cascade", branch = "releases/1.0.x" }
 djangocms-cascade =  { git = "https://github.com/haricot/djangocms-cascade.git", branch="wip_shop_django2" }
 django-compressor = "*"
 django-allauth = "*"
 django-angular = "*"
-#django-filer = "*"
-#AdminFileWidget Media dependency #1116
 django-filer =  { git = "https://github.com/haricot/django-filer", branch="patch-1" } 
 django-ipware = "*"
 django-sass-processor = "*"
@@ -34,7 +30,6 @@ schedule = "*"
 uWSGI = "*"
 djangorestframework = "<3.9"
 django-rest-auth = "*"
-#django_polymorphic = "<2"
 django_polymorphic = "*"
 django-admin-sortable2 = "*"
 django-fsm = "*"
@@ -46,7 +41,6 @@ djangocms-bootstrap =  { git = "https://github.com/haricot/djangocms-bootstrap3.
 elasticsearch = "<1.8"
 libsass = "*"
 django-shop = { git = "https://github.com/haricot/django-shop.git", branch="wip_django2" }
-#django-shop = "*"
 djangoshop_stripe = "*"
 djangoshop_sendcloud = { git = "https://github.com/haricot/djangoshop-sendcloud.git", branch="wip_django2" }
 
@@ -59,10 +53,6 @@ lxml = "*"
 factory-boy = "*"
 pytest-factoryboy = "*"
 autopep8 = "*"
-
-#[options-packages]
-#djangoshop_stripe = "*"
-#djangoshop_sendcloud = "*"
 
 
 [build-system]
