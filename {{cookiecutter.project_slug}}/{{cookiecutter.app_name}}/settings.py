@@ -723,3 +723,5 @@ SHOP_SENDCLOUD = {
 SHOP_CASCADE_FORMS = {
     'CustomerForm': '{{ cookiecutter.app_name }}.forms.CustomerForm',
 }
+
+SESSION_COOKIE_NAME = {{ cookiecutter.app_name }}
