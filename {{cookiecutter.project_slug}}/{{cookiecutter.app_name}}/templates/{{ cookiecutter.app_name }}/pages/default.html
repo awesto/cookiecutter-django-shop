@@ -12,9 +12,9 @@
 	{% include {% endraw %}"{{ cookiecutter.app_name }}/pages/navbar.html"{% raw %} with navbar_classes="navbar-expand-lg navbar-light bg-light fixed-top" %}
 {% endblock header %}
 
-{% block breadcrumb %}{% placeholder "Breadcrumb" or %}
-	{% include "shop/breadcrumb/default.html" %}
-{% endplaceholder %}{% endblock breadcrumb %}
+{% block breadcrumb %}
+	{% placeholder "Breadcrumb" %}
+{% endblock breadcrumb %}
 
 {% block main-content %}{% placeholder "Main Content" inherit or %}
 <div class="container">
