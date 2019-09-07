@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 import random
 from django.core.management.base import BaseCommand
-from myshop.models import Commodity, CommodityInventory, SmartCard, SmartCardInventory, SmartPhoneVariant, SmartPhoneInventory
+from {{ cookiecutter.app_name }}.models import Commodity, CommodityInventory, SmartCard, SmartCardInventory, SmartPhoneVariant, SmartPhoneInventory
 
 
 class Command(BaseCommand):
