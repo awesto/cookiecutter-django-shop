@@ -520,7 +520,7 @@ CMSPLUGIN_CASCADE = {
     ],
     'alien_plugins': ['TextPlugin', 'TextLinkPlugin', 'AcceptConditionPlugin'],
     'bootstrap4': {
-        'template_basedir': 'angular-ui',
+        'template_basedir': 'angular-ui/',
     },
     'plugins_with_extra_render_templates': {
         'CustomSnippetPlugin': [
@@ -616,6 +616,7 @@ CKEDITOR_SETTINGS_DESCRIPTION = {
 
 SELECT2_CSS = 'node_modules/select2/dist/css/select2.min.css'
 SELECT2_JS = 'node_modules/select2/dist/js/select2.min.js'
+SELECT2_I18N_PATH = 'node_modules/select2/dist/js/i18n'
 
 
 #############################################
