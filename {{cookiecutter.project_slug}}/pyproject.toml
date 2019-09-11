@@ -10,7 +10,7 @@ python = "^3.6"
 
 [tool.poetry.dev-dependencies]
 django = "<2.2"
-djangocms-cascade =  { git = "https://github.com/haricot/djangocms-cascade.git", branch="wip_shop_django2" }
+djangocms-cascade =  { git = "https://github.com/jrief/djangocms-cascade.git", branch="releases/1.0.x" }
 django-compressor = "*"
 django-allauth = "*"
 django-angular = "*"
