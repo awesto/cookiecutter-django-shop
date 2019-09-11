@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "<2"
+django = "<2.2"
 djangocms-cascade =  { file = "https://github.com/jrief/djangocms-cascade/archive/releases/1.0.x.zip" }
 {% if cookiecutter.use_compressor == 'y' -%}
 django-compressor = "*"
