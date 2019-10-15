@@ -1,7 +1,7 @@
 {% raw %}{% extends "shop/email/register-user-body.html" %}
-{% load html_email %}
+{% load post_office %}
 
 {% block email-logo %}
-<img src="{% image_src '{% endraw %}{{ cookiecutter.app_name }}{% raw %}/django-shop-logo.png' %}" width="200" style="margin: 20px auto; display: block;" />
+<img src="{% inline_image '{% endraw %}{{ cookiecutter.app_name }}{% raw %}/django-shop-logo.png' %}" width="200" style="margin: 20px auto; display: block;" />
 {% endblock %}
 {% endraw -%}
