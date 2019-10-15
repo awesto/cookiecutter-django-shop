@@ -145,6 +145,7 @@ class Product(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Transl
     # common product properties
     manufacturer = models.ForeignKey(
         Manufacturer,
+        on_delete=models.CASCADE,
         verbose_name=_("Manufacturer"),
     )
 
@@ -188,6 +189,7 @@ class Product(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Transl
 class ProductTranslation(TranslatedFieldsModel):
     master = models.ForeignKey(
         Product,
+        on_delete=models.CASCADE,
         related_name='translations',
         null=True,
     )
@@ -292,6 +294,7 @@ class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Tran
     # product properties
     manufacturer = models.ForeignKey(
         Manufacturer,
+        on_delete=models.CASCADE,
         verbose_name=_("Manufacturer"),
     )
 
@@ -394,6 +397,7 @@ class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Tran
 class SmartCardTranslation(TranslatedFieldsModel):
     master = models.ForeignKey(
         SmartCard,
+        on_delete=models.CASCADE,
         related_name='translations',
         null=True,
     )
@@ -483,6 +487,7 @@ class SmartPhoneModel(Product):
 
     operating_system = models.ForeignKey(
         OperatingSystem,
+        on_delete=models.CASCADE,
         verbose_name=_("Operating System"),
     )
 
@@ -577,7 +582,8 @@ class SmartPhoneModel(Product):
 
     def get_product_variant(self, **kwargs):
         try:
-            return self.variants.get(**kwargs)
+            product_code = kwargs.get('product_code')
+            return self.variants.get(product_code=product_code)
         except SmartPhoneVariant.DoesNotExist as e:
             raise SmartPhoneModel.DoesNotExist(e)
 
@@ -585,6 +591,7 @@ class SmartPhoneModel(Product):
 class SmartPhoneVariant({% if cookiecutter.stock_management != 'n' %}AvailableProductMixin, {% endif %}models.Model):
     product = models.ForeignKey(
         SmartPhoneModel,
+        on_delete=models.CASCADE,
         verbose_name=_("Smartphone Model"),
         related_name='variants',
     )
@@ -625,6 +632,7 @@ class SmartPhoneVariant({% if cookiecutter.stock_management != 'n' %}AvailablePr
 class CommodityInventory(BaseInventory):
     product = models.ForeignKey(
         Commodity,
+        on_delete=models.CASCADE,
         related_name='inventory_set',
     )
 
@@ -639,6 +647,7 @@ class CommodityInventory(BaseInventory):
 class SmartCardInventory(BaseInventory):
     product = models.ForeignKey(
         SmartCard,
+        on_delete=models.CASCADE,
         related_name='inventory_set',
     )
 
@@ -653,6 +662,7 @@ class SmartCardInventory(BaseInventory):
 class SmartPhoneInventory(BaseInventory):
     product = models.ForeignKey(
         SmartPhoneVariant,
+        on_delete=models.CASCADE,
         related_name='inventory_set',
     )
 
