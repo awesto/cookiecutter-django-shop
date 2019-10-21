@@ -37,7 +37,7 @@ class PostalShippingModifier(ShippingModifier):
         return (self.identifier, _("Postal shipping"))
 
     def add_extra_cart_row(self, cart, request):
-        if not self.is_active(cart) and len(cart_modifiers_pool.get_shipping_modifiers()) > 1:
+        if not self.is_active(cart.extra.get('shipping_modifier')) and len(cart_modifiers_pool.get_shipping_modifiers()) > 1:
             return
         # add a shipping flat fee
         amount = Money('5')
