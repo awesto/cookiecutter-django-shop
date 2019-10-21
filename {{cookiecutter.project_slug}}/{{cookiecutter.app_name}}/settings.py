@@ -461,8 +461,7 @@ THUMBNAIL_PROCESSORS = (
 # settings for django-cms and its plugins
 
 CMS_TEMPLATES = [
-    ('{{ cookiecutter.app_name }}/pages/default.html', _("Default Page")),
-    ('{{ cookiecutter.app_name }}/pages/test.html', _("Test Page")),  # to show strides rendering via {% raw %}{% render_cascade ... %}{% endraw %}
+    ('{{ cookiecutter.app_name }}/pages/default.html', {% if cookiecutter.use_i18n == 'y' %}_("Default Page"){% else %}"Default Page"{% endif %}),
 ]
 
 CMS_CACHE_DURATIONS = {
