@@ -544,7 +544,7 @@ CMSPLUGIN_CASCADE = {
         'SimpleIconPlugin': PluginExtraFieldsConfig(),
     },
     'plugins_with_extra_mixins': {
-        'BootstrapContainerPlugin': BootstrapUtilities(BootstrapUtilities.background_and_color),
+        'BootstrapContainerPlugin': BootstrapUtilities(),
         'BootstrapRowPlugin': BootstrapUtilities(BootstrapUtilities.paddings),
         'BootstrapYoutubePlugin': BootstrapUtilities(BootstrapUtilities.margins),
         'BootstrapButtonPlugin': BootstrapUtilities(BootstrapUtilities.floats),
