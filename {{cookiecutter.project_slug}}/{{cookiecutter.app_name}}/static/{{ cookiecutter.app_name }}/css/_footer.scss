@@ -1,29 +1,26 @@
 @import "variables";
 
 html {
-	@include media-breakpoint-up(lg) {
-		position: relative;
-		min-height: 100%;
+	height: 100%;
+	&.cms-toolbar-expanded {
+		// prevents pushing a sticky footer outside the vertical viewport if CMS toolbar is active
+		height: calc(100% - 46px);
 	}
 }
 body {
+	display: flex;
+	height: 100%;
+	flex-direction: column;
 	main {
+		flex: 1 0 auto;
 		padding-bottom: $body-footer-margin;
 	}
-	@include media-breakpoint-up(lg) {
-		margin-bottom: $body-footer-height;
-	}
-	.footer {
-		width: 100%;
+	footer {
+		flex-shrink: 0;
 		color: $body-footer-color;
 		background: $body-footer-bg;
-		padding-top: 20px;
-		padding-bottom: 20px;
-		@include media-breakpoint-up(lg) {
-			height: $body-footer-height;
-			position: absolute;
-			bottom: 0;
-		}
+		padding-top: $body-footer-margin;
+		padding-bottom: $body-footer-margin;
 		a {
 			color: $body-footer-link-color;
 			text-decoration: none;
