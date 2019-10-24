@@ -551,7 +551,8 @@ CMSPLUGIN_CASCADE = {
     },
     'bookmark_prefix': '/',
     'segmentation_mixins': [
-        ('shop.cascade.segmentation.EmulateCustomerModelMixin', 'shop.cascade.segmentation.EmulateCustomerAdminMixin'),
+        ('shop.cascade.segmentation.EmulateCustomerModelMixin',
+         'shop.cascade.segmentation.EmulateCustomerAdminMixin'),
     ],
     'allow_plugin_hiding': True,
 }
@@ -559,18 +560,16 @@ CMSPLUGIN_CASCADE = {
 CKEDITOR_SETTINGS = {
     'language': '{% raw %}{{ language }}{% endraw %}',
     'skin': 'moono-lisa',
-    'toolbar': 'CMS',
-    'toolbar_HTMLField': [
+    'toolbar_CMS': [
         ['Undo', 'Redo'],
         ['cmsplugins', '-', 'ShowBlocks'],
-        ['Format', 'Styles'],
+        ['Format'],
         ['TextColor', 'BGColor', '-', 'PasteText', 'PasteFromWord'],
-        ['Maximize', ''],
         '/',
-        ['Bold', 'Italic', 'Underline', '-', 'Subscript', 'Superscript', '-', 'RemoveFormat'],
-        ['JustifyLeft', 'JustifyCenter', 'JustifyRight'],
+        ['Bold', 'Italic', 'Underline', 'Strike', '-', 'Subscript', 'Superscript', '-', 'RemoveFormat'],
+        ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
         ['HorizontalRule'],
-        ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Table'],
+        ['NumberedList', 'BulletedList', 'Outdent', 'Indent'],
         ['Source']
     ],
     'stylesSet': format_lazy('default:{}', reverse_lazy('admin:cascade_texteditor_config')),
@@ -602,7 +601,7 @@ CKEDITOR_SETTINGS_DESCRIPTION = {
         ['Bold', 'Italic', 'Underline', '-', 'Subscript', 'Superscript', '-', 'RemoveFormat'],
         ['JustifyLeft', 'JustifyCenter', 'JustifyRight'],
         ['HorizontalRule'],
-        ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Table'],
+        ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
         ['Source']
     ],
 }
