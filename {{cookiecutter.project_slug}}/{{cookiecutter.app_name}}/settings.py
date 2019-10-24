@@ -170,51 +170,46 @@ DATABASES = {
 
 # Internationalization
 # https://docs.djangoproject.com/en/stable/topics/i18n/
-LANGUAGE_CODE = 'en'
+{%- with languages = cookiecutter.languages.replace(' ', '').split(',') %}
+
+LANGUAGE_CODE = '{{ languages[0] }}'
 {% if cookiecutter.use_i18n == 'y' %}
 USE_I18N = True
 
-LANGUAGES = [
-    ('en', "English"),
-    ('de', "Deutsch"),
+LANGUAGES = [{% for language in languages %}
+    ('{{ language }}', "{{ language }}"),{% endfor %}
 ]
 
-PARLER_DEFAULT_LANGUAGE = 'en'
+PARLER_DEFAULT_LANGUAGE = LANGUAGE_CODE
 
 PARLER_LANGUAGES = {
-    1: (
-        {'code': 'de'},
-        {'code': 'en'},
-    ),
+    1: [{% for language in languages %}
+        {'code': '{{ language }}'},{% endfor %}
+    ],
     'default': {
-        'fallbacks': ['de', 'en'],
+        'fallbacks': [{% for language in languages %}'{{ language }}'{% if not loop.last %}, {% endif %}{% endfor %}],
     },
 }
 
 CMS_LANGUAGES = {
     'default': {
-        'fallbacks': ['en', 'de'],
+        'fallbacks': [{% for language in languages %}'{{ language }}'{% if not loop.last %}, {% endif %}{% endfor %}],
         'redirect_on_fallback': True,
         'public': True,
         'hide_untranslated': False,
     },
-    1: ({
+    1: [{% for language in languages %}{
         'public': True,
-        'code': 'en',
+        'code': '{{ language }}',
         'hide_untranslated': False,
-        'name': 'English',
+        'name': '{{ language.title() }}',
         'redirect_on_fallback': True,
-    }, {
-        'public': True,
-        'code': 'de',
-        'hide_untranslated': False,
-        'name': 'Deutsch',
-        'redirect_on_fallback': True,
-    },)
+    }{% if not loop.last %}, {% endif %}{% endfor %}]
 }
 {% else %}
 USE_I18N = False
 {% endif %}
+{%- endwith %}
 
 USE_L10N = True
 
