@@ -21,13 +21,13 @@ def render_robots(request):
 
 
 i18n_urls = (
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
     url(r'^', include('cms.urls')),
 )
 urlpatterns = [
     url(r'^robots\.txt$', render_robots),
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
-    url(r'^shop/', include('shop.urls', namespace='shop')),
+    url(r'^shop/', include('shop.urls')),
 ]
 if settings.USE_I18N:
     urlpatterns.extend(i18n_patterns(*i18n_urls))
