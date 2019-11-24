@@ -14,6 +14,7 @@ from django.utils.translation import ugettext_lazy as _
 {%- if cookiecutter.use_i18n == 'y' %}
 from parler.admin import TranslatableAdmin
 {%- endif %}
+from filer.models import ThumbnailOption
 {%- if cookiecutter.products_model in ['commodity', 'polymorphic'] %}
 from cms.admin.placeholderadmin import PlaceholderAdminMixin, FrontendEditableAdminMixin
 {%- endif %}
@@ -46,6 +47,7 @@ from {{ cookiecutter.app_name }}.models import CommodityInventory, SmartCardInve
 {% endif %}
 
 admin.site.site_header = "{{ cookiecutter.project_name }} Administration"
+admin.site.unregister(ThumbnailOption)
 
 
 @admin.register(Order)
