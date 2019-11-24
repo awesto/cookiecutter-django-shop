@@ -18,16 +18,16 @@ class CatalogListApp(CatalogListCMSApp):
         from {{ cookiecutter.app_name }}.serializers import AddSmartPhoneToCartSerializer, CatalogSearchSerializer
 
         return [
-            url(r'^$', CMSPageCatalogWrapper.as_view(
-                filter_class=ManufacturerFilterSet,
-                search_serializer_class=CatalogSearchSerializer,
-            )),
-            url(r'^(?P<slug>[\w-]+)/?$', ProductRetrieveView.as_view(
-                use_modal_dialog=False,
-            )),
             url(r'^(?P<slug>[\w-]+)/add-to-cart', AddToCartView.as_view()),
             url(r'^(?P<slug>[\w-]+)/add-smartphone-to-cart', AddToCartView.as_view(
                 serializer_class=AddSmartPhoneToCartSerializer,
+            )),
+            url(r'^(?P<slug>[\w-]+)', ProductRetrieveView.as_view(
+                use_modal_dialog=False,
+            )),
+            url(r'^', CMSPageCatalogWrapper.as_view(
+                filter_class=ManufacturerFilterSet,
+                search_serializer_class=CatalogSearchSerializer,
             )),
         ]
 {%- else %}{% set use_lookup_field = (cookiecutter.products_model == 'commodity' and cookiecutter.use_i18n == 'y') %}
@@ -35,16 +35,16 @@ class CatalogListApp(CatalogListCMSApp):
         from {{ cookiecutter.app_name }}.serializers import ProductDetailSerializer
 
         return [
-            url(r'^$', ProductListView.as_view(
-                redirect_to_lonely_product=True,
-            )),
-            url(r'^(?P<slug>[\w-]+)/?$', ProductRetrieveView.as_view(
+            url(r'^(?P<slug>[\w-]+)/add-to-cart', AddToCartView.as_view({% if use_lookup_field %}lookup_field='translations__slug'{% endif %})),
+            url(r'^(?P<slug>[\w-]+)', ProductRetrieveView.as_view(
                 serializer_class=ProductDetailSerializer,
     {%- if use_lookup_field %}
                 lookup_field='translations__slug'
     {%- endif %}
             )),
-            url(r'^(?P<slug>[\w-]+)/add-to-cart', AddToCartView.as_view({% if use_lookup_field %}lookup_field='translations__slug'{% endif %})),
+            url(r'^', ProductListView.as_view(
+                redirect_to_lonely_product=True,
+            )),
         ]
 {%- endif %}
 
