@@ -560,12 +560,12 @@ class SmartPhoneModel(Product):
 
     {%- if cookiecutter.stock_management != 'n' %}
 
-    def get_availability(self, request, **extra):
-        variant = self.get_product_variant(**extra)
+    def get_availability(self, request, **kwargs):
+        variant = self.get_product_variant(**kwargs)
         return variant.get_availability(request)
 
-    def deduct_from_stock(self, quantity, **extra):
-        variant = self.get_product_variant(**extra)
+    def deduct_from_stock(self, quantity, **kwargs):
+        variant = self.get_product_variant(**kwargs)
         variant.deduct_from_stock(quantity)
 
     {%- endif %}
@@ -610,7 +610,7 @@ class SmartPhoneVariant({% if cookiecutter.stock_management != 'n' %}AvailablePr
 
     storage = models.PositiveIntegerField(
         _("Internal Storage"),
-        help_text=_("Internal storage in MB"),
+        help_text=_("Internal storage in GB"),
     )
 
     {%- if cookiecutter.stock_management == 'simple' %}
@@ -622,6 +622,9 @@ class SmartPhoneVariant({% if cookiecutter.stock_management != 'n' %}AvailablePr
         help_text=_("Available quantity in stock")
     )
     {%- endif %}
+
+    def __str__(self):
+        return _("{product} with {storage} GB").format(product=self.product, storage=self.storage)
 
     def get_price(self, request):
         return self.unit_price
