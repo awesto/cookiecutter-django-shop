@@ -28,9 +28,6 @@ version:
 timezone:
     The value to be used for the ``TIME_ZONE`` setting of the project.
 
-use_pycharm:
-    Indicates whether the project should be configured for development with PyCharm_.
-
 dockerize:
     Indicates whether the project should be configured to use Docker_ and `Docker Compose`_.
     The choices are:
@@ -50,8 +47,6 @@ debug:
     Indicates whether the project should be configured for debugging.
     This option is relevant for Cookiecutter Django developers only.
 
-
-.. _PyCharm: https://www.jetbrains.com/pycharm/
 
 .. _Docker: https://github.com/docker/docker
 .. _Docker Compose: https://docs.docker.com/compose/

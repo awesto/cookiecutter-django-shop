@@ -9,7 +9,6 @@
   "virtual_host": "www.example.com",
   "version": "1.0.0",
   "timezone": "UTC",
-  "use_pycharm": "n",
   "dockerize": [
     "n",
     "runserver",

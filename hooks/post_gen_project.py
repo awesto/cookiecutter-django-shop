@@ -32,16 +32,6 @@ SUCCESS = "\x1b[1;32m [SUCCESS]: "
 DEBUG_VALUE = "debug"
 
 
-def remove_pycharm_files():
-    idea_dir_path = ".idea"
-    if os.path.exists(idea_dir_path):
-        shutil.rmtree(idea_dir_path)
-
-    docs_dir_path = os.path.join("docs", "pycharm")
-    if os.path.exists(docs_dir_path):
-        shutil.rmtree(docs_dir_path)
-
-
 def remove_docker_files():
     shutil.rmtree("docker-files")
     file_names = [".dockerignore", "docker-compose.yml"]
@@ -211,9 +201,6 @@ def reformat_white_space():
 
 def main():
     set_django_secret_key(os.path.join("{{ cookiecutter.app_name }}", "settings.py"))
-
-    if "{{ cookiecutter.use_pycharm }}".lower() == "n":
-        remove_pycharm_files()
 
     next_steps = "Next steps to perform:"
     if "{{ cookiecutter.dockerize }}" == "n":
