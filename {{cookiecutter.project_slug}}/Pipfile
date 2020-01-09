@@ -20,7 +20,7 @@ django-haystack = "*"
 drf-haystack = "*"
 {% if cookiecutter.use_i18n == 'y' -%}
 django-parler = "*"
-"e007892" = {file = "https://github.com/jrief/django-parler-rest/archive/deserialize-TranslatedField.zip"}
+django-parler-rest = "*"
 {% endif -%}
 {% if cookiecutter.dockerize != "n" -%}
 psycopg2-binary = "<2.8"
