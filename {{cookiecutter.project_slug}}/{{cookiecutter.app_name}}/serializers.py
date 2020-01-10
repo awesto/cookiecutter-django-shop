@@ -5,13 +5,10 @@ from django.utils.safestring import mark_safe
 from rest_framework import serializers
 from shop.search.serializers import ProductSearchSerializer as BaseProductSearchSerializer
 from shop.serializers.bases import ProductSerializer
-{%- if cookiecutter.products_model == 'smartcard' %}
-from {{ cookiecutter.app_name }}.models import SmartCard
-{%- elif cookiecutter.products_model == 'polymorphic' %}
+{%- if cookiecutter.products_model == 'polymorphic' %}
 from rest_framework.fields import empty
 from shop.models.cart import CartModel
 from shop.serializers.defaults.catalog import AddToCartSerializer
-from {{ cookiecutter.app_name }}.models import SmartCard, SmartPhoneModel
 {%- endif %}
 from {{ cookiecutter.app_name }}.search_indexes import myshop_search_index_classes
 
@@ -65,20 +62,7 @@ class CatalogSearchSerializer(BaseProductSearchSerializer):
     def get_media(self, search_result):
         return mark_safe(search_result.catalog_media)
 
-{% if cookiecutter.products_model in ['smartcard', 'polymorphic'] %}
-
-class SmartCardSerializer(ProductSerializer):
-    class Meta:
-        model = SmartCard
-        fields = ['product_name', 'slug', 'unit_price', 'manufacturer', 'card_type', 'speed',
-                  'product_code', 'storage']
-
-{% endif -%}{%- if cookiecutter.products_model == 'polymorphic' %}
-
-class SmartPhoneSerializer(ProductSerializer):
-    class Meta:
-        model = SmartPhoneModel
-        fields = ['product_name', 'slug', 'battery_type', 'battery_capacity']
+{%- if cookiecutter.products_model == 'polymorphic' %}
 
 
 class AddSmartPhoneToCartSerializer(AddToCartSerializer):

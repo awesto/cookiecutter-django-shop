@@ -1,23 +1,26 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 {% if cookiecutter.products_model == 'commodity' -%}
 from shop.models.defaults.commodity import Commodity
     {%- if cookiecutter.delivery_handling in ['partial', 'common'] %}
 from django.db import models
-from django.utils.translation import ugettext_lazy as _, pgettext_lazy
+from django.utils.translation import ugettext_lazy as _
     {%- endif %}
 {% else -%}
+    {%- if cookiecutter.products_model == 'polymorphic' %}
 from decimal import Decimal
+        {%- if cookiecutter.delivery_handling in ['partial', 'common'] %}
 from django.core.exceptions import ObjectDoesNotExist
+        {%- endif %}
+    {%- endif %}
 from django.db import models
-from django.utils.translation import ugettext_lazy as _, pgettext_lazy
+from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
 from djangocms_text_ckeditor.fields import HTMLField
     {%- if cookiecutter.use_i18n == 'y' %}
 from polymorphic.query import PolymorphicQuerySet
 from parler.managers import TranslatableManager, TranslatableQuerySet
-from parler.models import TranslatableModelMixin, TranslatedFieldsModel, TranslatedFields
+from parler.models import TranslatableModelMixin, TranslatedFieldsModel{% if cookiecutter.products_model == 'polymorphic' %}, TranslatedFields{% endif %}
 from parler.fields import TranslatedField
     {%- endif %}
     {%- if cookiecutter.products_model == 'polymorphic' %}
@@ -38,19 +41,21 @@ from shop.models.defaults.order_item import OrderItem
 {% endif -%}
 from shop.models.defaults.order import Order
 from shop.models.defaults.mapping import ProductPage, ProductImage
+{% if cookiecutter.use_sendcloud == 'y' -%}
 from shop_sendcloud.models.address import BillingAddress, ShippingAddress
 from shop_sendcloud.models.customer import Customer
+{% else -%}
+from shop.models.defaults.address import BillingAddress, ShippingAddress
+from shop.models.defaults.customer import Customer
+{% endif %}
 
+__all__ = ['Cart', 'CartItem', 'Order', {% if cookiecutter.delivery_handling in ['partial', 'common'] %}'Delivery', 'DeliveryItem'{% else %}'OrderItem'{% endif %}, 'BillingAddress', 'ShippingAddress', 'Customer',{% if cookiecutter.products_model == 'commodity' %} 'Commodity',{%- endif %}]
 
 {% if cookiecutter.delivery_handling in ['partial', 'common'] -%}
 
 class OrderItem(BaseOrderItem):
     quantity = models.IntegerField(_("Ordered quantity"))
     canceled = models.BooleanField(_("Item canceled "), default=False)
-
-    class Meta:
-        verbose_name = pgettext_lazy('order_models', "Ordered Item")
-        verbose_name_plural = pgettext_lazy('order_models', "Ordered Items")
 
     {%- if cookiecutter.products_model == 'polymorphic' %}
 
@@ -265,7 +270,7 @@ class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Tran
     caption = HTMLField(
         _("Caption"),
         configuration='CKEDITOR_SETTINGS_CAPTION',
-        help_text=_("Short description used in the catalog's list view of products."),
+        help_text=_("Short description used in the catalog's list view."),
     )
 
         {%- endif %}
@@ -301,15 +306,15 @@ class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Tran
 
     card_type = models.CharField(
         _("Card Type"),
-        choices=(2 * ('{}{}'.format(s, t),)
-                 for t in ('SD', 'SDXC', 'SDHC', 'SDHC II') for s in ('', 'micro ')),
+        choices=[2 * ('{}{}'.format(s, t),)
+                 for t in ['SD', 'SDXC', 'SDHC', 'SDHC II'] for s in ['', 'micro ']],
         max_length=15,
     )
 
     speed = models.CharField(
         _("Transfer Speed"),
-        choices=((str(s), "{} MB/s".format(s))
-                 for s in (4, 20, 30, 40, 48, 80, 95, 280)),
+        choices=[(str(s), "{} MB/s".format(s))
+                 for s in [4, 20, 30, 40, 48, 80, 95, 280]],
         max_length=8,
     )
 
@@ -329,7 +334,7 @@ class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} Tran
     description = HTMLField(
         _("Description"),
         configuration='CKEDITOR_SETTINGS_DESCRIPTION',
-        help_text=_("Description for the list view of products."),
+        help_text=_("Long description for the detail view of this product."),
     )
 
     {%- endif %}
@@ -569,8 +574,4 @@ class SmartPhoneVariant(models.Model):
     def get_price(self, request):
         return self.unit_price
 
-{%- endif %}
-{%- if cookiecutter.products_model == 'commodity' %}
-
-__all__ = ['Commodity']
 {%- endif %}

@@ -18,6 +18,7 @@ from django.urls import reverse_lazy
 from django.utils.text import format_lazy
 from django.utils.translation import ugettext_lazy as _
 from cmsplugin_cascade.bootstrap4.mixins import BootstrapUtilities
+from cmsplugin_cascade.extra_fields.config import PluginExtraFieldsConfig
 
 SHOP_APP_LABEL = '{{ cookiecutter.app_name }}'
 BASE_DIR = os.path.dirname(__file__)
@@ -37,7 +38,7 @@ ADMINS = [("The Merchant", 'the.merchant@example.com')]
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '!!!SET DJANGO_SECRET_KEY!!!')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get('DJANGO_DEBUG'))
+DEBUG = {% if cookiecutter.debug == 'y' %}True{% else %}bool(os.environ.get('DJANGO_DEBUG')){% endif %}
 
 ALLOWED_HOSTS = ['*']
 
@@ -126,7 +127,6 @@ INSTALLED_APPS = [
     'shop_sendcloud',
 {%- endif %}
     'shop',
-    'html_email',
     '{{ cookiecutter.app_name }}',
 ]
 
@@ -154,13 +154,13 @@ WSGI_APPLICATION = 'wsgi.application'
 
 DATABASES = {
     'default': {
-{%- if cookiecutter.dockerize in ['http', 'uwsgi'] %}
+{%- if cookiecutter.dockerize != "n" %}
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DATABASE_NAME', 'djangoshop'),
-        'USER': os.getenv('DATABASE_USER', 'djangoshop'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-        'HOST': os.getenv('DATABASE_HOST', 'localhost'),
-        'PORT': os.getenv('DATABASE_PORT', 5432),
+        'NAME': os.getenv('POSTGRES_DB', 'djangoshop'),
+        'USER': os.getenv('POSTGRES_USER', 'djangoshop'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+        'PORT': os.getenv('POSTGRES_PORT', 5432),
 {%- else %}
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(WORK_DIR, 'db.sqlite3'),
@@ -271,11 +271,13 @@ TEMPLATES = [{
             'cms.context_processors.cms_settings',
             'shop.context_processors.customer',
             'shop.context_processors.shop_settings',
+{%- if cookiecutter.use_stripe == 'y' %}
             'shop_stripe.context_processors.public_keys',
+{%- endif %}
         ]
     }
 }, {
-    'BACKEND': 'html_email.template.backends.html_email.EmailTemplates',
+    'BACKEND': 'post_office.template.backends.post_office.PostOfficeTemplates',
     'APP_DIRS': True,
     'DIRS': [],
     'OPTIONS': {
@@ -291,6 +293,10 @@ TEMPLATES = [{
     }
 }]
 
+POST_OFFICE = {
+    'TEMPLATE_ENGINE': 'post_office',
+}
+
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 CACHES = {
@@ -302,10 +308,11 @@ CACHES = {
     }
 }
 
+############################################
+# settings for caching and storing session data
 REDIS_HOST = os.getenv('REDIS_HOST')
 if REDIS_HOST:
     SESSION_ENGINE = 'redis_sessions.session'
-    SESSION_SAVE_EVERY_REQUEST = True
 
     SESSION_REDIS = {
         'host': REDIS_HOST,
@@ -331,6 +338,10 @@ if REDIS_HOST:
 {% endif %}
     CACHE_MIDDLEWARE_ALIAS = 'default'
     CACHE_MIDDLEWARE_SECONDS = 3600
+else:
+    SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
+
+SESSION_SAVE_EVERY_REQUEST = True
 
 LOGGING = {
     'version': 1,
@@ -416,13 +427,6 @@ REST_FRAMEWORK = {
 REST_AUTH_SERIALIZERS = {
     'LOGIN_SERIALIZER': 'shop.serializers.auth.LoginSerializer',
 }
-
-############################################
-# settings for storing session data
-
-SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
-SESSION_SAVE_EVERY_REQUEST = True
-
 
 ############################################
 # settings for storing files and images
@@ -534,12 +538,18 @@ CMSPLUGIN_CASCADE = {
                                  'image_height', 'resize_options'],
         'BootstrapPicturePlugin': ['image_shapes', 'responsive_heights', 'image_size', 'resize_options'],
     },
+    'plugins_with_extra_fields': {
+        'BootstrapCardPlugin': PluginExtraFieldsConfig(),
+        'BootstrapCardHeaderPlugin': PluginExtraFieldsConfig(),
+        'BootstrapCardBodyPlugin': PluginExtraFieldsConfig(),
+        'BootstrapCardFooterPlugin': PluginExtraFieldsConfig(),
+        'SimpleIconPlugin': PluginExtraFieldsConfig(),
+    },
     'plugins_with_extra_mixins': {
         'BootstrapContainerPlugin': BootstrapUtilities(BootstrapUtilities.background_and_color),
         'BootstrapRowPlugin': BootstrapUtilities(BootstrapUtilities.paddings),
-        'ShopLeftExtension': BootstrapUtilities(BootstrapUtilities.paddings),
-        'ShopRightExtension': BootstrapUtilities(BootstrapUtilities.paddings),
-        'ShopAddToCartPlugin': BootstrapUtilities(BootstrapUtilities.margins),
+        'BootstrapYoutubePlugin': BootstrapUtilities(BootstrapUtilities.margins),
+        'BootstrapButtonPlugin': BootstrapUtilities(BootstrapUtilities.floats),
     },
     'leaflet': {
         'tilesURL': 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
@@ -570,7 +580,7 @@ CKEDITOR_SETTINGS = {
         ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Table'],
         ['Source']
     ],
-    'stylesSet': format_lazy('default:{}', reverse_lazy('admin:cascade_texticon_wysiwig_config')),
+    'stylesSet': format_lazy('default:{}', reverse_lazy('admin:cascade_texteditor_config')),
 }
 
 CKEDITOR_SETTINGS_CAPTION = {
@@ -640,21 +650,19 @@ SHOP_DEFAULT_CURRENCY = 'EUR'
 SHOP_EDITCART_NG_MODEL_OPTIONS = "{updateOn: 'default blur', debounce: {'default': 2500, 'blur': 0}}"
 
 SHOP_CART_MODIFIERS = [
-{%- if cookiecutter.products_model == 'polymorphic' %}
-    '{{ cookiecutter.app_name }}.polymorphic_modifiers.MyShopCartModifier',
-{%- else %}
-    'shop.modifiers.defaults.DefaultCartModifier',
-{%- endif %}
+    '{{ cookiecutter.app_name }}.modifiers.PrimaryCartModifier',
     'shop.modifiers.taxes.CartExcludedTaxModifier',
+{%- if cookiecutter.products_model != 'commodity' %}
     '{{ cookiecutter.app_name }}.modifiers.PostalShippingModifier',
-{%- if cookiecutter.use_paypal %}
+{%- endif %}
+{%- if cookiecutter.use_paypal == 'y' %}
     'shop_paypal.modifiers.PaymentModifier',
 {%- endif %}
-{%- if cookiecutter.use_stripe %}
+{%- if cookiecutter.use_stripe == 'y' %}
     '{{ cookiecutter.app_name }}.modifiers.StripePaymentModifier',
 {%- endif %}
     'shop.payment.modifiers.PayInAdvanceModifier',
-{%- if cookiecutter.use_sendcloud %}
+{%- if cookiecutter.use_sendcloud == 'y' %}
     'shop_sendcloud.modifiers.SendcloudShippingModifiers',
     'shop.modifiers.defaults.WeightedCartModifier',
 {%- endif %}
@@ -671,15 +679,15 @@ SHOP_ORDER_WORKFLOWS = [
 {%- else %}
     'shop.shipping.workflows.SimpleShippingWorkflowMixin',
 {%- endif %}
-{%- if cookiecutter.use_paypal %}
+{%- if cookiecutter.use_paypal == 'y' %}
     'shop_paypal.payment.OrderWorkflowMixin',
 {%- endif %}
-{%- if cookiecutter.use_stripe %}
+{%- if cookiecutter.use_stripe == 'y' %}
     'shop_stripe.workflows.OrderWorkflowMixin',
 {%- endif %}
 ]
 
-{% if cookiecutter.use_paypal -%}
+{% if cookiecutter.use_paypal == 'y' -%}
 SHOP_PAYPAL = {
     'API_ENDPOINT': 'https://api.sandbox.paypal.com',
     'MODE': 'sandbox',
@@ -689,7 +697,7 @@ SHOP_PAYPAL = {
 }
 {%- endif %}
 
-{% if cookiecutter.use_stripe -%}
+{% if cookiecutter.use_stripe == 'y' -%}
 SHOP_STRIPE = {
     'PUBKEY': os.getenv('STRIPE_PUBKEY', 'pk_test_HlEp5oZyPonE21svenqowhXp'),
     'APIKEY': os.getenv('STRIPE_APIKEY', 'sk_test_xUdHLeFasmOUDvmke4DHGRDP'),
@@ -701,7 +709,7 @@ SHOP_STRIPE_PREFILL = True
     {%- endif %}
 {%- endif %}
 
-{% if cookiecutter.use_sendcloud -%}
+{% if cookiecutter.use_sendcloud == 'y' -%}
 SHOP_SENDCLOUD = {
     'API_KEY': os.getenv('SENDCLOUD_PUBLIC_KEY'),
     'API_SECRET': os.getenv('SENDCLOUD_SECRET_KEY'),

@@ -5,6 +5,9 @@ They are not intended for general purpose and can be deleted thereafter.
 """
 from __future__ import unicode_literals
 
+{%- if cookiecutter.products_model == 'commodity' %}
+from filer.models.imagemodels import Image
+{%- endif %}
 from rest_framework import serializers
 from shop.serializers.catalog import CMSPagesField, ImagesField, ValueRelatedField
 {%- if cookiecutter.products_model == 'polymorphic' %}
@@ -22,22 +25,26 @@ class ProductSerializer(serializers.ModelSerializer):
     product_model = serializers.CharField(read_only=True)
 {%- if cookiecutter.products_model != 'commodity' %}
     manufacturer = ValueRelatedField(model=Manufacturer)
+    images = ImagesField()
 {%- endif %}
     caption = TranslatedField()
     cms_pages = CMSPagesField()
-    images = ImagesField()
 
     class Meta:
         exclude = ['id', 'polymorphic_ctype', 'updated_at']
 
     def create(self, validated_data):
         cms_pages = validated_data.pop('cms_pages')
+{%- if cookiecutter.products_model != 'commodity' %}
         images = validated_data.pop('images')
+{%- endif %}
         product = super(ProductSerializer, self).create(validated_data)
         for page in cms_pages:
             ProductPage.objects.create(product=product, page=page)
+{%- if cookiecutter.products_model != 'commodity' %}
         for image in images:
             ProductImage.objects.create(product=product, image=image)
+{%- endif %}
         return product
 
 
@@ -47,6 +54,7 @@ class CommoditySerializer(TranslatableModelSerializerMixin, ProductSerializer):
     {%- if cookiecutter.products_model == 'commodity' %}
     product_name = TranslatedField()
     slug = TranslatedField()
+    sample_image = serializers.PrimaryKeyRelatedField(queryset=Image.objects.all())
     {%- endif %}
 
     class Meta(ProductSerializer.Meta):
