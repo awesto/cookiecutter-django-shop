@@ -41,7 +41,7 @@ phonenumbers = "*"
 djangocms-bootstrap = "*"
 elasticsearch = "<1.8"
 libsass = "*"
-"b26de6a" = {file = "https://github.com/awesto/django-shop/archive/releases/1.1.x.zip"}
+django-shop = "<1.2"
 {% if cookiecutter.use_stripe == 'y' -%}
 djangoshop-stripe = "*"  {# "{{ cookiecutter.version }}" #}
 stripe = "<1.54"
