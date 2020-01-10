@@ -21,7 +21,7 @@ Check that your default Python is version 3.5 or later. In Ubuntu-18.04, Python 
 activate Python-3.6 using:
 
 ```bash
-sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.6 1
+sudo update-alternatives --install /usr/bin/python python /usr/bin/python3.7 1
 ```
 
 Before installing **django-SHOP**, a few additional packages must be added:
