@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.template.context import Context
 from django.template.loader import get_template
     {%- if cookiecutter.stock_management == 'inventory' %}
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.html import format_html
     {%- endif %}
 {%- endif %}
