@@ -15,7 +15,7 @@
     "uwsgi",
     "nginx"
   ],
-  "type_vitual_env": [
+  "pip_dependency_manager": [
     "pipenv",
     "poetry",
   ],

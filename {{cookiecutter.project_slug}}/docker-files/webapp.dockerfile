@@ -10,7 +10,7 @@ RUN apt-get upgrade -y
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
 RUN apt-get install -y nodejs optipng jpegoptim
 RUN pip install --upgrade pip
-{%- if cookiecutter.type_virtual_env == "poetry" %}
+{%- if cookiecutter.pip_dependency_manager == "poetry" %}
 # official install poetry
 RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
 {%- endif %}
@@ -26,10 +26,10 @@ COPY worker.py /web/worker.py
 COPY docker-files/uwsgi.ini /etc/uwsgi.ini
 {%- endif %}
 
-{%- if cookiecutter.type_virtual_env == "pipenv" %}
+{%- if cookiecutter.pip_dependency_manager == "pipenv" %}
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
-{%- elif cookiecutter.type_virtual_env == "poetry" %}
+{%- elif cookiecutter.pip_dependency_manager == "poetry" %}
 RUN $HOME/.poetry/bin/poetry config settings.virtualenvs.create false 
 RUN $HOME/.poetry/bin/poetry install 
 {%- endif %}
