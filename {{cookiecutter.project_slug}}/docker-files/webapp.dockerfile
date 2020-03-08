@@ -7,7 +7,7 @@ ARG DJANGO_STATIC_ROOT=/web/staticfiles
 
 # install packages outside of PyPI
 RUN apt-get upgrade -y
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
 RUN apt-get install -y nodejs optipng jpegoptim
 RUN pip install --upgrade pip
 
