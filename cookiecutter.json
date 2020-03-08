@@ -15,6 +15,10 @@
     "uwsgi",
     "nginx"
   ],
+  "pip_dependency_manager": [
+    "pipenv",
+    "poetry",
+  ],
   "use_i18n": "y",
   "languages": "en, de, fr",
   "use_paypal": "n",
