@@ -582,8 +582,11 @@ class SmartPhoneModel(Product):
 
     def get_product_variant(self, **kwargs):
         try:
-            product_code = kwargs.get('product_code')
-            return self.variants.get(product_code=product_code)
+            if product_code:
+                product = self.variants.get(product_code=product_code)
+            else :
+                product = self.variants.first()
+            return product
         except SmartPhoneVariant.DoesNotExist as e:
             raise SmartPhoneModel.DoesNotExist(e)
 
