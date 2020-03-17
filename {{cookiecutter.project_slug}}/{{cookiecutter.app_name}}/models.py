@@ -581,14 +581,12 @@ class SmartPhoneModel(Product):
                 return cart_item
 
     def get_product_variant(self, **kwargs):
-        try:
-            if product_code:
-                product = self.variants.get(product_code=product_code)
-            else :
-                product = self.variants.first()
-            return product
-        except SmartPhoneVariant.DoesNotExist as e:
-            raise SmartPhoneModel.DoesNotExist(e)
+        product_code = kwargs.get('product_code', False)
+        if product_code:
+             product = self.variants.get(product_code=product_code)
+        elif hasattr(self, 'variants' ) and len(self.variants.all()) >= 1:
+             product = self.variants.first()
+        return product
 
 
 class SmartPhoneVariant({% if cookiecutter.stock_management != 'n' %}AvailableProductMixin, {% endif %}models.Model):
