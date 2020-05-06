@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import json
 import os
 from cms.utils.copy_plugins import copy_plugins_to

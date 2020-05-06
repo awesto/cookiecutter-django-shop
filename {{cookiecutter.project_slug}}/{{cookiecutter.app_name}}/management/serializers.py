@@ -1,10 +1,7 @@
-# -*- coding: utf-8 -*-
 """
 These serializers are used exclusively to import the file ``workdir/fixtures/products-meta.json``.
 They are not intended for general purpose and can be deleted thereafter.
 """
-from __future__ import unicode_literals
-
 {%- if cookiecutter.products_model == 'commodity' %}
 from filer.models.imagemodels import Image
 {%- endif %}

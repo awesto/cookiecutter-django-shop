@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import os
 from django.conf import settings
 from django.contrib.staticfiles.finders import (FileSystemFinder as FileSystemFinderBase,

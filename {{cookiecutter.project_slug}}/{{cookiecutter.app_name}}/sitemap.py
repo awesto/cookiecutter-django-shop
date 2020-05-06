@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.contrib.sitemaps import Sitemap
 from django.conf import settings
 {%- if cookiecutter.products_model == 'commodity' %}

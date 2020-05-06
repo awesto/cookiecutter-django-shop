@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 {% if cookiecutter.products_model == 'commodity' -%}
 from shop.models.defaults.commodity import Commodity
     {%- if cookiecutter.delivery_handling in ['partial', 'common'] %}
@@ -16,7 +14,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import python_2_unicode_compatible
 from djangocms_text_ckeditor.fields import HTMLField
     {%- if cookiecutter.use_i18n == 'y' %}
 from polymorphic.query import PolymorphicQuerySet
@@ -79,7 +76,6 @@ class OrderItem(BaseOrderItem):
 {% if cookiecutter.products_model != 'commodity' %}
 
 
-@python_2_unicode_compatible
 class Manufacturer(models.Model):
     name = models.CharField(
         _("Name"),
@@ -111,7 +107,6 @@ class ProductManager(BaseProductManager):
     {%- endif %}{% if cookiecutter.products_model == 'polymorphic' %}
 
 
-@python_2_unicode_compatible
 class Product(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableModelMixin,{% endif %} BaseProduct):
     """
     Base class to describe a polymorphic product. Here we declare common fields available in all of
@@ -252,7 +247,6 @@ class Commodity({% if cookiecutter.stock_management != 'n' %}AvailableProductMix
         return self.unit_price
 
 
-@python_2_unicode_compatible
 class SmartCard({% if cookiecutter.stock_management != 'n' %}AvailableProductMixin, {% endif %}Product):
         {%- if cookiecutter.use_i18n == 'y' %}
     multilingual = TranslatedFields(
@@ -267,7 +261,6 @@ class SmartCard({% if cookiecutter.stock_management != 'n' %}AvailableProductMix
     {%- else %}  {# cookiecutter.products_model != 'polymorphic' #}
 
 
-@python_2_unicode_compatible
 class SmartCard(CMSPageReferenceMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableModelMixin,{% endif %}{% if cookiecutter.stock_management != 'n' %} AvailableProductMixin,{% endif %} BaseProduct):
     product_name = models.CharField(
         max_length=255,
@@ -424,7 +417,6 @@ class SmartCardTranslation(TranslatedFieldsModel):
 {%- if cookiecutter.products_model == 'polymorphic' %}
 
 
-@python_2_unicode_compatible
 class OperatingSystem(models.Model):
     name = models.CharField(
         _("Name"),

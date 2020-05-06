@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from haystack import indexes
 from shop.search.indexes import ProductIndex as ProductIndexBase
 {%- if cookiecutter.products_model == 'commodity' %}

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.utils.safestring import mark_safe
 from rest_framework import serializers
 from shop.search.serializers import ProductSearchSerializer as BaseProductSearchSerializer

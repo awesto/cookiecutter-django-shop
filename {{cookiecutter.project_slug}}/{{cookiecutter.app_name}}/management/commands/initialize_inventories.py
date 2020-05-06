@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import random
 from django.core.management.base import BaseCommand
 from {{ cookiecutter.app_name }}.models import Commodity, CommodityInventory, SmartCard, SmartCardInventory, SmartPhoneVariant, SmartPhoneInventory

@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 from django.contrib import admin
 {%- if cookiecutter.products_model == 'polymorphic' %}
 from django.template.context import Context
