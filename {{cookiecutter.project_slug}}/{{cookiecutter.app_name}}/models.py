@@ -234,7 +234,10 @@ class Commodity({% if cookiecutter.stock_management != 'n' %}AvailableProductMix
     placeholder = PlaceholderField("Commodity Details")
     show_breadcrumb = True  # hard coded to always show the product's breadcrumb
 
-        {%- if cookiecutter.use_i18n == 'y' %}
+    {%- if cookiecutter.products_model == 'polymorphic' %}
+
+    default_manager = ProductManager()
+    {% elif cookiecutter.use_i18n == 'y' %}
 
     default_manager = TranslatableManager()
         {%- endif %}
@@ -521,7 +524,6 @@ class SmartPhoneModel(Product):
         ),
     )
 
-    default_manager = TranslatableManager()
     {%- else %}
 
     description = HTMLField(
@@ -529,13 +531,19 @@ class SmartPhoneModel(Product):
         configuration='CKEDITOR_SETTINGS_DESCRIPTION',
         help_text=_("Full description used in the catalog's detail view of Smart Phones."),
     )
-
-    default_manager = ProductManager()
     {%- endif %}
 
     class Meta:
         verbose_name = _("Smart Phone")
         verbose_name_plural = _("Smart Phones")
+
+    {%- if cookiecutter.products_model == 'polymorphic' %}
+
+    default_manager = ProductManager()
+    {%- elif cookiecutter.use_i18n == 'y' %}
+
+    default_manager = TranslatableManager()
+    {%- endif %}
 
     def get_price(self, request):
         """
