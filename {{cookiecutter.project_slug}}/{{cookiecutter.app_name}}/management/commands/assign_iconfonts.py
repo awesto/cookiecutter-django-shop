@@ -17,14 +17,17 @@ class Command(BaseCommand):
             if file.label != 'Font Awesome':
                 continue
             if self.verbosity >= 2:
-                self.stdout.write("Creating Icon Font from: {}".format(file.label))
+                self.stdout.write(
+                    "Creating Icon Font from: {}".format(file.label))
             try:
                 zip_ref = zipfile.ZipFile(file.file, 'r')
             except zipfile.BadZipFile as exc:
-                self.stderr.write("Unable to unpack {}: {}".format(file.label, exc))
+                self.stderr.write(
+                    "Unable to unpack {}: {}".format(file.label, exc))
             else:
                 if not IconFont.objects.filter(zip_file=file).exists():
-                    font_folder, config_data = unzip_archive(file.label, zip_ref)
+                    font_folder, config_data = unzip_archive(
+                        file.label, zip_ref)
                     IconFont.objects.create(
                         identifier=config_data['name'],
                         config_data=config_data,

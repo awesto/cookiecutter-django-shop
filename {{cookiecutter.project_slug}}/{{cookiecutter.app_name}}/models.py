@@ -50,7 +50,8 @@ from shop.models.defaults.address import BillingAddress, ShippingAddress
 from shop.models.defaults.customer import Customer
 {% endif %}
 
-__all__ = ['Cart', 'CartItem', 'Order', {% if cookiecutter.delivery_handling in ['partial', 'common'] %}'Delivery', 'DeliveryItem'{% else %}'OrderItem'{% endif %}, 'BillingAddress', 'ShippingAddress', 'Customer',{% if cookiecutter.products_model == 'commodity' %} 'Commodity',{%- endif %}]
+__all__ = ['Cart', 'CartItem', 'Order', {% if cookiecutter.delivery_handling in ['partial', 'common'] %}'Delivery', 'DeliveryItem'{% else %}'OrderItem'{% endif %},
+            'BillingAddress', 'ShippingAddress', 'Customer',{% if cookiecutter.products_model == 'commodity' %} 'Commodity',{%- endif %}]
 
 {% if cookiecutter.delivery_handling in ['partial', 'common'] -%}
 
@@ -64,7 +65,8 @@ class OrderItem(BaseOrderItem):
         super(OrderItem, self).populate_from_cart_item(cart_item, request)
         # the product's unit_price must be fetched from the product's variant
         try:
-            variant = cart_item.product.get_product_variant(product_code=cart_item.product_code)
+            variant = cart_item.product.get_product_variant(
+                product_code=cart_item.product_code)
             self._unit_price = Decimal(variant.unit_price)
         except (KeyError, ObjectDoesNotExist) as e:
             raise CartItem.DoesNotExist(e)
@@ -194,7 +196,8 @@ class ProductTranslation(TranslatedFieldsModel):
         blank=True,
         null=True,
         configuration='CKEDITOR_SETTINGS_CAPTION',
-        help_text=_("Short description used in the catalog's list view of products."),
+        help_text=_(
+            "Short description used in the catalog's list view of products."),
     )
 
     class Meta:
@@ -256,7 +259,8 @@ class SmartCard({% if cookiecutter.stock_management != 'n' %}AvailableProductMix
         description=HTMLField(
             verbose_name=_("Description"),
             configuration='CKEDITOR_SETTINGS_DESCRIPTION',
-            help_text=_("Full description used in the catalog's detail view of Smart Cards."),
+            help_text=_(
+                "Full description used in the catalog's detail view of Smart Cards."),
         ),
     )
         {%- endif %}
@@ -401,13 +405,15 @@ class SmartCardTranslation(TranslatedFieldsModel):
     caption = HTMLField(
         verbose_name=_("Caption"),
         configuration='CKEDITOR_SETTINGS_CAPTION',
-        help_text=_("Short description used in the catalog's list view of products."),
+        help_text=_(
+            "Short description used in the catalog's list view of products."),
     )
 
     description = HTMLField(
         verbose_name=_("Description"),
         configuration='CKEDITOR_SETTINGS_DESCRIPTION',
-        help_text=_("Full description used in the catalog's detail view of Smart Cards."),
+        help_text=_(
+            "Full description used in the catalog's detail view of Smart Cards."),
     )
 
     class Meta:
@@ -520,7 +526,8 @@ class SmartPhoneModel(Product):
         description=HTMLField(
             verbose_name=_("Description"),
             configuration='CKEDITOR_SETTINGS_DESCRIPTION',
-            help_text=_("Full description used in the catalog's detail view of Smart Phones."),
+            help_text=_(
+                "Full description used in the catalog's detail view of Smart Phones."),
         ),
     )
 
@@ -529,7 +536,8 @@ class SmartPhoneModel(Product):
     description = HTMLField(
         verbose_name=_("Description"),
         configuration='CKEDITOR_SETTINGS_DESCRIPTION',
-        help_text=_("Full description used in the catalog's detail view of Smart Phones."),
+        help_text=_(
+            "Full description used in the catalog's detail view of Smart Phones."),
     )
     {%- endif %}
 
@@ -586,6 +594,9 @@ class SmartPhoneModel(Product):
             return self.variants.get(product_code=product_code)
         except SmartPhoneVariant.DoesNotExist as e:
             raise SmartPhoneModel.DoesNotExist(e)
+
+    def get_product_variants(self):
+        return self.variants.all()    
 
 
 class SmartPhoneVariant({% if cookiecutter.stock_management != 'n' %}AvailableProductMixin, {% endif %}models.Model):

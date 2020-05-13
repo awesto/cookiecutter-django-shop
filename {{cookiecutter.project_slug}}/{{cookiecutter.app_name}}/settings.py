@@ -25,7 +25,8 @@ BASE_DIR = os.path.dirname(__file__)
 PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR, os.path.pardir))
 
 # Directory where working files, such as media and databases are kept
-WORK_DIR = os.environ.get('DJANGO_WORKDIR', os.path.abspath(os.path.join(PROJECT_ROOT, 'workdir')))
+WORK_DIR = os.environ.get('DJANGO_WORKDIR', os.path.abspath(
+    os.path.join(PROJECT_ROOT, 'workdir')))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -33,7 +34,8 @@ WORK_DIR = os.environ.get('DJANGO_WORKDIR', os.path.abspath(os.path.join(PROJECT
 ADMINS = [("{{ cookiecutter.author_name }}", '{{ cookiecutter.email }}')]
 
 # SECURITY WARNING: in production, inject the secret key through the environment
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '!!!SET DJANGO_SECRET_KEY!!!')
+SECRET_KEY = os.environ.get(
+    'DJANGO_SECRET_KEY', '!!!SET DJANGO_SECRET_KEY!!!')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = {% if cookiecutter.debug == 'y' %}True{% else %}bool(os.environ.get('DJANGO_DEBUG')){% endif %}
@@ -96,6 +98,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
+    'django_elasticsearch_dsl',
     'django_fsm',
     'fsm_admin',
     'djng',
@@ -115,7 +118,6 @@ INSTALLED_APPS = [
     'parler',
 {%- endif %}
     'post_office',
-    'haystack',
 {%- if cookiecutter.use_paypal == 'y' %}
     'shop_paypal',
 {%- endif %}
@@ -216,6 +218,8 @@ USE_TZ = True
 
 USE_X_FORWARDED_HOST = True
 
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = os.path.join(WORK_DIR, 'media')
@@ -234,8 +238,10 @@ STATIC_ROOT = os.getenv('DJANGO_STATIC_ROOT', os.path.join(WORK_DIR, 'static'))
 STATIC_URL = '/static/'
 
 STATICFILES_FINDERS = [
-    '{{ cookiecutter.app_name }}.finders.FileSystemFinder',  # or 'django.contrib.staticfiles.finders.FileSystemFinder',
-    '{{ cookiecutter.app_name }}.finders.AppDirectoriesFinder',  # or 'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # or 'django.contrib.staticfiles.finders.FileSystemFinder',
+    '{{ cookiecutter.app_name }}.finders.FileSystemFinder',
+    # or 'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    '{{ cookiecutter.app_name }}.finders.AppDirectoriesFinder',
     'sass_processor.finders.CssFinder',
 {%- if cookiecutter.use_compressor == 'y' %}
     'compressor.finders.CompressorFinder',
@@ -409,7 +415,8 @@ SERIALIZATION_MODULES = {'json': str('shop.money.serializers')}
 REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'shop.rest.money.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',  # can be disabled for production environments
+        # can be disabled for production environments
+        'rest_framework.renderers.BrowsableAPIRenderer',
     ],
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
@@ -554,6 +561,7 @@ CMSPLUGIN_CASCADE = {
          'shop.cascade.segmentation.EmulateCustomerAdminMixin'),
     ],
     'allow_plugin_hiding': True,
+    'register_page_editor': True,
 }
 
 CKEDITOR_SETTINGS = {
@@ -565,11 +573,12 @@ CKEDITOR_SETTINGS = {
         ['Format'],
         ['TextColor', 'BGColor', '-', 'PasteText', 'PasteFromWord'],
         '/',
-        ['Bold', 'Italic', 'Underline', 'Strike', '-', 'Subscript', 'Superscript', '-', 'RemoveFormat'],
+        ['Bold', 'Italic', 'Underline', 'Strike', '-',
+            'Subscript', 'Superscript', '-', 'RemoveFormat'],
         ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
         ['HorizontalRule'],
         ['NumberedList', 'BulletedList', 'Outdent', 'Indent'],
-        ['Source']
+        ['Table', 'Source']
     ],
     'stylesSet': format_lazy('default:{}', reverse_lazy('admin:cascade_texteditor_config')),
 }
@@ -597,7 +606,8 @@ CKEDITOR_SETTINGS_DESCRIPTION = {
         ['TextColor', 'BGColor', '-', 'PasteText', 'PasteFromWord'],
         ['Maximize', ''],
         '/',
-        ['Bold', 'Italic', 'Underline', '-', 'Subscript', 'Superscript', '-', 'RemoveFormat'],
+        ['Bold', 'Italic', 'Underline', '-', 'Subscript',
+            'Superscript', '-', 'RemoveFormat'],
         ['JustifyLeft', 'JustifyCenter', 'JustifyRight'],
         ['HorizontalRule'],
         ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent'],
@@ -611,28 +621,15 @@ SELECT2_I18N_PATH = 'node_modules/select2/dist/js/i18n'
 
 
 #############################################
-# settings for full index text search (Haystack)
+# settings for full index text search 
 
 ELASTICSEARCH_HOST = os.getenv('ELASTICSEARCH_HOST', 'localhost')
 
-HAYSTACK_CONNECTIONS = {
+ELASTICSEARCH_DSL = {
     'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://{}:9200/'.format(ELASTICSEARCH_HOST),
-        'INDEX_NAME': '{{ cookiecutter.app_name }}-en',
+        'hosts': '{}:9200'.format(ELASTICSEARCH_HOST)
     },
-{%- if cookiecutter.use_i18n == 'y' %}
-    'de': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://{}:9200/'.format(ELASTICSEARCH_HOST),
-        'INDEX_NAME': '{{ cookiecutter.app_name }}-de',
-    }
-{% endif -%}
 }
-
-HAYSTACK_ROUTERS = [
-    'shop.search.routers.LanguageRouter',
-]
 
 
 ############################################

@@ -35,8 +35,10 @@ class Command(BaseCommand):
 {%- endif %}
             if product.get('product_code'){% if cookiecutter.products_model == 'commodity' %} != {% else %} == {% endif %}"parklake-springfield":
                 continue
-            ProductModel = ContentType.objects.get(app_label='{{ cookiecutter.app_name }}', model=product_model)
-            class_name = '{{ cookiecutter.app_name }}.management.serializers.' + ProductModel.model_class().__name__ + 'Serializer'
+            ProductModel = ContentType.objects.get(
+                app_label='{{ cookiecutter.app_name }}', model=product_model)
+            class_name = '{{ cookiecutter.app_name }}.management.serializers.' + \
+                ProductModel.model_class().__name__ + 'Serializer'
             serializer_class = import_string(class_name)
             serializer = serializer_class(data=product)
             assert serializer.is_valid(), serializer.errors
@@ -46,14 +48,18 @@ class Command(BaseCommand):
             if product_model == 'commodity':
                 languages = get_public_languages()
                 try:
-                    clipboard = CascadeClipboard.objects.get(identifier=instance.slug)
+                    clipboard = CascadeClipboard.objects.get(
+                        identifier=instance.slug)
                 except CascadeClipboard.DoesNotExist:
                     pass
                 else:
-                    deserialize_to_placeholder(instance.placeholder, clipboard.data, languages[0])
-                    plugins = list(instance.placeholder.get_plugins(language=languages[0]).order_by('path'))
+                    deserialize_to_placeholder(
+                        instance.placeholder, clipboard.data, languages[0])
+                    plugins = list(instance.placeholder.get_plugins(
+                        language=languages[0]).order_by('path'))
                     for language in languages[1:]:
-                        copy_plugins_to(plugins, instance.placeholder, language)
+                        copy_plugins_to(
+                            plugins, instance.placeholder, language)
 
     def find_fixture(self, filename):
         if os.path.isabs(filename):
@@ -71,7 +77,8 @@ class Command(BaseCommand):
             path = os.path.join(fixture_dir, fixture_name)
             if os.path.exists(path):
                 return path
-        raise CommandError("No such file in any fixture dir: {}".format(filename))
+        raise CommandError(
+            "No such file in any fixture dir: {}".format(filename))
 
     def assign_product_to_catalog(self, product):
         from cms.models.pagemodel import Page

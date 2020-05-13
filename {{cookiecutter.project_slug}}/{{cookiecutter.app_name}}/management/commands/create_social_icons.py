@@ -19,11 +19,15 @@ class Command(BaseCommand):
         try:
             clipboard = CascadeClipboard.objects.get(identifier='social-icons')
         except CascadeClipboard.DoesNotExist:
-            self.stderr.write("No Persisted Clipboard named 'social-icons' found.")
+            self.stderr.write(
+                "No Persisted Clipboard named 'social-icons' found.")
         else:
-            static_placeholder = StaticPlaceholder.objects.create(code='Social Icons')
-            deserialize_to_placeholder(static_placeholder.public, clipboard.data, default_language)
-            deserialize_to_placeholder(static_placeholder.draft, clipboard.data, default_language)
+            static_placeholder = StaticPlaceholder.objects.create(
+                code='Social Icons')
+            deserialize_to_placeholder(
+                static_placeholder.public, clipboard.data, default_language)
+            deserialize_to_placeholder(
+                static_placeholder.draft, clipboard.data, default_language)
             self.stdout.write("Added Social Icons to Static Placeholder")
 
     def publish_in_all_languages(self, page):

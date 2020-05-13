@@ -87,11 +87,15 @@ class Command(BaseCommand):
         from {{ cookiecutter.app_name }}.models import Commodity, SmartCard, SmartPhoneModel
 
         apphook = ShopCommand.get_installed_apphook('CatalogListCMSApp')
-        catalog_pages = Page.objects.drafts().filter(application_urls=apphook.__class__.__name__)
+        catalog_pages = Page.objects.drafts().filter(
+            application_urls=apphook.__class__.__name__)
         assert catalog_pages.count() == 1, "There should be only one catalog page"
-        self.create_subcategory(apphook, catalog_pages.first(), "Earphones", Commodity)
-        self.create_subcategory(apphook, catalog_pages.first(), "Smart Cards", SmartCard)
-        self.create_subcategory(apphook, catalog_pages.first(), "Smart Phones", SmartPhoneModel)
+        self.create_subcategory(
+            apphook, catalog_pages.first(), "Earphones", Commodity)
+        self.create_subcategory(
+            apphook, catalog_pages.first(), "Smart Cards", SmartCard)
+        self.create_subcategory(
+            apphook, catalog_pages.first(), "Smart Phones", SmartPhoneModel)
 
     def create_subcategory(self, apphook, parent_page, title, product_type):
         from cms.api import create_page

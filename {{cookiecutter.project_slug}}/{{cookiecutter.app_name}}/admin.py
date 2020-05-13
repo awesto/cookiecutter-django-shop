@@ -31,7 +31,7 @@ from shop_sendcloud.admin import SendCloudOrderAdminMixin
 from shop.admin.defaults import commodity
 {%- elif cookiecutter.products_model in ['smartcard', 'polymorphic'] %}
 from adminsortable2.admin import SortableAdminMixin{% if cookiecutter.products_model == 'polymorphic' %}, PolymorphicSortableAdminMixin{% endif %}
-from shop.admin.product import CMSPageAsCategoryMixin, UnitPriceMixin, ProductImageInline, InvalidateProductCacheMixin{% if cookiecutter.products_model == 'polymorphic' %}, CMSPageFilter{% endif %}
+from shop.admin.product import CMSPageAsCategoryMixin, UnitPriceMixin, ProductImageInline, InvalidateProductCacheMixin, SearchProductIndexMixin{% if cookiecutter.products_model == 'polymorphic' %}, CMSPageFilter{% endif %}
     {%- if cookiecutter.products_model == 'polymorphic' %}
 from polymorphic.admin import (PolymorphicParentModelAdmin, PolymorphicChildModelAdmin,
                                PolymorphicChildModelFilter)
@@ -62,7 +62,7 @@ __all__ = ['customer']
 
 
 @admin.register(SmartCard)
-class SmartCardAdmin(InvalidateProductCacheMixin, SortableAdminMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableAdmin,{% endif %} CMSPageAsCategoryMixin, UnitPriceMixin, {% if cookiecutter.products_model == 'polymorphic' %}PolymorphicChildModelAdmin{% else %}admin.ModelAdmin{% endif %}):
+class SmartCardAdmin(InvalidateProductCacheMixin, SearchProductIndexMixin, SortableAdminMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableAdmin,{% endif %} CMSPageAsCategoryMixin, UnitPriceMixin, {% if cookiecutter.products_model == 'polymorphic' %}PolymorphicChildModelAdmin{% else %}admin.ModelAdmin{% endif %}):
     fieldsets = [
         (None, {
             'fields': [
@@ -109,7 +109,7 @@ class SmartCardInventoryAdmin(admin.StackedInline):
 
 
 @admin.register(Commodity)
-class CommodityAdmin(InvalidateProductCacheMixin, SortableAdminMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableAdmin,{% endif %} FrontendEditableAdminMixin,
+class CommodityAdmin(InvalidateProductCacheMixin, SearchProductIndexMixin, SortableAdminMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableAdmin,{% endif %} FrontendEditableAdminMixin,
                      PlaceholderAdminMixin, CMSPageAsCategoryMixin, PolymorphicChildModelAdmin):
     """
     Since our Commodity model inherits from polymorphic Product, we have to redefine its admin class.
@@ -131,7 +131,7 @@ class CommodityAdmin(InvalidateProductCacheMixin, SortableAdminMixin,{% if cooki
 
 
 @admin.register(SmartCard)
-class SmartCardAdmin(InvalidateProductCacheMixin, SortableAdminMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableAdmin,{% endif %} FrontendEditableAdminMixin,
+class SmartCardAdmin(InvalidateProductCacheMixin, SearchProductIndexMixin, SortableAdminMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableAdmin,{% endif %} FrontendEditableAdminMixin,
                      CMSPageAsCategoryMixin, PlaceholderAdminMixin, PolymorphicChildModelAdmin):
     base_model = Product
     fieldsets = (
@@ -190,7 +190,7 @@ class SmartPhoneInline(admin.TabularInline):
     {%- endif %}
 
 @admin.register(SmartPhoneModel)
-class SmartPhoneAdmin(InvalidateProductCacheMixin, SortableAdminMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableAdmin,{% endif %} FrontendEditableAdminMixin,
+class SmartPhoneAdmin(InvalidateProductCacheMixin, SearchProductIndexMixin, SortableAdminMixin,{% if cookiecutter.use_i18n == 'y' %} TranslatableAdmin,{% endif %} FrontendEditableAdminMixin,
                       CMSPageAsCategoryMixin, PlaceholderAdminMixin, PolymorphicChildModelAdmin):
     base_model = Product
     fieldsets = [

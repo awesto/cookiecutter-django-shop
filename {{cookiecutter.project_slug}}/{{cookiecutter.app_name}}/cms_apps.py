@@ -1,19 +1,23 @@
 from django.conf.urls import url
+from rest_framework.settings import api_settings
 
 from cms.apphook_pool import apphook_pool
 from cms.cms_menus import SoftRootCutter
 from menus.menu_pool import menu_pool
-from shop.cms_apphooks import CatalogListCMSApp, CatalogSearchCMSApp, OrderApp, PasswordResetApp
+
+from shop.cms_apphooks import CatalogListCMSApp, CatalogSearchApp, OrderApp, PasswordResetApp
+from shop.rest.filters import CMSPagesFilterBackend
 
 
 class CatalogListApp(CatalogListCMSApp):
     def get_urls(self, page=None, language=None, **kwargs):
 {%- if cookiecutter.products_model == 'polymorphic' %}
-        from shop.search.views import CMSPageCatalogWrapper
-        from shop.views.catalog import AddToCartView, ProductRetrieveView
+        from shop.search.mixins import ProductSearchViewMixin
+        from shop.views.catalog import AddToCartView, AddFilterContextMixin, ProductListView, ProductRetrieveView
         from {{ cookiecutter.app_name }}.filters import ManufacturerFilterSet
-        from {{ cookiecutter.app_name }}.serializers import AddSmartPhoneToCartSerializer, CatalogSearchSerializer
+        from {{ cookiecutter.app_name }}.serializers import AddSmartPhoneToCartSerializer
 
+        ProductSearchListView = type('SearchView', (AddFilterContextMixin, ProductSearchViewMixin, ProductListView), {})
         return [
             url(r'^(?P<slug>[\w-]+)/add-to-cart', AddToCartView.as_view()),
             url(r'^(?P<slug>[\w-]+)/add-smartphone-to-cart', AddToCartView.as_view(
@@ -22,9 +26,9 @@ class CatalogListApp(CatalogListCMSApp):
             url(r'^(?P<slug>[\w-]+)', ProductRetrieveView.as_view(
                 use_modal_dialog=False,
             )),
-            url(r'^', CMSPageCatalogWrapper.as_view(
+            url(r'^', ProductSearchListView.as_view(
+                filter_backends=[CMSPagesFilterBackend] + list(api_settings.DEFAULT_FILTER_BACKENDS),
                 filter_class=ManufacturerFilterSet,
-                search_serializer_class=CatalogSearchSerializer,
             )),
         ]
 {%- else %}{% set use_lookup_field = (cookiecutter.products_model == 'commodity' and cookiecutter.use_i18n == 'y') %}
@@ -46,18 +50,6 @@ class CatalogListApp(CatalogListCMSApp):
 {%- endif %}
 
 apphook_pool.register(CatalogListApp)
-
-
-class CatalogSearchApp(CatalogSearchCMSApp):
-    def get_urls(self, page=None, language=None, **kwargs):
-        from shop.search.views import SearchView
-        from {{ cookiecutter.app_name }}.serializers import ProductSearchSerializer
-
-        return [
-            url(r'^', SearchView.as_view(
-                serializer_class=ProductSearchSerializer,
-            )),
-        ]
 
 apphook_pool.register(CatalogSearchApp)
 

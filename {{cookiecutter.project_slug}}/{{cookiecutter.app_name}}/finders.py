@@ -17,7 +17,8 @@ class FileSystemFinder(FileSystemFinderBase):
             base, ext = os.path.splitext(path)
             base, minext = os.path.splitext(base)
             if minext == '.min':
-                unminimized_path = super(FileSystemFinder, self).find_location(root, base + ext, prefix)
+                unminimized_path = super(FileSystemFinder, self).find_location(
+                    root, base + ext, prefix)
                 if unminimized_path:
                     return unminimized_path
         # otherwise proceed with the given one

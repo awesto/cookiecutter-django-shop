@@ -30,4 +30,5 @@ if settings.USE_I18N:
     urlpatterns.extend(i18n_patterns(*i18n_urls))
 else:
     urlpatterns.extend(i18n_urls)
-urlpatterns.extend(static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))
+urlpatterns.extend(
+    static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT))

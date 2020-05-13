@@ -9,7 +9,7 @@ from rest_framework import serializers
 from shop.serializers.catalog import CMSPagesField, ImagesField, ValueRelatedField
 {%- if cookiecutter.products_model == 'polymorphic' %}
 from {{ cookiecutter.app_name }}.models import (Commodity, SmartCard, SmartPhoneModel, SmartPhoneVariant,
-    Manufacturer, OperatingSystem, ProductPage, ProductImage)
+                            Manufacturer, OperatingSystem, ProductPage, ProductImage)
 {%- elif cookiecutter.products_model == 'smartcard' %}
 from {{ cookiecutter.app_name }}.models import SmartCard, Manufacturer, ProductPage, ProductImage
 {%- elif cookiecutter.products_model == 'commodity' %}

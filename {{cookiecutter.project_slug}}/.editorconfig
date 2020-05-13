@@ -24,3 +24,6 @@ indent_size = 4
 
 [*.md]
 trim_trailing_whitespace = false
+
+[*.txt]
+insert_final_newline = false
