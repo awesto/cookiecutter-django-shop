@@ -1,0 +1,3 @@
+{% include "myshop/search/indexes/product.txt" %}
+{{ product.description }}
+{{ product.get_card_type_display }} {{ product.storage }}GB

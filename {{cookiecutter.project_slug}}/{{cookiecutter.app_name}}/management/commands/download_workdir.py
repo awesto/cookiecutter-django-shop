@@ -1,12 +1,8 @@
 import os
 import requests
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import BytesIO as StringIO
+from io import BytesIO as StringIO
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
-from six.moves import input
 try:
     import czipfile as zipfile
 except ImportError:

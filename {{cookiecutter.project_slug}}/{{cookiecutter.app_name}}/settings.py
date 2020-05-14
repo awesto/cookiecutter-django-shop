@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/stable/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from decimal import Decimal
 import os
-import six
 from django.urls import reverse_lazy
 from django.utils.text import format_lazy
 from django.utils.translation import ugettext_lazy as _
@@ -171,6 +170,16 @@ DATABASES = {
 
 # Internationalization
 # https://docs.djangoproject.com/en/stable/topics/i18n/
+{%- set language_labels = ({
+    "en": "English",
+    "de": "German",
+    "fr": "French",
+    "es": "Spanish",
+    "ru": "Russian",
+    "it": "Italian",
+    "jp": "Japanese",
+    "cn": "Chinese"
+}) %}
 {%- with languages = cookiecutter.languages.replace(' ', '').split(',') %}
 
 LANGUAGE_CODE = '{{ languages[0] }}'
@@ -178,7 +187,7 @@ LANGUAGE_CODE = '{{ languages[0] }}'
 USE_I18N = True
 
 LANGUAGES = [{% for language in languages %}
-    ('{{ language }}', "{{ language }}"),{% endfor %}
+    ('{{ language }}', "{{ language_labels[language] }}"),{% endfor %}
 ]
 
 PARLER_DEFAULT_LANGUAGE = LANGUAGE_CODE
@@ -325,9 +334,6 @@ if REDIS_HOST:
     CACHES['default'] = {
         'BACKEND': 'redis_cache.RedisCache',
         'LOCATION': 'redis://{}:6379/1'.format(REDIS_HOST),
-        'OPTIONS': {
-            'PICKLE_VERSION': 2 if six.PY2 else -1,
-        }
     }
 {% if cookiecutter.use_compressor == 'y' %}
     COMPRESS_CACHE_BACKEND = 'compressor'

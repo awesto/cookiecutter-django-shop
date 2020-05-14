@@ -1,7 +1,0 @@
-{% raw %}{{ object.product_name }}
-{{ object.product_code }}
-{{ object.manufacturer }}
-{{ object.description|striptags }}
-{# TODO: render placeholder content #}
-{% for page in object.cms_pages.all %}
-{{ page.get_title }}{% endfor %}{% endraw %}

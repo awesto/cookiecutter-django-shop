@@ -237,6 +237,10 @@ class Commodity({% if cookiecutter.stock_management != 'n' %}AvailableProductMix
     placeholder = PlaceholderField("Commodity Details")
     show_breadcrumb = True  # hard coded to always show the product's breadcrumb
 
+    class Meta:
+        verbose_name = _("Commodity")
+        verbose_name_plural = _("Commodities")
+
     {%- if cookiecutter.products_model == 'polymorphic' %}
 
     default_manager = ProductManager()
@@ -244,10 +248,6 @@ class Commodity({% if cookiecutter.stock_management != 'n' %}AvailableProductMix
 
     default_manager = TranslatableManager()
         {%- endif %}
-
-    class Meta:
-        verbose_name = _("Commodity")
-        verbose_name_plural = _("Commodities")
 
     def get_price(self, request):
         return self.unit_price

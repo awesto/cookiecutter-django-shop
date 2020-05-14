@@ -1,0 +1,4 @@
+{% include "myshop/search/indexes/product.txt" %}
+{{ product.description }}
+{{ product.operating_system }}{% for variant in product.get_product_variants %}
+{{ variant.storage}}GB{% endfor %}

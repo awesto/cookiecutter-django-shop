@@ -1,7 +1,0 @@
-{% raw %}{% load shop_tags shop_search_tags %}
-{{ object.product_name }}
-{{ object.product_code }}
-{{ object.caption|striptags }}
-{% for page in object.cms_pages.all %}
-{{ page.get_title }}{% endfor %}
-{% render_placeholder object.placeholder %}{% endraw %}
