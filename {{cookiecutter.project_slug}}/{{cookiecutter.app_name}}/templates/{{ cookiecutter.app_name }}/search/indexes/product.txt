@@ -1,0 +1,4 @@
+{% raw %}{{ product.caption }}
+{{ product.manufacturer }}{% for page in product.cms_pages.public %}
+{{ page.get_title }}{% endfor %}
+{% endraw %}

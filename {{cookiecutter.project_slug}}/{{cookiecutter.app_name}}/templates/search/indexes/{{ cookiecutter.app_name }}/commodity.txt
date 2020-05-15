@@ -1,4 +1,0 @@
-{% raw %}{% load shop_search_tags %}
-{% include "myshop/search/indexes/product.txt" %}
-{% render_placeholder product.placeholder %}
-{% endraw %}
