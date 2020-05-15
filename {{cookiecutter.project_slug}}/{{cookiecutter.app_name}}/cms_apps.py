@@ -17,7 +17,10 @@ class CatalogListApp(CatalogListCMSApp):
         from {{ cookiecutter.app_name }}.filters import ManufacturerFilterSet
         from {{ cookiecutter.app_name }}.serializers import AddSmartPhoneToCartSerializer
 
-        ProductSearchListView = type('SearchView', (AddFilterContextMixin, ProductSearchViewMixin, ProductListView), {})
+        bases = (AddFilterContextMixin, ProductSearchViewMixin, ProductListView)
+        ProductSearchListView = type('SearchView', bases, {})
+        filter_backends = [CMSPagesFilterBackend]
+        filter_backends.extend(api_settings.DEFAULT_FILTER_BACKENDS)
         return [
             url(r'^(?P<slug>[\w-]+)/add-to-cart', AddToCartView.as_view()),
             url(r'^(?P<slug>[\w-]+)/add-smartphone-to-cart', AddToCartView.as_view(
@@ -27,7 +30,7 @@ class CatalogListApp(CatalogListCMSApp):
                 use_modal_dialog=False,
             )),
             url(r'^', ProductSearchListView.as_view(
-                filter_backends=[CMSPagesFilterBackend] + list(api_settings.DEFAULT_FILTER_BACKENDS),
+                filter_backends=filter_backends,
                 filter_class=ManufacturerFilterSet,
             )),
         ]
