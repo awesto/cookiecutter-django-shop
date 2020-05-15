@@ -97,8 +97,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'rest_auth',
+{%- if cookiecutter.use_elasticsearch == 'y' %}
     'django_elasticsearch_dsl',
-    'django_fsm',
+{%- endif %}
+'django_fsm',
     'fsm_admin',
     'djng',
     'cms',
@@ -626,6 +628,8 @@ SELECT2_JS = 'node_modules/select2/dist/js/select2.min.js'
 SELECT2_I18N_PATH = 'node_modules/select2/dist/js/i18n'
 
 
+{% if cookiecutter.use_elasticsearch == 'y' -%}
+
 #############################################
 # settings for full index text search 
 
@@ -637,6 +641,7 @@ ELASTICSEARCH_DSL = {
     },
 }
 
+{%- endif %}
 
 ############################################
 # settings for django-shop and its plugins
