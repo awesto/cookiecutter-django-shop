@@ -1,6 +1,6 @@
 {{ '{%' }} extends "{{ cookiecutter.app_name }}/products/search-product-media.html" {{ '%}' }}
-{% block media-body %}
+{% raw %}{% block media-body %}
 	<h4 class="media-heading"><a href="{{ product.get_absolute_url }}">{{ product.product_name }}</a></h4>
 	{{ product.caption|truncatewords_html:50 }}
 {% endblock %}
-
+{% endraw %}

@@ -20,4 +20,5 @@ class {{ cookiecutter.appName }}(AppConfig):
         as_i18n = {% if cookiecutter.use_i18n == 'y' %}" as I18N"{% else %}""{% endif %}
         self.logger.info("Running as {{ cookiecutter.products_model }}{}".format(as_i18n))
 
-        import {{ cookiecutter.app_name }}.search_indexes
+        from {{ cookiecutter.app_name }} import search_indexes
+        __all__ = ['search_indexes']

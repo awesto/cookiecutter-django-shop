@@ -187,7 +187,7 @@ LANGUAGE_CODE = '{{ languages[0] }}'
 USE_I18N = True
 
 LANGUAGES = [{% for language in languages %}
-    ('{{ language }}', "{{ language_labels[language] }}"),{% endfor %}
+    ('{{ language }}', _("{{ language_labels[language] }}")),{% endfor %}
 ]
 
 PARLER_DEFAULT_LANGUAGE = LANGUAGE_CODE
@@ -219,7 +219,7 @@ CMS_LANGUAGES = {
 {% else %}
 USE_I18N = False
 {% endif %}
-{%- endwith %}
+{%- endwith -%}
 
 USE_L10N = True
 

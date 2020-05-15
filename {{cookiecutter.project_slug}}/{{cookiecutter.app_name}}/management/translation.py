@@ -13,7 +13,7 @@ from parler_rest.serializers import TranslatedFieldsField, TranslatedField, Tran
 class TranslatableModelSerializerMixin(TranslatableModelSerializerMixin):
     def to_internal_value(self, data):
         data = self._swap_translated_data(data)
-        return super(TranslatableModelSerializerMixin, self).to_internal_value(data)
+        return super().to_internal_value(data)
 
     def _swap_translated_data(self, data):
         """
@@ -35,7 +35,7 @@ class TranslatableModelSerializerMixin(TranslatableModelSerializerMixin):
 from rest_framework import serializers
 
 
-class TranslatableModelSerializerMixin(object):
+class TranslatableModelSerializerMixin:
     """
     Pseudo class mimicking the behaviour of :class:`parler_rest.TranslatableModelSerializerMixin`.
     It converts the content for fields of type TranslatedFieldsField to simple serializer
@@ -43,7 +43,7 @@ class TranslatableModelSerializerMixin(object):
     """
     def to_internal_value(self, data):
         data = self._unify_translated_data(data)
-        result = super(TranslatableModelSerializerMixin, self).to_internal_value(data)
+        result = super().to_internal_value(data)
         return result
 
     def _unify_translated_data(self, data):

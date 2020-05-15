@@ -35,7 +35,7 @@ class ProductSerializer(serializers.ModelSerializer):
 {%- if cookiecutter.products_model != 'commodity' %}
         images = validated_data.pop('images')
 {%- endif %}
-        product = super(ProductSerializer, self).create(validated_data)
+        product = super().create(validated_data)
         for page in cms_pages:
             ProductPage.objects.create(product=product, page=page)
 {%- if cookiecutter.products_model != 'commodity' %}
@@ -92,7 +92,7 @@ class SmartPhoneModelSerializer(TranslatableModelSerializerMixin, ProductSeriali
 
     def create(self, validated_data):
         variants = validated_data.pop('variants')
-        product = super(SmartPhoneModelSerializer, self).create(validated_data)
+        product = super().create(validated_data)
         for variant in variants:
             SmartPhoneVariant.objects.create(product=product, **variant)
         return product

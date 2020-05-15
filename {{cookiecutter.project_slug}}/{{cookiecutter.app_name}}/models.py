@@ -62,7 +62,7 @@ class OrderItem(BaseOrderItem):
     {%- if cookiecutter.products_model == 'polymorphic' %}
 
     def populate_from_cart_item(self, cart_item, request):
-        super(OrderItem, self).populate_from_cart_item(cart_item, request)
+        super().populate_from_cart_item(cart_item, request)
         # the product's unit_price must be fetched from the product's variant
         try:
             variant = cart_item.product.get_product_variant(

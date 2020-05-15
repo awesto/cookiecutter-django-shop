@@ -5,20 +5,22 @@ root = true
 [*]
 charset = utf-8
 end_of_line = lf
-insert_final_newline = true
+insert_final_newline = false
 trim_trailing_whitespace = true
 
-[*.{py,ini}]
+[*.{py,rst,ini}]
 indent_style = space
 indent_size = 4
+
+[*.py]
+line_length = 119
+known_first_party = my-shop
+multi_line_output = 3
+default_section = THIRDPARTY
 
 [*.{html,js,rst,scss}]
 indent_style = tab
 indent_size = 4
 
-[*.{css,json,md,yml}]
-indent_style = space
-indent_size = 2
-
-[*.md]
+[*.txt]
 trim_trailing_whitespace = false

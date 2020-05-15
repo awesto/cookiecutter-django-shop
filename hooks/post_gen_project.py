@@ -7,8 +7,6 @@ NOTE:
 
 TODO: ? restrict Cookiecutter Django project initialization to Python 3.x environments only
 """
-from __future__ import print_function
-
 import os
 import subprocess
 import random
@@ -201,7 +199,7 @@ def reformat_white_space():
 
 def main():
     set_django_secret_key(os.path.join("{{ cookiecutter.app_name }}", "settings.py"))
-
+    shutil.move(".editorconfig.template", ".editorconfig")
     next_steps = "Next steps to perform:"
     if "{{ cookiecutter.dockerize }}" == "n":
         remove_docker_files()

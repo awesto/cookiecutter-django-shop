@@ -4,4 +4,5 @@
 	{% thumbnail product.sample_image 50x50 crop as thumb %}
 	{% thumbnail product.sample_image 100x100 crop as thumb2 %}
 	<img class="mr-1" width="{{ thumb.width }}" height="{{ thumb.height }}" src="{{ thumb.url }}" srcset="{{ thumb.url }} 1x, {{ thumb2.url }} 2x" />
-{% endblock %}{% endraw %}
+{% endblock %}
+{% endraw %}

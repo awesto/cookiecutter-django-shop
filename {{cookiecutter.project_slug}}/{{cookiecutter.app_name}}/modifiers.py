@@ -46,7 +46,7 @@ class PostalShippingModifier(ShippingModifier):
     def ship_the_goods(self, delivery):
         if not delivery.shipping_id:
             raise ValidationError("Please provide a valid Shipping ID")
-        super(PostalShippingModifier, self).ship_the_goods(delivery)
+        super().ship_the_goods(delivery)
 
 {%- if cookiecutter.use_stripe == 'y' %}
 

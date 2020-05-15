@@ -17,12 +17,11 @@ class FileSystemFinder(FileSystemFinderBase):
             base, ext = os.path.splitext(path)
             base, minext = os.path.splitext(base)
             if minext == '.min':
-                unminimized_path = super(FileSystemFinder, self).find_location(
-                    root, base + ext, prefix)
+                unminimized_path = super().find_location(root, base + ext, prefix)
                 if unminimized_path:
                     return unminimized_path
         # otherwise proceed with the given one
-        path = super(FileSystemFinder, self).find_location(root, path, prefix)
+        path = super().find_location(root, path, prefix)
         return path
 
 
@@ -30,7 +29,7 @@ class AppDirectoriesFinder(AppDirectoriesFinderBase):
     serve_unminimized = getattr(settings, 'DEBUG', False)
 
     def find_in_app(self, app, path):
-        matched_path = super(AppDirectoriesFinder, self).find_in_app(app, path)
+        matched_path = super().find_in_app(app, path)
         if matched_path and self.serve_unminimized:
             base, ext = os.path.splitext(matched_path)
             base, minext = os.path.splitext(base)

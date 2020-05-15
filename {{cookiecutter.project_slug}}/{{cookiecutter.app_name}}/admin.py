@@ -176,7 +176,7 @@ class SmartPhoneInline(admin.TabularInline):
         js = ['shop/js/admin/popup.js']
 
     def get_readonly_fields(self, request, obj=None):
-        readonly_fields = list(super(SmartPhoneInline, self).get_readonly_fields(request, obj))
+        readonly_fields = list(super().get_readonly_fields(request, obj))
         readonly_fields.append('variant_admin')
         return readonly_fields
 
