@@ -1,0 +1,3 @@
+{% raw %}{% load shop_search_tags %}{% endraw %}
+{{ '{%' }} include "{{ cookiecutter.app_name }}/search/indexes/product.txt" {{ '%}' }}
+{% raw %}{% render_placeholder product.placeholder %}{% endraw %}

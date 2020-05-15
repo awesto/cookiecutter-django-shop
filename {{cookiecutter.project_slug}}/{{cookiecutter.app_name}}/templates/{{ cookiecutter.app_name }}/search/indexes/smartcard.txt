@@ -1,4 +1,5 @@
-{% raw %}{% include "myshop/search/indexes/product.txt" %}
+{{ '{%' }} include "{{ cookiecutter.app_name }}/search/indexes/product.txt" {{ '%}' }}
+{% raw %}
 {{ product.description }}
 {{ product.get_card_type_display }} {{ product.storage }}GB
 {% endraw %}
