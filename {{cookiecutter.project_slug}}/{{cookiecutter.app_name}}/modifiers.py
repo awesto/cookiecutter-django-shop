@@ -29,13 +29,18 @@ class PrimaryCartModifier(DefaultCartModifier):
 
 
 class PostalShippingModifier(ShippingModifier):
+    """
+    This is just a demo on how to implement a shipping modifier, which when selected
+    by the customer, adds an additional charge to the cart.
+    """
     identifier = 'postal-shipping'
 
     def get_choice(self):
         return (self.identifier, _("Postal shipping"))
 
     def add_extra_cart_row(self, cart, request):
-        if not self.is_active(cart.extra.get('shipping_modifier')) and len(cart_modifiers_pool.get_shipping_modifiers()) > 1:
+        shipping_modifiers = cart_modifiers_pool.get_shipping_modifiers()
+        if not self.is_active(cart.extra.get('shipping_modifier')) and len(shipping_modifiers) > 1:
             return
         # add a shipping flat fee
         amount = Money('5')
