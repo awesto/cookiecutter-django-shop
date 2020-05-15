@@ -13,10 +13,10 @@ indent_style = space
 indent_size = 4
 
 [*.py]
-line_length=119
-known_first_party=my-shop
-multi_line_output=3
-default_section=THIRDPARTY
+line_length = 119
+known_first_party = my-shop
+multi_line_output = 3
+default_section = THIRDPARTY
 
 [*.{html,js,rst,scss}]
 indent_style = tab
