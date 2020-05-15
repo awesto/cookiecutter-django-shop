@@ -1,5 +1,3 @@
-from django.utils.safestring import mark_safe
-from rest_framework import serializers
 {%- if cookiecutter.products_model != 'polymorphic' %}
 from shop.serializers.bases import ProductSerializer
 {%- else %}
