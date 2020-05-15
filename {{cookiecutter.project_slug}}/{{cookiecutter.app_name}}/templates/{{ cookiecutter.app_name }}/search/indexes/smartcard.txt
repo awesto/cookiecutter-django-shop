@@ -1,4 +1,9 @@
 {{ '{%' }} include "{{ cookiecutter.app_name }}/search/indexes/product.txt" {{ '%}' }}
+<<<<<<< HEAD
 {% raw %}{{ product.description }}
+=======
+{% raw %}
+{{ product.description }}
+>>>>>>> 2b777182fb23e0c2300fbf8bb315d2319246caa6
 {{ product.get_card_type_display }} {{ product.storage }}GB
 {% endraw %}
