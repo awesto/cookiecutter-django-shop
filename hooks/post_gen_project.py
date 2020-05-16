@@ -214,10 +214,7 @@ pipenv run ./manage.py initialize_shop_demo
 pipenv run ./manage.py runserver
 """
     else:
-        if "{{ cookiecutter.pip_dependency_manager }}" == "pipenv":
-            pipenv_to_requirements()
-        elif "{{ cookiecutter.pip_dependency_manager }}" == "poetry":
-            poetry_to_requirements()
+        pipenv_to_requirements()
         set_database_password("docker-files/databases.environ")
         next_steps += """
 cd {{ cookiecutter.project_slug }}
