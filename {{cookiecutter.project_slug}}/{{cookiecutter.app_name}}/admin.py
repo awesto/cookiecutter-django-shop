@@ -181,7 +181,7 @@ class SmartPhoneInline(admin.TabularInline):
         return readonly_fields
 
     def variant_admin(self, obj):
-        link = reverse('admin:myshop_smartphonevariant_change', args=(obj.id,)), _("Edit Variant")
+        link = reverse('admin:{{ cookiecutter.app_name }}_smartphonevariant_change', args=(obj.id,)), _("Edit Variant")
         return format_html(
             '<span class="object-tools"><a href="#" onclick="shopShowAdminPopup(\'{0}\', \'Edit Variant\');" class="viewsitelink">{1}</a></span>',
             *link)

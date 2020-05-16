@@ -159,7 +159,10 @@ def pipenv_to_requirements():
     ret = subprocess.check_output(['pipenv', 'lock', '--requirements'])
     with open('requirements.txt', 'w') as fh:
         fh.write(ret.decode('utf-8'))
-
+        
+def poetry_to_requirements():
+    cmd = "poetry install;"
+    subprocess.run(cmd, shell=True)    
 
 def set_flags_in_envs_deprecated(
     postgres_user,
@@ -211,7 +214,10 @@ pipenv run ./manage.py initialize_shop_demo
 pipenv run ./manage.py runserver
 """
     else:
-        pipenv_to_requirements()
+        if "{{ cookiecutter.pip_dependency_manager }}" == "pipenv":
+            pipenv_to_requirements()
+        elif "{{ cookiecutter.pip_dependency_manager }}" == "poetry":
+            poetry_to_requirements()
         set_database_password("docker-files/databases.environ")
         next_steps += """
 cd {{ cookiecutter.project_slug }}

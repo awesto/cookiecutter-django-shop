@@ -1,4 +1,6 @@
 *
+!poetry.lock
+!pyproject.toml
 !docker-files
 !{{ cookiecutter.app_name }}
 !.coveragerc

@@ -7,10 +7,13 @@ ARG DJANGO_STATIC_ROOT=/web/staticfiles
 
 # install packages outside of PyPI
 RUN apt-get upgrade -y
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash -
 RUN apt-get install -y nodejs optipng jpegoptim
 RUN pip install --upgrade pip
-
+{%- if cookiecutter.pip_dependency_manager == "poetry" %}
+# official install poetry
+RUN curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+{%- endif %}
 {%- if cookiecutter.dockerize == "runserver" %}
 COPY docker-files/entrypoint.sh /usr/local/bin/entrypoint.sh
 {%- else %}
@@ -22,10 +25,16 @@ COPY manage.py /web/manage.py
 COPY worker.py /web/worker.py
 COPY docker-files/uwsgi.ini /etc/uwsgi.ini
 {%- endif %}
-COPY requirements.txt /tmp/requirements.txt
 
-# install project specific requirements
+{%- if cookiecutter.pip_dependency_manager == "pipenv" %}
+COPY requirements.txt /tmp/requirements.txt
 RUN pip install -r /tmp/requirements.txt
+{%- elif cookiecutter.pip_dependency_manager == "poetry" %}
+COPY pyproject.toml /web/pyproject.toml
+RUN $HOME/.poetry/bin/poetry config settings.virtualenvs.create false 
+RUN $HOME/.poetry/bin/poetry install 
+{%- endif %}
+
 {%- if cookiecutter.dockerize != "runserver" %}
 RUN npm install
 {%- endif %}
