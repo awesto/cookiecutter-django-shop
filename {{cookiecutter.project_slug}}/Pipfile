@@ -5,15 +5,12 @@ name = "pypi"
 
 [packages]
 Django = ">=3"
-djangocms-text-ckeditor = {git = "https://github.com/beeduino/djangocms-text-ckeditor.git", ref = "changes-for-django3", editable = true} 
-# djangocms-cascade = ">=1.3"
-# djangocms-cascade = {git = "https://github.com/jrief/djangocms-cascade.git", ref ="releases/1.3", editable = true}
-djangocms-cascade = {git = "https://github.com/beeduino/djangocms-cascade.git", ref="changes-for-django3", editable = true}
+06edf32 = {file = "https://github.com/jrief/djangocms-text-ckeditor/archive/patch-1.zip"}
+djangocms-cascade = "*"
 {% if cookiecutter.use_compressor == 'y' -%}
 django-compressor = "*"
 {% endif -%}
 django-allauth = "*"
-# django-angular = "*"
 django-angular = ">=2.3"
 django-filer = "*"
 django-ipware = "*"
@@ -33,8 +30,7 @@ uWSGI = "*"
 {% endif -%}
 djangorestframework = "*"
 django-rest-auth = "*"
-# django_polymorphic = "*"
-django-polymorphic = ">=2.1.2"
+django-polymorphic = ">=2.1"
 django-admin-sortable2 = "*"
 django-fsm = "*"
 django-fsm-admin = "*"
@@ -43,22 +39,19 @@ django-post_office = "*"
 phonenumbers = "*"
 djangocms-bootstrap = "*"
 django-elasticsearch-dsl-drf = "*"
-# elasticsearch = "<1.8"
-elasticsearch = ">=7.6.0"
+elasticsearch = ">=7"
 libsass = "*"
-# django-shop = "<1.2"
-django-shop = {git = "https://github.com/awesto/django-shop.git", ref = "releases/1.2", editable = true}
+django-shop = ">=1.2"
 {% if cookiecutter.use_stripe == 'y' -%}
-djangoshop-stripe = "*"  {# "{{ cookiecutter.version }}" #}
-stripe = "<1.54"
+djangoshop-stripe = ">=1.2"
+stripe = "<2"
 {% endif -%}
 {% if cookiecutter.use_paypal == 'y' -%}
-djangoshop-paypal = "*"  {# "{{ cookiecutter.version }}" #}
+djangoshop-paypal = ">=1.2"
 paypalrestsdk = "<2"
 {% endif -%}
 {% if cookiecutter.use_sendcloud == 'y' -%}
-# djangoshop-sendcloud = "*"  {# "{{ cookiecutter.version }}" #}
-djangoshop-sendcloud = {git = "https://github.com/beeduino/djangoshop-sendcloud.git", ref = "changes-for-django3", editable = true}
+djangoshop-sendcloud = ">=1.2"
 {% endif -%}
 
 [dev-packages]
@@ -71,7 +64,7 @@ factory-boy = "*"
 pytest-factoryboy = "*"
 
 [requires]
-python_version = ">=3.6"
+python_version = "3.7"
 
 [pipenv]
 allow_prereleases = true
