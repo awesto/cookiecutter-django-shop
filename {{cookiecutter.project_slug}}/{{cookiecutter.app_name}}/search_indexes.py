@@ -8,7 +8,7 @@ settings = {
     'number_of_replicas': 0,
 }
 {%- if cookiecutter.use_i18n == 'y' %}
-for language, _ in settings.LANGUAGES:
+for language, _ in config.LANGUAGES:
     ProductDocument(language=language, settings=settings)
 {% else %}
 ProductDocument(settings=settings)
