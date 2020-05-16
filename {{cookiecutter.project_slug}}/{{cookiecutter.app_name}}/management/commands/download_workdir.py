@@ -7,6 +7,7 @@ try:
     import czipfile as zipfile
 except ImportError:
     import zipfile
+from .spinner import Spinner
 
 
 class Command(BaseCommand):
@@ -50,12 +51,14 @@ Type 'yes' to continue, or 'no' to cancel:
                     return
 
         extract_to = os.path.join(settings.WORK_DIR, os.pardir)
-        msg = "Downloading workdir and extracting to {}. Please wait ..."
-        self.stdout.write(msg.format(extract_to))
-        download_url = self.download_url.format(version=self.version)
-        response = requests.get(download_url, stream=True)
-        zip_ref = zipfile.ZipFile(StringIO(response.content))
-        try:
-            zip_ref.extractall(extract_to)
-        finally:
-            zip_ref.close()
+        msg = "Downloading workdir and extracting to {}. Please wait"
+        self.stdout.write(msg.format(extract_to), ending=' ')
+        with Spinner():
+            download_url = self.download_url.format(version=self.version)
+            response = requests.get(download_url, stream=True)
+            zip_ref = zipfile.ZipFile(StringIO(response.content))
+            try:
+                zip_ref.extractall(extract_to)
+            finally:
+                zip_ref.close()
+        self.stdout.write('- done.')
