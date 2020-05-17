@@ -71,6 +71,12 @@ class Command(BaseCommand):
             except CommandError:
                 pass
 {%- endif %}
+{%- if cookiecutter.use_elasticsearch == 'y' %}
+            try:
+                call_command('search_index', action='rebuild', force=True)
+            except CommandError:
+                pass
+{%- endif %}
         else:
             self.stdout.write("Project {{ cookiecutter.app_name }} already initialized")
             call_command('migrate')
