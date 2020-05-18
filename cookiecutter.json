@@ -16,8 +16,8 @@
     "nginx"
   ],
   "use_i18n": "y",
-  "languages": "en, de, fr, es, ru, it, jp, cn",
-  "use_paypal": "n",
+  "languages": "de, en",
+  "use_paypal": "y",
   "use_stripe": "y",
   "use_sendcloud": "y",
   "printable_invoice": "y",
