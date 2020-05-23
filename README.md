@@ -34,23 +34,25 @@ pip install --user pipenv cookiecutter autopep8
 
 ### on MacOS
 
-Check that you have install Python-3.6 or later. If unsure invoke `python --version`.
+Check that you have install Python version 3.6 or later. If unsure, invoke `python --version` in a
+terminal. Otherwise
+[download the latest stable Python release](https://www.python.org/downloads/mac-osx/) and install
+it following the instructions.
 
-Install **nodejs** using
+Check that you have installed NodeJS version 12 or later. If unsure, invoke `node --version` in a
+terminal. Otherwise [download NodeJS](https://nodejs.org/en/download/) and install it following the
+instructions.
 
-```bash
-sudo brew install node
-```
 
-or, if you don't use `brew` follow [these instruction](https://nodejs.org/en/download/).
+## Kickstaring
 
-To kickstart the project, we must install two Python packages globally:
+To kickstart the project, we must install three Python packages globally:
 
 ```
 pip install --user pipenv cookiecutter autopep8
 ```
 
-To create a demo of running implementation of **django-SHOP**, change into the projects directory
+To create a demo of a running implementation of **django-SHOP**, change into the project's directory
 and invoke:
 
 ```bash
@@ -61,10 +63,11 @@ Cookicutter will ask a few questions; if unsure, just use the defaults. This cre
 named `my-shop`, or whatever project name has been choosen. In **django-SHOP**'s jargon, this
 generated directory is named the *merchant implementation*.
  
-For simplicity let's refer to it as `my-shop` in the following documentation. This directory is
-where the merchant keeps its configurations, declares his own Django product models, overrides the
-rendering templates, adds custom modifiers to influence the final price in the cart, and defines the
-workflow for handling orders.
+For simplicity let's refer to it as `my-shop` in this documentation. The directory `my-shop` is
+where the merchant keeps its configuration and customization. This separation keeps the core of
+**django-SHOP** at a barebone minimum. In this directory the merchant declares his own Django
+product models, overrides the rendering templates, adds custom modifiers to influence the final
+price in the cart, and defines the workflow for handling orders.
 
 For details, please refer to the
 [full documentation of django-SHOP](https://django-shop.readthedocs.io/en/latest/index.html).
@@ -94,7 +97,7 @@ This demo uses SQLite as its database. It neither supports caching, nor full tex
 asyncrounous worker.
 
 Please be patient during the first page loads, because media files have to be downloaded and
-thumbnailed andthe latter is a time-consuming task.
+thumbnailed. The latter is a time-consuming task.
 
 
 ## Run django-SHOP demo in Docker
