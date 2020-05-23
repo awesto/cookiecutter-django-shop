@@ -1,13 +1,14 @@
 # Cookiecutter for django-SHOP
 
-Powered by [Cookiecutter](https://github.com/audreyr/cookiecutter), **cookiecutter-django-shop** is a set of templates
-for jumpstarting a [django-SHOP](https://github.com/awesto/django-shop) project quickly.
+Powered by [Cookiecutter](https://github.com/audreyr/cookiecutter), **cookiecutter-django-shop** is
+a set of templates for jumpstarting a [django-SHOP](https://github.com/awesto/django-shop) project
+quickly.
 
 Use these Cookiecutter Templates to run one of the demo merchant implementations.
 
 * To get a first impression on its features.
-* Select the configuration example which is the most similar to your own requirements. Then replace the
-  product models and templates with your own implementations.
+* Select the configuration example which is the most similar to your own requirements. Then replace
+  the product models and templates with your own implementations.
 
 
 ## Quick How-To
@@ -50,7 +51,7 @@ To kickstart the project, we must install three Python packages globally:
 
 ```
 pip install --user pipenv cookiecutter autopep8
-PATH="$(python3 -m site --user-base)/bin:${PATH}"
+PATH="$(python -m site --user-base)/bin:${PATH}"
 ```
 
 To create a demo of a running implementation of **django-SHOP**, change into the project's directory
