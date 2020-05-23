@@ -450,12 +450,6 @@ FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880
 
 THUMBNAIL_HIGH_RESOLUTION = False
 
-THUMBNAIL_OPTIMIZE_COMMAND = {
-    'gif': '/usr/bin/optipng {filename}',
-    'jpeg': '/usr/bin/jpegoptim {filename}',
-    'png': '/usr/bin/optipng {filename}'
-}
-
 THUMBNAIL_PRESERVE_EXTENSIONS = True
 
 THUMBNAIL_PROCESSORS = (
