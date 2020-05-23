@@ -5,8 +5,6 @@ name = "pypi"
 
 [packages]
 Django = ">=3"
-06edf32 = {file = "https://github.com/jrief/djangocms-text-ckeditor/archive/patch-1.zip"}
-djangocms-cascade = "*"
 {% if cookiecutter.use_compressor == 'y' -%}
 django-compressor = "*"
 {% endif -%}
@@ -37,11 +35,15 @@ django-fsm-admin = "*"
 django-phonenumber-field = "*"
 django-post_office = "*"
 phonenumbers = "*"
+django-cms = ">=3.7.2"
 djangocms-bootstrap = "*"
-django-elasticsearch-dsl-drf = "*"
-elasticsearch = ">=7"
+djangocms-cascade = ">=1.3.1"
 libsass = "*"
-django-shop = ">=1.2"
+django-shop = ">=1.2.1"
+{% if cookiecutter.use_elasticsearch == 'y' -%}
+django-elasticsearch-dsl = "*"
+elasticsearch-dsl = ">=7"
+{% endif -%}
 {% if cookiecutter.use_stripe == 'y' -%}
 djangoshop-stripe = ">=1.2"
 stripe = "<2"
@@ -53,6 +55,7 @@ paypalrestsdk = "<2"
 {% if cookiecutter.use_sendcloud == 'y' -%}
 djangoshop-sendcloud = ">=1.2"
 {% endif -%}
+06edf32 = {file = "https://github.com/jrief/djangocms-text-ckeditor/archive/patch-1.zip"}
 
 [dev-packages]
 tox = "*"

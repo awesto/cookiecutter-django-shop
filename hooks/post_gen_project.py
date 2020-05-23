@@ -208,7 +208,7 @@ def main():
         remove_docker_files()
         next_steps += """
 cd {{ cookiecutter.project_slug }}
-pipenv install --sequential
+pipenv install
 npm install
 pipenv run ./manage.py initialize_shop_demo
 pipenv run ./manage.py runserver
