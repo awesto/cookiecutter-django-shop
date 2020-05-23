@@ -50,6 +50,7 @@ To kickstart the project, we must install three Python packages globally:
 
 ```
 pip install --user pipenv cookiecutter autopep8
+PATH="$(python3 -m site --user-base)/bin:${PATH}"
 ```
 
 To create a demo of a running implementation of **django-SHOP**, change into the project's directory
@@ -83,7 +84,7 @@ When asked by Cookiecutter: *Select dockerize*, choose `1 - n`.
 
 ```bash
 cd my-shop
-pipenv install --sequential
+pipenv install
 npm install
 pipenv run ./manage.py initialize_shop_demo
 export DJANGO_DEBUG=1

@@ -32,7 +32,7 @@
     "commodity"
   ],
   "use_compressor": "n",
-  "use_elasticsearch": "n",
+  "use_elasticsearch": "y",
   "stock_management": [
     "simple",
     "inventory",
