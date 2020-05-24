@@ -439,7 +439,7 @@ class OperatingSystem(models.Model):
 
 class SmartPhoneModel(Product):
     """
-    A generic smart phone model, which must be concretized by a model `SmartPhone` - see below.
+    A generic smart phone model, which must be concretized by a `SmartPhoneVariant` - see below.
     """
     BATTERY_TYPES = [
         (1, "Lithium Polymer (Li-Poly)"),
