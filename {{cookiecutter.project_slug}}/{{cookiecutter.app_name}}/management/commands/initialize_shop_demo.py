@@ -74,7 +74,7 @@ class Command(BaseCommand):
 {%- if cookiecutter.use_elasticsearch == 'y' %}
             try:
                 call_command('search_index', action='rebuild', force=True)
-            except CommandError:
+            except:
                 pass
 {%- endif %}
         else:
