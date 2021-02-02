@@ -45,7 +45,7 @@ terminal. Otherwise [download NodeJS](https://nodejs.org/en/download/) and insta
 instructions.
 
 
-## Kickstaring
+## Kickstarting
 
 To kickstart the project, we must install three Python packages globally:
 
