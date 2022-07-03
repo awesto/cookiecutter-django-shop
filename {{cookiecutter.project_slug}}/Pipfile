@@ -10,7 +10,7 @@ django-compressor = "*"
 {% endif -%}
 django-allauth = "*"
 django-angular = ">=2.3"
-django-filer = "*"
+django-filer = "==2.0.2"
 django-ipware = "*"
 django-sass-processor = "*"
 django-select2 = "*"
