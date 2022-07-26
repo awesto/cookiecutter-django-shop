@@ -38,5 +38,6 @@
     "inventory",
     "n"
   ],
-  "debug": "y"
+  "debug": "y",
+  "python_version": "3.9"
 }

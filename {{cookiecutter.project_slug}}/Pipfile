@@ -67,7 +67,7 @@ factory-boy = "*"
 pytest-factoryboy = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "{{ cookiecutter.python_version }}"
 
 [pipenv]
 allow_prereleases = true
