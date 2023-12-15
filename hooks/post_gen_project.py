@@ -156,9 +156,15 @@ def append_to_gitignore_file(s):
 
 
 def pipenv_to_requirements():
-    ret = subprocess.check_output(['pipenv', 'lock', '--requirements'])
+    # First, we ensure that the Pipfile.lock is up to date
+    subprocess.check_call(['pipenv', 'lock'])
+
+    # Then, we use pipenv to generate the requirements.txt content
+    requirements = subprocess.check_output(['pipenv', 'run', 'pip', 'freeze'])
+
+    # Write the output to requirements.txt
     with open('requirements.txt', 'w') as fh:
-        fh.write(ret.decode('utf-8'))
+        fh.write(requirements.decode('utf-8'))
         
 def poetry_to_requirements():
     cmd = "poetry install;"
